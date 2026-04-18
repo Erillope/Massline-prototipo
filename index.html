@@ -767,6 +767,1416 @@
       opacity: 1;
     }
 
+    /* ===== Arrival action button (table) ===== */
+    .btn-arrival {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 8px;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid #0ea5e9;
+      background: #f0f9ff;
+      color: #075985;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .btn-arrival:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
+    }
+
+    .btn-arrival::after {
+      content: 'Registrar llegada';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-arrival:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== Arrival action button (detail) ===== */
+    .btn-arrival-lg {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-arrival-lg:hover {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Modal overlay ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 480px;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #f0f0f5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-header-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #f0f9ff;
+      color: #0ea5e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .modal-header p {
+      font-size: 13px;
+      color: #8b8fa3;
+      margin-top: 2px;
+    }
+
+    .modal-close {
+      margin-left: auto;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b8fa3;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: #f0f0f5;
+      color: #1a1a2e;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-summary {
+      background: #f7f8fa;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .modal-summary-label {
+      color: #8b8fa3;
+      font-weight: 500;
+    }
+
+    .modal-summary-value {
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    .modal-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 0;
+    }
+
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .modal-form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #8b8fa3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-form-input {
+      padding: 9px 12px;
+      border: 1.5px solid #dfe1e8;
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #1a1a2e;
+      background: #fafbfd;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .modal-form-input:focus {
+      border-color: #0ea5e9;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    }
+
+    .modal-footer {
+      padding: 16px 24px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-modal-cancel {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid #dfe1e8;
+      background: #fff;
+      color: #4a4a68;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #f0f0f5;
+      border-color: #b4b7c9;
+    }
+
+    .btn-modal-confirm {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-confirm:hover {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Toast notification ===== */
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      border: 1px solid #e8e8ef;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 2000;
+      transform: translateX(120%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 420px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #ecfdf5;
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+
+    .toast-message {
+      font-size: 13px;
+      color: #8b8fa3;
+    }
+
+    .toast-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b8fa3;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .toast-close:hover {
+      background: #f0f0f5;
+      color: #1a1a2e;
+    }
+
+    /* ===== Review action button (table) ===== */
+    .btn-review {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 8px;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .btn-review:hover {
+      background: #d1fae5;
+      border-color: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-review::after {
+      content: 'Iniciar revisión';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-review:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== Review action button (detail) ===== */
+    .btn-review-lg {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-review-lg:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Review View ===== */
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .review-header .detail-title {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .review-order-meta {
+      font-size: 13px;
+      color: #8b8fa3;
+      margin-top: 4px;
+    }
+
+    .status-badge.en-revision {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1.5px dashed #f59e0b;
+      animation: pulse-review 2s infinite;
+    }
+    .status-badge.en-revision .dot { background: #f59e0b; }
+
+    @keyframes pulse-review {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+      50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+    }
+
+    /* Review verification table */
+    .review-table th:last-child,
+    .review-table td:last-child {
+      text-align: center;
+    }
+
+    .review-table .qty-input {
+      width: 70px;
+      padding: 6px 8px;
+      border: 1.5px solid #dfe1e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: center;
+      color: #1a1a2e;
+      background: #fafbfd;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .review-table .qty-input:focus {
+      border-color: #6c63ff;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    }
+
+    .review-table .qty-input.mismatch {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .review-table .dmg-input {
+      width: 60px;
+      padding: 6px 8px;
+      border: 1.5px solid #dfe1e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: center;
+      color: #1a1a2e;
+      background: #fafbfd;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .review-table .dmg-input:focus {
+      border-color: #f59e0b;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    .review-table .dmg-input.has-damaged {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .review-table .dmg-input {
+      width: 60px;
+      padding: 6px 8px;
+      border: 1.5px solid #dfe1e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: center;
+      color: #1a1a2e;
+      background: #fafbfd;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .review-table .dmg-input:focus {
+      border-color: #f59e0b;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    .review-table .dmg-input.has-damaged {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .review-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .review-status.ok {
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .review-status.pending {
+      background: #f0f0f5;
+      color: #8b8fa3;
+    }
+
+    .review-status.anomaly {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .btn-anomaly {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: 6px;
+      border: 1.5px solid #dfe1e8;
+      background: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b8fa3;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .btn-anomaly:hover {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      color: #f59e0b;
+    }
+
+    .btn-anomaly.active {
+      border-color: #f59e0b;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .btn-anomaly::after {
+      content: 'Registrar anomalía';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-anomaly:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Anomaly panel (inline below row) */
+    .anomaly-panel {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 8px 0 4px;
+    }
+
+    .anomaly-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .anomaly-panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .anomaly-panel-close {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92400e;
+      transition: all 0.2s;
+    }
+
+    .anomaly-panel-close:hover {
+      background: #fde68a;
+    }
+
+    .anomaly-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .anomaly-summary {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #92400e;
+    }
+
+    .anomaly-summary .summary-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .anomaly-summary .summary-item strong {
+      font-weight: 700;
+      color: #78350f;
+    }
+
+    /* Detail anomaly cards */
+    .detail-anomaly-card {
+      padding: 14px 16px;
+      border-radius: 10px;
+      border-left: 4px solid;
+    }
+
+    .detail-anomaly-card.severity-leve {
+      background: #f0fdf4;
+      border-color: #22c55e;
+      border-left-color: #22c55e;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #22c55e;
+    }
+
+    .detail-anomaly-card.severity-moderada {
+      background: #fefce8;
+      border-color: #fde68a;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .detail-anomaly-card.severity-grave {
+      background: #fef2f2;
+      border-color: #fecaca;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #ef4444;
+    }
+
+    .detail-anomaly-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .detail-anomaly-item-label {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .severity-leve .detail-anomaly-item-label { color: #166534; }
+    .severity-moderada .detail-anomaly-item-label { color: #92400e; }
+    .severity-grave .detail-anomaly-item-label { color: #991b1b; }
+
+    .detail-anomaly-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .severity-leve .detail-anomaly-badge { background: #dcfce7; color: #166534; }
+    .severity-moderada .detail-anomaly-badge { background: #fef3c7; color: #92400e; }
+    .severity-grave .detail-anomaly-badge { background: #fee2e2; color: #991b1b; }
+
+    .detail-anomaly-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .detail-anomaly-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .detail-anomaly-tag.faltantes {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .detail-anomaly-tag.danados {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .detail-anomaly-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .severity-leve .detail-anomaly-desc { color: #14532d; }
+    .severity-moderada .detail-anomaly-desc { color: #78350f; }
+    .severity-grave .detail-anomaly-desc { color: #7f1d1d; }
+
+    /* View anomaly button (detail product table) */
+    .btn-view-anomaly {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: 6px;
+      border: 1.5px solid #fde68a;
+      background: #fef3c7;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #92400e;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .btn-view-anomaly:hover {
+      border-color: #f59e0b;
+      background: #fef3c7;
+      color: #b45309;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+
+    .btn-view-anomaly.expanded {
+      border-color: #f59e0b;
+      background: #f59e0b;
+      color: #fff;
+    }
+
+    .btn-view-anomaly::after {
+      content: 'Ver anomalía';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-view-anomaly:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Read-only anomaly view panel */
+    .anomaly-view-panel {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 8px 0 4px;
+    }
+
+    .anomaly-view-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .anomaly-view-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #92400e;
+    }
+
+    .anomaly-view-title svg {
+      width: 16px;
+      height: 16px;
+      color: #f59e0b;
+    }
+
+    .anomaly-view-field {
+      margin-bottom: 12px;
+    }
+
+    .anomaly-view-field:last-child {
+      margin-bottom: 0;
+    }
+
+    .anomaly-view-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #92400e;
+      margin-bottom: 4px;
+    }
+
+    .anomaly-view-value {
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.5;
+    }
+
+    .anomaly-view-severity {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .anomaly-view-severity.leve {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .anomaly-view-severity.moderada {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .anomaly-view-severity.grave {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Photo gallery (view-only) */
+    .photo-gallery-view {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .photo-view-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
+      background: #f0f0f5;
+      border: 1.5px solid #fde68a;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .photo-view-thumb:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+      transform: scale(1.05);
+    }
+
+    .photo-view-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Photo lightbox */
+    .photo-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
+    }
+
+    .photo-lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .photo-lightbox img {
+      max-width: 85vw;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      transform: scale(0.9);
+      transition: transform 0.25s;
+    }
+
+    .photo-lightbox.active img {
+      transform: scale(1);
+    }
+
+    .photo-lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: background 0.2s;
+    }
+
+    .photo-lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .anomaly-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .anomaly-form-group label {
+      font-size: 11px;
+      font-weight: 500;
+      color: #92400e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .anomaly-form-group select,
+    .anomaly-form-group textarea,
+    .anomaly-form-group input {
+      padding: 8px 10px;
+      border: 1.5px solid #fde68a;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #1a1a2e;
+      background: #fff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .anomaly-form-group select:focus,
+    .anomaly-form-group textarea:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    .anomaly-form-group textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .severity-chips {
+      display: flex;
+      gap: 6px;
+    }
+
+    .severity-chip {
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid #dfe1e8;
+      background: #fff;
+      color: #6b7280;
+      transition: all 0.2s;
+    }
+
+    .severity-chip:hover { border-color: #b4b7c9; }
+
+    .severity-chip.selected.leve {
+      border-color: #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .severity-chip.selected.moderada {
+      border-color: #f59e0b;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .severity-chip.selected.grave {
+      border-color: #ef4444;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .btn-register-anomaly {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: #f59e0b;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+
+    .btn-register-anomaly:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+
+    /* Upload zone (review) */
+    .upload-zone-sm {
+      border: 1.5px dashed #fde68a;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+      color: #92400e;
+      background: #fffef5;
+    }
+
+    .upload-zone-sm:hover {
+      border-color: #f59e0b;
+      background: #fef3c7;
+    }
+
+    /* Photo gallery */
+    .photo-gallery {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .photo-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      background: #f0f0f5;
+      border: 1.5px solid #fde68a;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-thumb-remove {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .photo-thumb:hover .photo-thumb-remove {
+      opacity: 1;
+    }
+
+    /* Delete anomaly button */
+    .btn-delete-anomaly {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid #fca5a5;
+      background: #fff;
+      color: #dc2626;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+
+    .btn-delete-anomaly:hover {
+      background: #fef2f2;
+      border-color: #ef4444;
+      transform: translateY(-1px);
+    }
+
+    .anomaly-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    /* Review progress bar (sticky bottom) */
+    .review-progress-bar {
+      position: sticky;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid #e8e8ef;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+      border-radius: 0 0 16px 16px;
+      z-index: 10;
+      gap: 16px;
+    }
+
+    .review-progress-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+    }
+
+    .review-progress-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #4a4a68;
+    }
+
+    .review-progress-item .count {
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .review-progress-item.anomalies .count {
+      color: #f59e0b;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: #e8e8ef;
+      border-radius: 3px;
+      overflow: hidden;
+      min-width: 100px;
+      max-width: 200px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .btn-finish-review {
+      padding: 9px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-finish-review:hover:not(:disabled) {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-finish-review:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ===== Recipients (review modal) ===== */
+    .recipients-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .recipient-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      background: #f0f2f5;
+      border: 1px solid #e2e4e9;
+      border-radius: 20px;
+      font-size: 12.5px;
+      color: #374151;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    .recipient-chip.default {
+      background: #ede9fe;
+      border-color: #c4b5fd;
+      color: #5b21b6;
+    }
+
+    .recipient-chip .chip-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      color: #7c3aed;
+      margin-right: 2px;
+    }
+
+    .recipient-chip-remove {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border: none;
+      background: rgba(0,0,0,0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+      color: #6b7280;
+      font-size: 11px;
+      line-height: 1;
+      transition: all 0.15s;
+    }
+
+    .recipient-chip-remove:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .recipient-add-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .recipient-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1.5px solid #e2e4e9;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .recipient-input:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    }
+
+    .btn-add-recipient {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      background: #f8f9fb;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-add-recipient:hover {
+      background: #6c63ff;
+      border-color: #6c63ff;
+      color: #fff;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid #e2e4e9;
+      background: #fff;
+      border-radius: 8px;
+      color: #6b7280;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .btn-download:hover {
+      background: #6c63ff;
+      border-color: #6c63ff;
+      color: #fff;
+    }
+
     /* ===== Responsive ===== */
     @media (max-width: 768px) {
       .sidebar {
@@ -963,7 +2373,7 @@
                     <td>Textiles Oriente SpA</td>
                     <td>16/04/2026 08:45</td>
                     <td>8</td>
-                    <td><span class="status-badge en-bodega"><span class="dot"></span> En bodega</span></td>
+                    <td><span class="status-badge en-bodega"><span class="dot"></span> En bodega</span> <button class="btn-review" onclick="event.stopPropagation(); startReview('PO-2026-0460','Textiles Oriente SpA','8')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
@@ -973,7 +2383,7 @@
                     <td>Logística Global Ltda.</td>
                     <td>14/04/2026 10:20</td>
                     <td>3</td>
-                    <td><span class="status-badge en-bodega"><span class="dot"></span> En bodega</span></td>
+                    <td><span class="status-badge en-bodega"><span class="dot"></span> En bodega</span> <button class="btn-review" onclick="event.stopPropagation(); startReview('PO-2026-0458','Logística Global Ltda.','3')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
@@ -1037,7 +2447,7 @@
                     <td>Distribuidora ABC Ltda.</td>
                     <td>16/04/2026 07:30</td>
                     <td>5</td>
-                    <td><span class="status-badge ingresada"><span class="dot"></span> Por llegar</span></td>
+                    <td><span class="status-badge ingresada"><span class="dot"></span> Por llegar</span> <button class="btn-arrival" onclick="event.stopPropagation(); openArrivalModal('PO-2026-0461','Distribuidora ABC Ltda.','5')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
@@ -1093,6 +2503,14 @@
           <span id="detailStatusBadge" class="status-badge en-bodega" style="margin-left:auto;">
             <span class="dot"></span> <span id="detailStatusText">En bodega</span>
           </span>
+          <button id="detailArrivalBtn" class="btn-arrival-lg" style="display:none; margin-left:12px;" onclick="openArrivalModal(document.getElementById('detailCode').textContent, document.getElementById('detailInfoProveedor').textContent, '5')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            Registrar llegada a bodega
+          </button>
+          <button id="detailReviewBtn" class="btn-review-lg" style="display:none; margin-left:12px;" onclick="startReview(document.getElementById('detailCode').textContent, document.getElementById('detailInfoProveedor').textContent, '8')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            Iniciar revisión
+          </button>
         </div>
 
         <!-- Info general -->
@@ -1143,37 +2561,6 @@
           </div>
         </div>
 
-        <!-- Anomalías registradas (solo almacenada con anomalías) -->
-        <div class="card" id="detailAnomaliesCard" style="display:none;">
-          <div class="card-header">
-            <div class="card-header-icon" style="background:#fef3c7; color:#f59e0b;">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-              </svg>
-            </div>
-            <h2>Anomalías registradas</h2>
-            <span class="card-header-right">Registradas durante la revisión</span>
-          </div>
-          <div class="card-body">
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <div style="padding:14px 16px; background:#fefce8; border:1px solid #fde68a; border-radius:10px; border-left:4px solid #f59e0b;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                  <span style="font-size:13px; font-weight:600; color:#92400e;">Diferencia de cantidad</span>
-                  <span style="font-size:11px; padding:2px 8px; border-radius:10px; background:#fef3c7; color:#92400e; font-weight:500;">Ítem #3</span>
-                </div>
-                <p style="font-size:13px; color:#78350f; line-height:1.5; margin:0;">Se recibieron 180 unidades de Hilo industrial blanco 5000m en lugar de las 200 solicitadas. Diferencia: -20 unidades.</p>
-              </div>
-              <div style="padding:14px 16px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; border-left:4px solid #ef4444;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                  <span style="font-size:13px; font-weight:600; color:#991b1b;">Producto dañado</span>
-                  <span style="font-size:11px; padding:2px 8px; border-radius:10px; background:#fef2f2; color:#991b1b; font-weight:500;">Ítem #6</span>
-                </div>
-                <p style="font-size:13px; color:#7f1d1d; line-height:1.5; margin:0;">2 rollos de Elástico plano 3cm presentan cortes y no son utilizables. Se registró evidencia fotográfica.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Productos -->
         <div class="card">
           <div class="card-header">
@@ -1191,7 +2578,7 @@
               </div>
             </div>
             <div class="table-wrapper" style="border:none; border-radius:0;">
-              <table class="data-table">
+              <table class="data-table" id="detailProductTable">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -1201,9 +2588,10 @@
                     <th>Cantidad</th>
                     <th>Precio unit.</th>
                     <th>Subtotal</th>
+                    <th id="detailAnomalyColHeader" style="display:none; width:40px;"></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="detailProductTableBody">
                   <tr>
                     <td>1</td>
                     <td><code>ART-3010</code></td>
@@ -1279,8 +2667,9 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="6" style="text-align:right; font-weight:600; border-top: 2px solid #e8e8f0;">Total</td>
+                    <td id="detailTotalColspan" colspan="6" style="text-align:right; font-weight:600; border-top: 2px solid #e8e8f0;">Total</td>
                     <td style="font-weight:700; color:#1a1a2e; border-top: 2px solid #e8e8f0;">$3.138.000</td>
+                    <td id="detailTotalExtraCol" style="display:none; border-top: 2px solid #e8e8f0;"></td>
                   </tr>
                 </tfoot>
               </table>
@@ -1306,6 +2695,9 @@
                   <div style="font-weight:500; color:#1a1a2e;">orden_PO-2026-0460.xlsx</div>
                   <div style="color:#8b8fa3; font-size:12px;">124.3 KB</div>
                 </div>
+                <button class="btn-download" title="Descargar" onclick="return false">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                </button>
               </div>
               <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#f7f8fa; border-radius:10px; font-size:13px;">
                 <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#fee2e2;color:#ef4444;">PDF</div>
@@ -1313,6 +2705,22 @@
                   <div style="font-weight:500; color:#1a1a2e;">email_confirmacion_proveedor.pdf</div>
                   <div style="color:#8b8fa3; font-size:12px;">89.7 KB</div>
                 </div>
+                <button class="btn-download" title="Descargar" onclick="return false">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                </button>
+              </div>
+              <div id="detailAnomalyReportDoc" style="display:none; align-items:center; gap:12px; padding:10px 14px; background:#fefce8; border:1px solid #fde68a; border-radius:10px; font-size:13px;">
+                <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#fef3c7;color:#f59e0b;">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:500; color:#1a1a2e;">reporte_anomalias_<span id="detailAnomalyReportCode">PO-2026-0455</span>.eml</div>
+                  <div style="color:#92400e; font-size:12px;">Enviado a jefe.bodega, compras, calidad</div>
+                </div>
+                <span style="font-size:11px; font-weight:600; padding:3px 8px; background:#fde68a; color:#92400e; border-radius:6px;">Anomalías</span>
+                <button class="btn-download" title="Descargar" onclick="return false">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                </button>
               </div>
             </div>
           </div>
@@ -1320,6 +2728,325 @@
       </div>
 
     </div>
+
+  <!-- Vista de revisión de orden -->
+  <div id="viewReview" style="display:none;" class="page-content">
+    <div class="content-area">
+
+      <!-- Header de revisión -->
+      <div class="review-header">
+        <button class="btn-back" onclick="cancelReview()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="detail-title">
+          <h1>Revisión de <span id="reviewCode">PO-2026-0460</span></h1>
+          <div class="review-order-meta">Proveedor: <span id="reviewProveedor">Textiles Oriente SpA</span></div>
+        </div>
+        <span class="status-badge en-revision"><span class="dot"></span> En revisión</span>
+      </div>
+
+      <!-- Tabla de verificación de productos -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Verificación de productos</h2>
+          <span class="card-header-right" id="reviewItemsCount">0 de 8 verificados</span>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <table class="data-table review-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Unidad</th>
+                <th>Cant. esperada</th>
+                <th>Cant. recibida</th>
+                <th>Dañados</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="reviewTableBody">
+              <tr data-idx="0">
+                <td><code>ART-3010</code></td>
+                <td>Tela algodón 100% orgánico (rollo)</td>
+                <td>Rollo</td>
+                <td>50</td>
+                <td><input type="number" class="qty-input" data-expected="50" oninput="updateRowReview(0)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(0)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(0)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow0" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel0"></div></td></tr>
+
+              <tr data-idx="1">
+                <td><code>ART-3011</code></td>
+                <td>Tela poliéster reciclado (rollo)</td>
+                <td>Rollo</td>
+                <td>30</td>
+                <td><input type="number" class="qty-input" data-expected="30" oninput="updateRowReview(1)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(1)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(1)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow1" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel1"></div></td></tr>
+
+              <tr data-idx="2">
+                <td><code>ART-3012</code></td>
+                <td>Hilo industrial blanco 5000m</td>
+                <td>Unidad</td>
+                <td>200</td>
+                <td><input type="number" class="qty-input" data-expected="200" oninput="updateRowReview(2)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(2)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(2)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow2" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel2"></div></td></tr>
+
+              <tr data-idx="3">
+                <td><code>ART-3013</code></td>
+                <td>Cierre metálico 20cm surtido</td>
+                <td>Paquete</td>
+                <td>500</td>
+                <td><input type="number" class="qty-input" data-expected="500" oninput="updateRowReview(3)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(3)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(3)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow3" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel3"></div></td></tr>
+
+              <tr data-idx="4">
+                <td><code>ART-3014</code></td>
+                <td>Botones madera natural 15mm</td>
+                <td>Bolsa (100u)</td>
+                <td>80</td>
+                <td><input type="number" class="qty-input" data-expected="80" oninput="updateRowReview(4)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(4)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(4)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow4" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel4"></div></td></tr>
+
+              <tr data-idx="5">
+                <td><code>ART-3015</code></td>
+                <td>Elástico plano 3cm (rollo 50m)</td>
+                <td>Rollo</td>
+                <td>40</td>
+                <td><input type="number" class="qty-input" data-expected="40" oninput="updateRowReview(5)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(5)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(5)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow5" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel5"></div></td></tr>
+
+              <tr data-idx="6">
+                <td><code>ART-3016</code></td>
+                <td>Etiqueta tejida marca personalizada</td>
+                <td>Millar</td>
+                <td>10</td>
+                <td><input type="number" class="qty-input" data-expected="10" oninput="updateRowReview(6)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(6)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(6)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow6" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel6"></div></td></tr>
+
+              <tr data-idx="7">
+                <td><code>ART-3017</code></td>
+                <td>Papel tissue embalaje 50x70cm</td>
+                <td>Resma</td>
+                <td>25</td>
+                <td><input type="number" class="qty-input" data-expected="25" oninput="updateRowReview(7)" min="0"></td>
+                <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(7)"></td>
+                <td><span class="review-status pending">Pendiente</span></td>
+                <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(7)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+              </tr>
+              <tr id="anomalyRow7" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel7"></div></td></tr>
+            </tbody>
+          </table>
+
+          <!-- Barra de progreso sticky -->
+          <div class="review-progress-bar">
+            <div class="review-progress-info">
+              <div class="review-progress-item">
+                <svg width="14" height="14" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="count" id="reviewOkCount">0</span> OK
+              </div>
+              <div class="review-progress-item anomalies">
+                <svg width="14" height="14" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                <span class="count" id="reviewAnomalyCount">0</span> Anomalías
+              </div>
+              <div class="review-progress-item">
+                <span class="count" id="reviewPendingCount">8</span> Pendientes
+              </div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="reviewProgressFill" style="width:0%"></div>
+            </div>
+            <button class="btn-finish-review" id="btnFinishReview" disabled onclick="openReviewModal()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Finalizar revisión
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal: Confirmar revisión -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.15)); color:#059669;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h3>Finalizar revisión</h3>
+          <p>Confirmar resultado de la revisión de la orden</p>
+        </div>
+        <button class="modal-close" onclick="closeReviewModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Orden</span>
+            <span class="modal-summary-value" id="reviewModalCode">PO-2026-0460</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Ítems OK</span>
+            <span class="modal-summary-value" id="reviewModalOk" style="color:#059669; font-weight:600;">0</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Anomalías</span>
+            <span class="modal-summary-value" id="reviewModalAnomalies" style="color:#f59e0b; font-weight:600;">0</span>
+          </div>
+          <div class="modal-summary-row" id="reviewModalResultRow">
+            <span class="modal-summary-label">Resultado</span>
+            <span class="modal-summary-value" id="reviewModalResult">Revisada</span>
+          </div>
+        </div>
+        <div class="modal-form-row">
+          <div class="modal-form-group">
+            <label class="modal-form-label">Fecha de revisión</label>
+            <input type="text" class="modal-form-input" id="reviewModalFecha" value="17/04/2026" readonly>
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-form-label">Hora</label>
+            <input type="text" class="modal-form-input" id="reviewModalHora" value="10:30" readonly>
+          </div>
+        </div>
+        <div class="modal-form-group" style="margin-top:14px;">
+          <label class="modal-form-label">Revisada por</label>
+          <input type="text" class="modal-form-input" id="reviewModalReviewer" value="Usuario Sistema" readonly>
+        </div>
+
+        <!-- Destinatarios del reporte de anomalías -->
+        <div id="reviewRecipientsSection" style="display:none; margin-top:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <svg width="16" height="16" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span style="font-size:13px; font-weight:600; color:#1a1a2e;">Reporte de anomalías se enviará a:</span>
+          </div>
+          <div class="recipients-container" id="recipientsContainer">
+            <!-- Los chips de destinatarios se renderizan dinámicamente -->
+          </div>
+          <div class="recipient-add-row">
+            <input type="email" class="recipient-input" id="recipientInput" placeholder="correo@empresa.com" onkeydown="if(event.key==='Enter'){event.preventDefault();addRecipient();}">
+            <button type="button" class="btn-add-recipient" onclick="addRecipient()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeReviewModal()">Cancelar</button>
+        <button class="btn-modal-confirm" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="confirmReview()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmar revisión
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Registrar llegada a bodega -->
+  <div class="modal-overlay" id="arrivalModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        </div>
+        <div>
+          <h3>Registrar llegada a bodega</h3>
+          <p>Confirmar la recepción de la orden de compra</p>
+        </div>
+        <button class="modal-close" onclick="closeArrivalModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Orden</span>
+            <span class="modal-summary-value" id="modalOrderCode">PO-2026-0461</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Proveedor</span>
+            <span class="modal-summary-value" id="modalOrderProveedor">Distribuidora ABC Ltda.</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Ítems</span>
+            <span class="modal-summary-value" id="modalOrderItems">5</span>
+          </div>
+        </div>
+        <div class="modal-form-row">
+          <div class="modal-form-group">
+            <label class="modal-form-label">Fecha de llegada</label>
+            <input type="text" class="modal-form-input" id="modalFecha" value="17/04/2026" readonly>
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-form-label">Hora</label>
+            <input type="text" class="modal-form-input" id="modalHora" value="09:15" readonly>
+          </div>
+        </div>
+        <div class="modal-form-group" style="margin-top:14px;">
+          <label class="modal-form-label">Recibido por</label>
+          <input type="text" class="modal-form-input" id="modalRecibidoPor" value="Usuario Sistema" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeArrivalModal()">Cancelar</button>
+        <button class="btn-modal-confirm" onclick="confirmArrival()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmar llegada
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo lightbox -->
+  <div class="photo-lightbox" id="photoLightbox" onclick="closePhotoLightbox()">
+    <button class="photo-lightbox-close" onclick="closePhotoLightbox()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="Evidencia fotográfica" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="arrivalToast">
+    <div class="toast-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">Llegada registrada</div>
+      <div class="toast-message" id="toastMessage">La orden PO-2026-0461 fue registrada en bodega.</div>
+    </div>
+    <button class="toast-close" onclick="hideToast()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
   </div>
 
   <script>
@@ -1336,6 +3063,191 @@
     }
 
     /* === Navegación lista <-> detalle === */
+    /* === Anomalías predefinidas por orden (datos de demostración) === */
+    const orderAnomalies = {
+      'PO-2026-0455': [
+        {
+          item: 3,
+          producto: 'Hilo industrial blanco 5000m',
+          codigo: 'ART-3012',
+          esperado: 200,
+          recibido: 180,
+          danados: 0,
+          severity: 'moderada',
+          desc: 'Se recibieron 180 unidades en lugar de las 200 solicitadas. Faltan 20 unidades según guía de despacho.'
+        },
+        {
+          item: 5,
+          producto: 'Elástico plano 3cm (rollo 50m)',
+          codigo: 'ART-3014',
+          esperado: 80,
+          recibido: 80,
+          danados: 5,
+          severity: 'grave',
+          desc: '5 bolsas presentan humedad y moho visible. Producto no utilizable. Se registró evidencia fotográfica.',
+          fotos: [
+            'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fde68a" width="200" height="200"/><rect fill="%23f59e0b" x="30" y="60" width="140" height="80" rx="8"/><text x="100" y="108" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="14" font-weight="600">Foto 1 — Daño</text></svg>'),
+            'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fee2e2" width="200" height="200"/><rect fill="%23ef4444" x="30" y="60" width="140" height="80" rx="8"/><text x="100" y="108" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="14" font-weight="600">Foto 2 — Daño</text></svg>'),
+            'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fef3c7" width="200" height="200"/><rect fill="%23d97706" x="30" y="60" width="140" height="80" rx="8"/><text x="100" y="108" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="14" font-weight="600">Foto 3 — Daño</text></svg>')
+          ]
+        }
+      ],
+      'PO-2026-0449': [
+        {
+          item: 2,
+          producto: 'Tela poliéster reciclado (rollo)',
+          codigo: 'ART-3011',
+          esperado: 30,
+          recibido: 27,
+          danados: 2,
+          severity: 'grave',
+          desc: '3 rollos faltantes y 2 rollos con manchas de aceite. Embalaje exterior dañado durante el transporte.',
+          fotos: [
+            'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fee2e2" width="200" height="200"/><rect fill="%23991b1b" x="20" y="55" width="160" height="90" rx="8"/><text x="100" y="105" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="13" font-weight="600">Manchas aceite</text></svg>'),
+            'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fef3c7" width="200" height="200"/><rect fill="%23b45309" x="20" y="55" width="160" height="90" rx="8"/><text x="100" y="105" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="13" font-weight="600">Embalaje dañado</text></svg>')
+          ]
+        },
+        {
+          item: 7,
+          producto: 'Etiqueta tejida marca personalizada',
+          codigo: 'ART-3016',
+          esperado: 10,
+          recibido: 10,
+          danados: 0,
+          severity: 'leve',
+          desc: 'Etiquetas con leve decoloración en los bordes. Producto utilizable pero no cumple estándar de calidad óptimo.'
+        },
+        {
+          item: 8,
+          producto: 'Papel tissue embalaje 50x70cm',
+          codigo: 'ART-3017',
+          esperado: 25,
+          recibido: 20,
+          danados: 0,
+          severity: 'moderada',
+          desc: 'Se recibieron 20 resmas en lugar de 25. Proveedor indica que las 5 restantes serán enviadas en despacho complementario.'
+        }
+      ]
+    };
+
+    /* Productos base para la tabla de detalle */
+    const detailProducts = [
+      { num: 1, codigo: 'ART-3010', desc: 'Tela algodón 100% orgánico (rollo)', unidad: 'Rollo', cantidad: 50, precio: '$18.500', subtotal: '$925.000' },
+      { num: 2, codigo: 'ART-3011', desc: 'Tela poliéster reciclado (rollo)', unidad: 'Rollo', cantidad: 30, precio: '$14.200', subtotal: '$426.000' },
+      { num: 3, codigo: 'ART-3012', desc: 'Hilo industrial blanco 5000m', unidad: 'Unidad', cantidad: 200, precio: '$3.400', subtotal: '$680.000' },
+      { num: 4, codigo: 'ART-3013', desc: 'Cierre metálico 20cm surtido', unidad: 'Paquete', cantidad: 500, precio: '$850', subtotal: '$425.000' },
+      { num: 5, codigo: 'ART-3014', desc: 'Botones madera natural 15mm', unidad: 'Bolsa (100u)', cantidad: 80, precio: '$2.100', subtotal: '$168.000' },
+      { num: 6, codigo: 'ART-3015', desc: 'Elástico plano 3cm (rollo 50m)', unidad: 'Rollo', cantidad: 40, precio: '$5.600', subtotal: '$224.000' },
+      { num: 7, codigo: 'ART-3016', desc: 'Etiqueta tejida marca personalizada', unidad: 'Millar', cantidad: 10, precio: '$12.000', subtotal: '$120.000' },
+      { num: 8, codigo: 'ART-3017', desc: 'Papel tissue embalaje 50x70cm', unidad: 'Resma', cantidad: 25, precio: '$6.800', subtotal: '$170.000' }
+    ];
+
+    function renderDetailProductTable(code) {
+      const anomalies = orderAnomalies[code] || [];
+      const hasAnomalias = anomalies.length > 0;
+      const anomalyByItem = {};
+      anomalies.forEach(a => { anomalyByItem[a.item] = a; });
+
+      // Show/hide extra column header
+      document.getElementById('detailAnomalyColHeader').style.display = hasAnomalias ? '' : 'none';
+      document.getElementById('detailTotalExtraCol').style.display = hasAnomalias ? '' : 'none';
+      document.getElementById('detailTotalColspan').setAttribute('colspan', hasAnomalias ? '6' : '6');
+
+      const tbody = document.getElementById('detailProductTableBody');
+      let html = '';
+
+      detailProducts.forEach(p => {
+        const a = anomalyByItem[p.num];
+        const extraCol = hasAnomalias
+          ? (a ? '<td style="text-align:center;"><button class="btn-view-anomaly" onclick="toggleDetailAnomaly(' + p.num + ', this)" title="Ver anomalía"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>'
+            : '<td></td>')
+          : '';
+
+        html += '<tr>';
+        html += '<td>' + p.num + '</td>';
+        html += '<td><code>' + p.codigo + '</code></td>';
+        html += '<td>' + p.desc + '</td>';
+        html += '<td>' + p.unidad + '</td>';
+        html += '<td>' + p.cantidad + '</td>';
+        html += '<td>' + p.precio + '</td>';
+        html += '<td>' + p.subtotal + '</td>';
+        html += extraCol;
+        html += '</tr>';
+
+        if (a) {
+          const cols = hasAnomalias ? 8 : 7;
+          html += '<tr class="detail-anomaly-row" id="detailAnomalyRow-' + p.num + '" style="display:none;">';
+          html += '<td colspan="' + cols + '" style="padding:0 16px 12px; background:#fff;">';
+          html += buildAnomalyViewPanel(a);
+          html += '</td></tr>';
+        }
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function buildAnomalyViewPanel(a) {
+      const faltantes = Math.max(0, a.esperado - a.recibido);
+      const hasFaltantes = faltantes > 0;
+      const hasDanados = a.danados > 0;
+      const severityLabel = a.severity.charAt(0).toUpperCase() + a.severity.slice(1);
+
+      let tagsHTML = '';
+      if (hasFaltantes || hasDanados) {
+        tagsHTML = '<div class="detail-anomaly-tags" style="margin-bottom:12px;">';
+        if (hasFaltantes) tagsHTML += '<span class="detail-anomaly-tag faltantes">📦 Esperado: ' + a.esperado + ' · Recibido: ' + a.recibido + ' · Faltantes: ' + faltantes + '</span>';
+        if (hasDanados) tagsHTML += '<span class="detail-anomaly-tag danados">⚠️ ' + a.danados + ' dañado' + (a.danados !== 1 ? 's' : '') + '</span>';
+        tagsHTML += '</div>';
+      }
+
+      return `
+        <div class="anomaly-view-panel">
+          <div class="anomaly-view-header">
+            <div class="anomaly-view-title">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+              Anomalía — Ítem #${a.item}
+            </div>
+            <span class="anomaly-view-severity ${a.severity}">${severityLabel}</span>
+          </div>
+          ${tagsHTML}
+          <div class="anomaly-view-field">
+            <span class="anomaly-view-label">Descripción</span>
+            <div class="anomaly-view-value">${a.desc}</div>
+          </div>
+          ${a.fotos && a.fotos.length > 0 ? `
+          <div class="anomaly-view-field" style="margin-top:12px;">
+            <span class="anomaly-view-label">Evidencia fotográfica (${a.fotos.length})</span>
+            <div class="photo-gallery-view">
+              ${a.fotos.map((f, i) => `<div class="photo-view-thumb" onclick="openPhotoLightbox('${f.replace(/'/g, "\\'")}')"><img src="${f}" alt="Foto ${i+1}"></div>`).join('')}
+            </div>
+          </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function toggleDetailAnomaly(itemNum, btn) {
+      const row = document.getElementById('detailAnomalyRow-' + itemNum);
+      const isVisible = row.style.display !== 'none';
+      // Close all other open panels
+      document.querySelectorAll('.detail-anomaly-row').forEach(r => r.style.display = 'none');
+      document.querySelectorAll('.btn-view-anomaly').forEach(b => b.classList.remove('expanded'));
+      if (!isVisible) {
+        row.style.display = '';
+        btn.classList.add('expanded');
+      }
+    }
+
+    function openPhotoLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('photoLightbox').classList.add('active');
+    }
+
+    function closePhotoLightbox() {
+      document.getElementById('photoLightbox').classList.remove('active');
+      document.getElementById('lightboxImg').src = '';
+    }
+
     function showDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, reviewDate) {
       // Icono de advertencia SVG para almacenada con anomalías
       const warningIconSVG = '<svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
@@ -1368,9 +3280,25 @@
         reviewDateField.style.display = 'none';
       }
 
-      // Mostrar/ocultar tarjeta de anomalías
-      const anomaliesCard = document.getElementById('detailAnomaliesCard');
-      anomaliesCard.style.display = hasAnomalias ? '' : 'none';
+      // Mostrar/ocultar documento de reporte de anomalías
+      const anomalyReportDoc = document.getElementById('detailAnomalyReportDoc');
+      if (hasAnomalias) {
+        anomalyReportDoc.style.display = 'flex';
+        document.getElementById('detailAnomalyReportCode').textContent = code;
+      } else {
+        anomalyReportDoc.style.display = 'none';
+      }
+
+      // Mostrar/ocultar botón de registrar llegada (solo para "Por llegar")
+      const arrivalBtn = document.getElementById('detailArrivalBtn');
+      arrivalBtn.style.display = (statusClass === 'ingresada') ? 'inline-flex' : 'none';
+
+      // Mostrar/ocultar botón de iniciar revisión (solo para "En bodega")
+      const reviewBtn = document.getElementById('detailReviewBtn');
+      reviewBtn.style.display = (statusClass === 'en-bodega') ? 'inline-flex' : 'none';
+
+      // Renderizar tabla de productos con botones de anomalía si corresponde
+      renderDetailProductTable(code);
 
       document.getElementById('viewList').style.display = 'none';
       document.getElementById('viewDetail').style.display = '';
@@ -1379,8 +3307,602 @@
 
     function showList() {
       document.getElementById('viewDetail').style.display = 'none';
+      document.getElementById('viewReview').style.display = 'none';
       document.getElementById('viewList').style.display = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* === Registrar llegada a bodega === */
+    let arrivalOrderCode = '';
+
+    function openArrivalModal(code, proveedor, items) {
+      arrivalOrderCode = code;
+      document.getElementById('modalOrderCode').textContent = code;
+      document.getElementById('modalOrderProveedor').textContent = proveedor;
+      document.getElementById('modalOrderItems').textContent = items;
+      document.getElementById('arrivalModal').classList.add('active');
+    }
+
+    function closeArrivalModal() {
+      document.getElementById('arrivalModal').classList.remove('active');
+      arrivalOrderCode = '';
+    }
+
+    function confirmArrival() {
+      const code = arrivalOrderCode;
+      closeArrivalModal();
+
+      // Buscar la fila en la tabla y actualizar estado
+      const rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
+      rows.forEach(row => {
+        const codeCell = row.querySelector('td:first-child code');
+        if (codeCell && codeCell.textContent === code) {
+          // Cambiar badge de estado y quitar botón de llegada
+          const badge = row.querySelector('.status-badge');
+          const statusTd = badge.closest('td');
+          statusTd.innerHTML = '<span class="status-badge en-bodega"><span class="dot"></span> En bodega</span>';
+
+          // Actualizar onclick de la fila
+          row.setAttribute('onclick', row.getAttribute('onclick').replace("'ingresada','Por llegar'", "'en-bodega','En bodega'"));
+        }
+      });
+
+      // Si estamos en detalle, actualizar allí también
+      if (document.getElementById('viewDetail').style.display !== 'none') {
+        const detailCode = document.getElementById('detailCode').textContent;
+        if (detailCode === code) {
+          updateDetailToEnBodega();
+        }
+      }
+
+      // Actualizar contadores de tabs
+      updateTabCounts();
+
+      // Mostrar toast
+      document.getElementById('toastMessage').textContent = 'La orden ' + code + ' fue registrada en bodega.';
+      showToast();
+    }
+
+    function updateDetailToEnBodega() {
+      // Header badge
+      const headerBadge2 = document.getElementById('detailStatusBadge');
+      headerBadge2.className = 'status-badge en-bodega';
+      headerBadge2.style.marginLeft = 'auto';
+      document.getElementById('detailStatusText').textContent = 'En bodega';
+
+      // Info badge
+      const infoBadge2 = document.getElementById('detailInfoStatus');
+      infoBadge2.className = 'status-badge en-bodega';
+      document.getElementById('detailInfoStatusText').textContent = 'En bodega';
+
+      // Ocultar botón de llegada
+      document.getElementById('detailArrivalBtn').style.display = 'none';
+    }
+
+    function updateTabCounts() {
+      // Recount statuses from table
+      const rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
+      let total = 0, enBodega = 0, conAnomalias = 0, revisada = 0, almacenada = 0, porLlegar = 0;
+      rows.forEach(row => {
+        const badge = row.querySelector('.status-badge');
+        if (!badge) return;
+        total++;
+        const cls = badge.className;
+        if (cls.includes('en-bodega')) enBodega++;
+        if (cls.includes('revisada-anomalia') || cls.includes('almacenada-anomalia')) conAnomalias++;
+        if (cls.includes('revisada')) revisada++;
+        if (cls.includes('almacenada') && !cls.includes('almacenada-anomalia')) almacenada++;
+        if (cls.includes('almacenada-anomalia')) almacenada++;
+        if (cls.includes('ingresada')) porLlegar++;
+      });
+
+      const tabs = document.querySelectorAll('.estado-tab');
+      tabs.forEach(tab => {
+        const text = tab.childNodes[0].textContent.trim();
+        const countEl = tab.querySelector('.tab-count');
+        if (!countEl) return;
+        if (text.startsWith('Todos')) countEl.textContent = total;
+        else if (text.startsWith('En bodega')) countEl.textContent = enBodega;
+        else if (text.startsWith('Con anomalías')) countEl.textContent = conAnomalias;
+        else if (text.startsWith('Revisada')) countEl.textContent = revisada;
+        else if (text.startsWith('Almacenada')) countEl.textContent = almacenada;
+        else if (text.startsWith('Por llegar')) countEl.textContent = porLlegar;
+      });
+    }
+
+    function showToast() {
+      const toast = document.getElementById('arrivalToast');
+      toast.classList.add('show');
+      setTimeout(() => { hideToast(); }, 4000);
+    }
+
+    function hideToast() {
+      document.getElementById('arrivalToast').classList.remove('show');
+    }
+
+    /* === Revisión de orden (Caso de uso 3) === */
+    let reviewOrderCode = '';
+    let reviewProveedor = '';
+    let reviewAnomalies = {}; // { idx: { type, desc, severity, photos } }
+    let reviewSimMode = 0; // 0=normal(limpia), 1=con anomalías
+
+    function startReview(code, proveedor, items) {
+      reviewOrderCode = code;
+      reviewProveedor = proveedor;
+      reviewAnomalies = {};
+      anomalyPhotos = {};
+
+      document.getElementById('reviewCode').textContent = code;
+      document.getElementById('reviewProveedor').textContent = proveedor;
+
+      // Reset all inputs and statuses
+      const inputs = document.querySelectorAll('#reviewTableBody .qty-input');
+      inputs.forEach(inp => {
+        inp.value = '';
+        inp.classList.remove('mismatch');
+      });
+      // Reset damaged inputs
+      document.querySelectorAll('#reviewTableBody .dmg-input').forEach(inp => {
+        inp.value = '0';
+        inp.classList.remove('has-damaged');
+      });
+      const statusCells = document.querySelectorAll('#reviewTableBody tr[data-idx] td:nth-child(7)');
+      statusCells.forEach(td => {
+        td.innerHTML = '<span class="review-status pending">Pendiente</span>';
+      });
+      // Reset anomaly buttons
+      document.querySelectorAll('#reviewTableBody .btn-anomaly').forEach(btn => btn.classList.remove('active'));
+      // Hide anomaly panels
+      for (let i = 0; i < 8; i++) {
+        document.getElementById('anomalyRow' + i).style.display = 'none';
+        document.getElementById('anomalyPanel' + i).innerHTML = '';
+      }
+
+      // If sim mode = "con anomalías", pre-fill items #3 and #6
+      if (reviewSimMode === 1) {
+        // Item 2 (ART-3012): qty mismatch 200 vs 180
+        inputs[2].value = 180;
+        updateRowReview(2);
+        // Auto-register anomaly for item 2
+        reviewAnomalies[2] = { damaged: '20', desc: 'Se recibieron 180 unidades en lugar de 200. Faltan 20 unidades.', severity: 'moderada' };
+        document.querySelectorAll('#reviewTableBody .btn-anomaly')[2].classList.add('active');
+
+        // Item 5 (ART-3015): damaged, correct qty
+        inputs[5].value = 40;
+        updateRowReview(5);
+        // Auto-register anomaly for item 5
+        reviewAnomalies[5] = { damaged: '8', desc: 'Rollos con daño visible en embalaje. 8 rollos presentan humedad.', severity: 'grave' };
+        document.querySelectorAll('#reviewTableBody .btn-anomaly')[5].classList.add('active');
+        // Set damaged input in table for item 5
+        const dmgInputs = document.querySelectorAll('#reviewTableBody .dmg-input');
+        dmgInputs[5].value = 8;
+        dmgInputs[5].classList.add('has-damaged');
+        // Mark row 5 as anomaly even though qty matches
+        const statusTd5 = document.querySelectorAll('#reviewTableBody tr[data-idx="5"] td:nth-child(7)')[0];
+        if (statusTd5) {
+          statusTd5.innerHTML = '<span class="review-status anomaly">⚠ Anomalía</span>';
+        }
+      }
+
+      updateReviewProgress();
+
+      // Switch views
+      document.getElementById('viewList').style.display = 'none';
+      document.getElementById('viewDetail').style.display = 'none';
+      document.getElementById('viewReview').style.display = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelReview() {
+      document.getElementById('viewReview').style.display = 'none';
+      document.getElementById('viewList').style.display = '';
+      reviewOrderCode = '';
+      reviewProveedor = '';
+      reviewAnomalies = {};
+      anomalyPhotos = {};
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateRowReview(idx) {
+      const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
+      const input = row.querySelector('.qty-input');
+      const dmgInput = row.querySelector('.dmg-input');
+      const statusTd = row.querySelector('td:nth-child(7)');
+      const expected = parseInt(input.dataset.expected);
+      const received = input.value === '' ? null : parseInt(input.value);
+      const damaged = dmgInput ? parseInt(dmgInput.value) || 0 : 0;
+
+      // Highlight damaged input
+      if (dmgInput) {
+        dmgInput.classList.toggle('has-damaged', damaged > 0);
+      }
+
+      if (received === null || isNaN(received)) {
+        statusTd.innerHTML = '<span class="review-status pending">Pendiente</span>';
+        input.classList.remove('mismatch');
+      } else if (damaged > 0 || reviewAnomalies[idx]) {
+        statusTd.innerHTML = '<span class="review-status anomaly">⚠ Anomalía</span>';
+        input.classList.toggle('mismatch', received !== expected);
+      } else if (received === expected) {
+        statusTd.innerHTML = '<span class="review-status ok">✓ OK</span>';
+        input.classList.remove('mismatch');
+      } else {
+        statusTd.innerHTML = '<span class="review-status anomaly">⚠ Diferencia</span>';
+        input.classList.add('mismatch');
+      }
+
+      // Update anomaly summary if panel is open
+      updateAnomalySummary(idx);
+
+      updateReviewProgress();
+    }
+
+    function updateReviewProgress() {
+      const inputs = document.querySelectorAll('#reviewTableBody .qty-input');
+      let ok = 0, anomalies = 0, pending = 0;
+
+      inputs.forEach((inp, idx) => {
+        const val = inp.value === '' ? null : parseInt(inp.value);
+        const expected = parseInt(inp.dataset.expected);
+        const dmgInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .dmg-input');
+        const damaged = dmgInput ? parseInt(dmgInput.value) || 0 : 0;
+
+        if (val === null || isNaN(val)) {
+          pending++;
+        } else if (reviewAnomalies[idx] || val !== expected || damaged > 0) {
+          anomalies++;
+        } else {
+          ok++;
+        }
+      });
+
+      document.getElementById('reviewOkCount').textContent = ok;
+      document.getElementById('reviewAnomalyCount').textContent = anomalies;
+      document.getElementById('reviewPendingCount').textContent = pending;
+
+      const total = inputs.length;
+      const verified = ok + anomalies;
+      const pct = total > 0 ? Math.round((verified / total) * 100) : 0;
+      document.getElementById('reviewProgressFill').style.width = pct + '%';
+      document.getElementById('reviewItemsCount').textContent = verified + ' de ' + total + ' verificados';
+
+      // Enable finish button when all items are verified
+      document.getElementById('btnFinishReview').disabled = (pending > 0);
+    }
+
+    function toggleAnomalyPanel(idx) {
+      const panelRow = document.getElementById('anomalyRow' + idx);
+      const panel = document.getElementById('anomalyPanel' + idx);
+      const btn = document.querySelectorAll('#reviewTableBody .btn-anomaly')[idx];
+
+      if (panelRow.style.display !== 'none') {
+        panelRow.style.display = 'none';
+        panel.innerHTML = '';
+        return;
+      }
+
+      // Pre-fill if anomaly already registered
+      const existing = reviewAnomalies[idx] || {};
+
+      const isEditing = !!existing.severity;
+
+      // Get expected and received quantities for summary
+      const qtyInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .qty-input');
+      const dmgInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .dmg-input');
+      const expected = parseInt(qtyInput.dataset.expected);
+      const received = qtyInput.value ? parseInt(qtyInput.value) : 0;
+      const damaged = dmgInput ? parseInt(dmgInput.value) || 0 : 0;
+      const faltantes = Math.max(0, expected - received);
+
+      panel.innerHTML = `
+        <div class="anomaly-panel-header">
+          <div class="anomaly-panel-title">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+            ${isEditing ? 'Editar' : 'Registrar'} anomalía — Ítem #${idx + 1}
+          </div>
+          <button class="anomaly-panel-close" onclick="toggleAnomalyPanel(${idx})">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="anomaly-summary" id="anomalySummary${idx}">
+          <span class="summary-item">📦 Faltantes: <strong>${faltantes}</strong></span>
+          <span class="summary-item">⚠️ Dañados: <strong>${damaged}</strong></span>
+        </div>
+        <div class="anomaly-form-row">
+          <div class="anomaly-form-group">
+            <label>Severidad</label>
+            <div class="severity-chips" id="severityChips${idx}">
+              <button class="severity-chip leve ${existing.severity === 'leve' ? 'selected' : ''}" onclick="selectSeverity(${idx},'leve')">Leve</button>
+              <button class="severity-chip moderada ${existing.severity === 'moderada' ? 'selected' : ''}" onclick="selectSeverity(${idx},'moderada')">Moderada</button>
+              <button class="severity-chip grave ${existing.severity === 'grave' ? 'selected' : ''}" onclick="selectSeverity(${idx},'grave')">Grave</button>
+            </div>
+          </div>
+        </div>
+        <div class="anomaly-form-group" style="margin-bottom:12px;">
+          <label>Descripción</label>
+          <textarea id="anomalyDesc${idx}" placeholder="Describir la anomalía encontrada...">${existing.desc || ''}</textarea>
+        </div>
+        <div class="anomaly-form-group" style="margin-bottom:14px;">
+          <label>Evidencia fotográfica (opcional)</label>
+          <div class="upload-zone-sm" onclick="document.getElementById('anomalyPhoto${idx}').click()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
+            Agregar fotos
+          </div>
+          <input type="file" id="anomalyPhoto${idx}" accept="image/*" multiple style="display:none;" onchange="addPhotos(${idx})">
+          <div class="photo-gallery" id="photoGallery${idx}"></div>
+        </div>
+        <div class="anomaly-actions">
+          <button class="btn-register-anomaly" onclick="registerAnomaly(${idx})">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            ${isEditing ? 'Actualizar anomalía' : 'Registrar anomalía'}
+          </button>
+          ${isEditing ? `<button class="btn-delete-anomaly" onclick="deleteAnomaly(${idx})">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            Eliminar anomalía
+          </button>` : ''}
+        </div>
+      `;
+
+      // Render existing photos if any
+      if (existing.photos && existing.photos.length > 0) {
+        renderPhotoGallery(idx, existing.photos);
+      }
+
+      panelRow.style.display = '';
+    }
+
+    function updateAnomalySummary(idx) {
+      const qtyInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .qty-input');
+      const dmgInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .dmg-input');
+      const expected = parseInt(qtyInput.dataset.expected);
+      const received = qtyInput.value ? parseInt(qtyInput.value) : 0;
+      const damaged = dmgInput ? parseInt(dmgInput.value) || 0 : 0;
+      const faltantes = Math.max(0, expected - received);
+      const summary = document.getElementById('anomalySummary' + idx);
+      if (summary) {
+        summary.innerHTML = `
+          <span class="summary-item">📦 Faltantes: <strong>${faltantes}</strong></span>
+          <span class="summary-item">⚠️ Dañados: <strong>${damaged}</strong></span>
+        `;
+      }
+    }
+
+    function selectSeverity(idx, level) {
+      const chips = document.querySelectorAll('#severityChips' + idx + ' .severity-chip');
+      chips.forEach(c => c.classList.remove('selected'));
+      const chip = document.querySelector('#severityChips' + idx + ' .severity-chip.' + level);
+      if (chip) chip.classList.add('selected');
+    }
+
+    // Photo management per anomaly
+    let anomalyPhotos = {}; // { idx: ['data:image/...', ...] }
+
+    function addPhotos(idx) {
+      const input = document.getElementById('anomalyPhoto' + idx);
+      if (!input.files || input.files.length === 0) return;
+
+      if (!anomalyPhotos[idx]) anomalyPhotos[idx] = [];
+
+      Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          anomalyPhotos[idx].push(e.target.result);
+          renderPhotoGallery(idx, anomalyPhotos[idx]);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Reset input so the same files can be selected again
+      input.value = '';
+    }
+
+    function renderPhotoGallery(idx, photos) {
+      const gallery = document.getElementById('photoGallery' + idx);
+      if (!gallery) return;
+      gallery.innerHTML = photos.map((src, i) => `
+        <div class="photo-thumb">
+          <img src="${src}" alt="Foto ${i + 1}">
+          <button class="photo-thumb-remove" onclick="event.stopPropagation(); removePhoto(${idx}, ${i})" title="Quitar foto">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removePhoto(idx, photoIdx) {
+      if (!anomalyPhotos[idx]) return;
+      anomalyPhotos[idx].splice(photoIdx, 1);
+      renderPhotoGallery(idx, anomalyPhotos[idx]);
+    }
+
+    function registerAnomaly(idx) {
+      const dmgInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .dmg-input');
+      const damaged = dmgInput ? dmgInput.value : '0';
+      const desc = document.getElementById('anomalyDesc' + idx).value;
+      const chips = document.querySelectorAll('#severityChips' + idx + ' .severity-chip.selected');
+      const severity = chips.length > 0 ? chips[0].textContent.toLowerCase() : '';
+
+      if (!severity) { alert('Seleccione la severidad'); return; }
+
+      reviewAnomalies[idx] = { damaged: damaged, desc: desc, severity: severity, photos: anomalyPhotos[idx] || [] };
+
+      // Update button and row status
+      document.querySelectorAll('#reviewTableBody .btn-anomaly')[idx].classList.add('active');
+      const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
+      const statusTd = row.querySelector('td:nth-child(7)');
+      statusTd.innerHTML = '<span class="review-status anomaly">⚠ Anomalía</span>';
+
+      // Close panel
+      document.getElementById('anomalyRow' + idx).style.display = 'none';
+
+      updateReviewProgress();
+    }
+
+    function deleteAnomaly(idx) {
+      delete reviewAnomalies[idx];
+      delete anomalyPhotos[idx];
+
+      // Reset button state
+      document.querySelectorAll('#reviewTableBody .btn-anomaly')[idx].classList.remove('active');
+
+      // Re-evaluate row status based on quantity
+      updateRowReview(idx);
+
+      // Close panel
+      document.getElementById('anomalyRow' + idx).style.display = 'none';
+      document.getElementById('anomalyPanel' + idx).innerHTML = '';
+
+      updateReviewProgress();
+    }
+
+    // Default recipients for anomaly report
+    const defaultRecipients = [
+      { email: 'jefe.bodega@massline.cl', removable: false },
+      { email: 'compras@massline.cl', removable: false },
+      { email: 'calidad@massline.cl', removable: false }
+    ];
+    let extraRecipients = [];
+
+    function renderRecipients() {
+      const container = document.getElementById('recipientsContainer');
+      let html = '';
+      defaultRecipients.forEach(r => {
+        html += `<span class="recipient-chip default">
+          <span class="chip-label">fijo</span>
+          ${r.email}
+        </span>`;
+      });
+      extraRecipients.forEach((email, i) => {
+        html += `<span class="recipient-chip">
+          ${email}
+          <button class="recipient-chip-remove" onclick="removeRecipient(${i})" title="Quitar">✕</button>
+        </span>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function addRecipient() {
+      const input = document.getElementById('recipientInput');
+      const email = input.value.trim().toLowerCase();
+      if (!email) return;
+
+      // Validación básica de email
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        input.style.borderColor = '#ef4444';
+        setTimeout(() => { input.style.borderColor = ''; }, 1500);
+        return;
+      }
+
+      // Verificar duplicados
+      const allEmails = defaultRecipients.map(r => r.email).concat(extraRecipients);
+      if (allEmails.includes(email)) {
+        input.style.borderColor = '#f59e0b';
+        setTimeout(() => { input.style.borderColor = ''; }, 1500);
+        input.value = '';
+        return;
+      }
+
+      extraRecipients.push(email);
+      input.value = '';
+      renderRecipients();
+    }
+
+    function removeRecipient(index) {
+      extraRecipients.splice(index, 1);
+      renderRecipients();
+    }
+
+    function openReviewModal() {
+      const okCount = parseInt(document.getElementById('reviewOkCount').textContent);
+      const anomalyCount = parseInt(document.getElementById('reviewAnomalyCount').textContent);
+
+      document.getElementById('reviewModalCode').textContent = reviewOrderCode;
+      document.getElementById('reviewModalOk').textContent = okCount;
+      document.getElementById('reviewModalAnomalies').textContent = anomalyCount;
+
+      const result = anomalyCount > 0 ? 'Revisada ⚠' : 'Revisada';
+      document.getElementById('reviewModalResult').textContent = result;
+      document.getElementById('reviewModalResult').style.color = anomalyCount > 0 ? '#f59e0b' : '#059669';
+
+      // Mostrar sección de destinatarios solo si hay anomalías
+      const recipientsSection = document.getElementById('reviewRecipientsSection');
+      if (anomalyCount > 0) {
+        recipientsSection.style.display = '';
+        extraRecipients = [];
+        renderRecipients();
+      } else {
+        recipientsSection.style.display = 'none';
+      }
+
+      document.getElementById('reviewModal').classList.add('active');
+    }
+
+    function closeReviewModal() {
+      document.getElementById('reviewModal').classList.remove('active');
+    }
+
+    function confirmReview() {
+      const code = reviewOrderCode;
+      const anomalyCount = parseInt(document.getElementById('reviewAnomalyCount').textContent);
+      const hasAnomalias = anomalyCount > 0;
+      const newStatus = hasAnomalias ? 'revisada-anomalia' : 'revisada';
+      const newLabel = hasAnomalias ? 'Revisada' : 'Revisada';
+      const reviewer = 'Usuario Sistema';
+      const reviewDate = '17/04/2026 10:30';
+
+      closeReviewModal();
+
+      // Warning icon SVG for anomalies
+      const warningIconSVG = '<svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
+
+      // Update table row
+      const rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
+      rows.forEach(row => {
+        const codeCell = row.querySelector('td:first-child code');
+        if (codeCell && codeCell.textContent === code) {
+          const badge = row.querySelector('.status-badge');
+          const statusTd = badge.closest('td');
+          const badgeHTML = hasAnomalias
+            ? '<span class="status-badge revisada-anomalia"><span class="dot"></span> Revisada ' + warningIconSVG + '</span>'
+            : '<span class="status-badge revisada"><span class="dot"></span> Revisada</span>';
+          statusTd.innerHTML = badgeHTML;
+
+          // Update onclick to include reviewer info
+          const onclick = row.getAttribute('onclick');
+          row.setAttribute('onclick', onclick
+            .replace("'en-bodega','En bodega'", "'" + newStatus + "','" + newLabel + "','" + reviewer + "','" + reviewDate + "'")
+          );
+        }
+      });
+
+      updateTabCounts();
+
+      // Switch to list view
+      document.getElementById('viewReview').style.display = 'none';
+      document.getElementById('viewList').style.display = '';
+
+      // Show toast
+      const msg = hasAnomalias
+        ? 'La orden ' + code + ' fue revisada con ' + anomalyCount + ' anomalía(s) registrada(s).'
+        : 'La orden ' + code + ' fue revisada correctamente.';
+      document.getElementById('toastMessage').textContent = msg;
+      document.getElementById('arrivalToast').querySelector('.toast-title').textContent = 'Revisión completada';
+      showToast();
+
+      // Reset
+      reviewOrderCode = '';
+      reviewProveedor = '';
+      reviewAnomalies = {};
+      anomalyPhotos = {};
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* === Toggle de simulación de revisión === */
+    function toggleReviewSimMode() {
+      reviewSimMode = (reviewSimMode + 1) % 2;
+      const labels = ['Normal (limpia)', 'Con anomalías'];
+      const btn = document.getElementById('btnToggleReviewMode');
+      btn.querySelector('.mode-label').textContent = labels[reviewSimMode];
+      btn.title = 'Revisión: ' + labels[reviewSimMode] + ' (clic para cambiar)';
     }
 
     /* === Modo simulación de flujos === */
@@ -1418,8 +3940,9 @@
         estadoTabs.style.display = 'none';
       }
 
-      // Volver a vista lista si estamos en detalle
-      if (document.getElementById('viewDetail').style.display !== 'none') {
+      // Volver a vista lista si estamos en detalle o revisión
+      if (document.getElementById('viewDetail').style.display !== 'none' ||
+          document.getElementById('viewReview').style.display !== 'none') {
         showList();
       }
     }
@@ -1440,6 +3963,14 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
     </svg>
     <span class="mode-label">Normal</span>
+  </button>
+
+  <!-- Botón oculto para alternar modo de simulación de revisión -->
+  <button class="toggle-error-mode" id="btnToggleReviewMode" onclick="toggleReviewSimMode()" title="Revisión: Normal (limpia) (clic para cambiar)" style="bottom: 50px;">
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+    </svg>
+    <span class="mode-label">Normal (limpia)</span>
   </button>
 </body>
 </html>
