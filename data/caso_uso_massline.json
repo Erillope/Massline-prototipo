@@ -1,0 +1,307 @@
+{
+    "orden_compra": [
+        {
+            "id": 1,
+            "nombre": "Ingresar orden de compra",
+            "descripcion": "El usuario ingresa los detalles de la orden de compra a través de un archivo Excel, que es procesado por el sistema para registrar la orden en la base de datos.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El usuario debe tener acceso al ingreso de órdenes de compra."
+            ],
+            "postcondiciones": [
+                "La orden de compra se registra correctamente en la base de datos."
+            ],
+            "reglas_negocio": [
+                "La orden de compra debe contener al menos un producto."
+            ],
+            "flujo_principal": [
+                "El usuario selecciona el archivo Excel con los detalles de la orden de compra.",
+                "El sistema procesa el archivo y extrae la información de la orden.",
+                "El sistema valida los datos extraídos y registra la orden en la base de datos."
+            ],
+            "flujo_alternativo": [
+                {
+                    "nombre": "Archivo no válido",
+                    "condicion": "El archivo seleccionado no es un Excel o tiene un formato incorrecto",
+                    "pasos": [
+                        "El sistema muestra un mensaje de error indicando que el archivo no es válido.",
+                        "El usuario selecciona un nuevo archivo."
+                    ]
+                },
+                {
+                    "nombre": "Datos incompletos",
+                    "condicion": "El archivo Excel no contiene toda la información requerida para la orden de compra",
+                    "pasos": [
+                        "El sistema muestra un mensaje indicando que faltan datos en el archivo.",
+                        "El usuario sube el archivo y vuelve a seleccionarlo."
+                    ]
+                },
+                {
+                    "nombre": "Orden existente",
+                    "condicion": "El sistema detecta que la orden de compra ya existe en la base de datos",
+                    "pasos": [
+                        "El sistema muestra un mensaje indicando que la orden de compra ya existe.",
+                        "El usuario puede optar por actualizar la orden existente o cancelar el ingreso."
+                    ]
+                }
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe aceptar archivos Excel con el formato especificado.",
+                "El sistema debe validar que el archivo contiene toda la información requerida.",
+                "El sistema debe registrar la orden de compra en la base de datos si los datos son válidos."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": []
+        },
+        {
+            "id": 2,
+            "nombre": "Visualizar orden de compra",
+            "descripcion": "El usuario puede visualizar los detalles de una orden de compra registrada en el sistema, incluyendo los productos, cantidades, precios y estado de la orden.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El usuario debe tener acceso a la visualización de órdenes de compra."
+            ],
+            "postcondiciones": [
+                "El usuario puede ver los detalles de la orden de compra seleccionada."
+            ],
+            "reglas_negocio": [
+                "Las ordenes de compras se pueden buscar por código, proveedor, fecha y filtrar por estado.",
+                "El filtro inicial debería ser primero mostrar las ordenes de compras en bodega sin revisar, luego las más recientes ingresadas pero dando prioridad a las que esten revisadas con anomalías, y como menos prioridad las que ya están almacenadas"
+            ],
+            "flujo_principal": [
+                "El usuario accede a la sección de órdenes de compra.",
+                "El usuario selecciona una orden de compra de la lista.",
+                "El sistema muestra los detalles de la orden de compra seleccionada."
+            ],
+            "flujo_alternativo": [
+                {
+                    "nombre": "Orden de compra no encontrada",
+                    "condicion": "El usuario intenta visualizar una orden de compra que no existe en el sistema",
+                    "pasos": [
+                        "El sistema muestra un mensaje indicando que la orden de compra no fue encontrada."
+                    ]
+                },
+                {
+                    "nombre": "No hay ordenes de compra disponibles",
+                    "condicion": "El usuario accede a la sección de órdenes de compra pero no hay ninguna orden registrada en el sistema",
+                    "pasos": [
+                        "El sistema muestra un mensaje indicando que no hay órdenes de compra disponibles."
+                    ]
+                }
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar los detalles de la orden de compra seleccionada.",
+                "El sistema debe permitir buscar y filtrar las órdenes de compra según los criterios establecidos."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": [
+                "Ingresar orden de compra"
+            ]
+        },
+        {
+            "id": 3,
+            "nombre": "Revisar orden de compra",
+            "descripcion": "El usuario revisa los detalles de una orden de compra para verificar que los productos han llegado como corresponde, y registra cualquier anomalía encontrada durante la revisión.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El usuario debe tener acceso a la revisión de órdenes de compra.",
+                "La orden de compra debe estar en bodega."
+            ],
+            "postcondiciones": [
+                "La orden de compra queda registrada como revisada en el sistema, con o sin anomalías.",
+                "Se asignan información como lotes, códigos, etc",
+                "Se separan los productos en cajas",
+                "Se asignan posiciones a las cajas en bodega",
+                "Se asigna tarea de almacenamiento al operario de bodega correspondiente",
+                "Se notifica al encargado de las anomalías, y miembros relacionados, si las hay."
+            ],
+            "reglas_negocio": [
+                "Las anomalías deben ser registradas y notificadas al proveedor correspondiente. Y a los demás miembros del negocio que se considere necesario",
+                "Las anomalías deben ser documentadas con una descripción o evidencia fotográfica para su seguimiento."
+            ],
+            "flujo_principal": [
+                "El usuario accede a la sección de revisión de órdenes de compra.",
+                "El usuario selecciona una orden de compra de la lista.",
+                "El sistema muestra los detalles de la orden de compra seleccionada.",
+                "El usuario verifica los productos recibidos y registra cualquier anomalía encontrada."
+            ],
+            "flujo_alternativo": [
+                {
+                    "nombre": "Orden de compra con anomalías (Desde pedido local)",
+                    "condicion": "El usuario encuentra anomalías durante la revisión de una orden de compra registrada como pedido local",
+                    "pasos": [
+                        "El usuario registra las anomalías encontradas durante la revisión."
+                    ]
+                },
+                {
+                    "nombre": "Orden de compra con anomalías (Desde pedido externo)",
+                    "condicion": "El usuario encuentra anomalías durante la revisión de una orden de compra registrada como pedido externo",
+                    "pasos": [
+                        "El usuario registra las anomalías encontradas durante la revisión."
+                    ]
+                }
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe permitir registrar las anomalías encontradas durante la revisión.",
+                "El sistema debe notificar al proveedor correspondiente sobre las anomalías registradas."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": [
+                "Ingresar orden de compra",
+                "Visualizar orden de compra"
+            ]
+        },
+        {
+            "id": 4,
+            "nombre": "Recomendación Posición de Almacenamiento",
+            "descripcion": "El sistema recomienda la mejor posición de almacenamiento para los productos de una orden de compra, considerando factores como el tipo de producto, cantidad, y espacio disponible en bodega. (Por definir)",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar registrada en el sistema."
+            ],
+            "postcondiciones": [
+                "El sistema proporciona una recomendación de posición de almacenamiento para los productos de la orden de compra."
+            ],
+            "reglas_negocio": [],
+            "flujo_principal": [
+                "El usuario revisa una orden de compra registrada en el sistema.",
+                "El sistema recomienda la mejor posición de almacenamiento para los productos de la orden de compra."
+            ],
+            "flujo_alternativo": [
+                {
+                    "nombre": "No hay espacio disponible",
+                    "condicion": "El sistema no encuentra espacio disponible en bodega para almacenar los productos de la orden de compra",
+                    "pasos": []
+                }
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe proporcionar recomendaciones de posición de almacenamiento basadas en los datos de la orden de compra y el espacio disponible en bodega."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": [
+                "Visualizar orden de compra"
+            ]
+        },
+        {
+            "id": 5,
+            "nombre": "Modificar posición de almacenamiento",
+            "descripcion": "El usuario puede modificar la posición de almacenamiento recomendada por el sistema para los productos de una orden de compra, en caso de que la recomendación no sea adecuada o haya cambios en el espacio disponible en bodega. (Por definir)",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar registrada en el sistema.",
+                "El sistema debe haber proporcionado una recomendación de posición de almacenamiento para los productos de la orden de compra."
+            ],
+            "postcondiciones": [
+                "El sistema actualiza la posición de almacenamiento de los productos de la orden de compra según la modificación realizada por el usuario."
+            ],
+            "reglas_negocio": [],
+            "flujo_principal": [
+                "El usuario revisa la recomendación de posición de almacenamiento proporcionada por el sistema.",
+                "El usuario modifica la posición de almacenamiento si es necesario.",
+                "El sistema actualiza la posición de almacenamiento de los productos de la orden de compra."
+            ],
+            "flujo_alternativo": [
+                {
+                    "nombre": "No hay espacio disponible",
+                    "condicion": "El sistema no encuentra espacio disponible en bodega para almacenar los productos de la orden de compra",
+                    "pasos": []
+                }
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe permitir modificar la posición de almacenamiento de los productos de la orden de compra.",
+                "El sistema debe actualizar la posición de almacenamiento de los productos de la orden de compra según la modificación realizada por el usuario."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": [
+                "Registrar el llegado a bodega de la orden de compra"
+            ]
+        },
+        {
+            "id": 7,
+            "nombre": "Registrar el llegado a bodega de la orden de compra",
+            "descripcion": "El usuario registra el momento en que los productos de una orden de compra llegan a la bodega, lo que permite actualizar el estado de la orden y activar procesos relacionados con el almacenamiento y gestión de inventario. (Por definir)",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar registrada en el sistema."
+            ],
+            "postcondiciones": [
+                "El sistema actualiza el estado de la orden de compra para reflejar que los productos han llegado a la bodega."
+            ],
+            "reglas_negocio": [],
+            "flujo_principal": [
+                "El usuario accede a la sección de órdenes de compra.",
+                "El usuario selecciona una orden de compra registrada en el sistema.",
+                "El usuario registra el momento en que los productos de la orden de compra llegan a la bodega.",
+                "El sistema actualiza el estado de la orden de compra para reflejar que los productos han llegado a la bodega."
+            ],
+            "flujo_alternativo": [],
+            "criterios_aceptacion": [
+                "El sistema debe permitir registrar el momento en que los productos de una orden de compra llegan a la bodega.",
+                "El sistema debe actualizar el estado de la orden de compra para reflejar que los productos han llegado a la bodega."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": [
+                "Visualizar orden de compra"
+            ]
+        }
+    ],
+    "bodega_virtual": [
+        {
+            "id": 6,
+            "nombre": "Visualizar bodega virtual",
+            "descripcion": "El usuario puede visualizar una representación virtual de la bodega, mostrando la ubicación de los productos almacenados, el espacio disponible, y cualquier información relevante sobre el estado de la bodega. (Por definir)",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [],
+            "postcondiciones": [
+                "El usuario puede ver la representación virtual de la bodega con la información relevante sobre los productos almacenados y el espacio disponible."
+            ],
+            "reglas_negocio": [],
+            "flujo_principal": [
+                "El usuario accede a la sección de bodega virtual.",
+                "El sistema muestra la representación virtual de la bodega con la información relevante sobre los productos almacenados y el espacio disponible."
+            ],
+            "flujo_alternativo": [
+                {
+                    "nombre": "No hay productos almacenados",
+                    "condicion": "El usuario accede a la sección de bodega virtual pero no hay ningún producto registrado como almacenado en el sistema",
+                    "pasos": [
+                        "El sistema muestra la bodega vacía."
+                    ]
+                }
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar una representación virtual de la bodega con la información relevante sobre los productos almacenados y el espacio disponible."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": null,
+            "dependencias": []
+        }
+    ]
+}
