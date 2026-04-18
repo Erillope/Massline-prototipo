@@ -866,6 +866,9 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
       width: 90%;
       max-width: 480px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
       transform: translateY(20px) scale(0.97);
       transition: transform 0.25s ease;
     }
@@ -928,6 +931,8 @@
 
     .modal-body {
       padding: 24px;
+      overflow-y: auto;
+      flex: 1;
     }
 
     .modal-summary {
@@ -2920,14 +2925,48 @@
             <span class="modal-summary-label">Ítems OK</span>
             <span class="modal-summary-value" id="reviewModalOk" style="color:#059669; font-weight:600;">0</span>
           </div>
-          <div class="modal-summary-row">
-            <span class="modal-summary-label">Anomalías</span>
-            <span class="modal-summary-value" id="reviewModalAnomalies" style="color:#f59e0b; font-weight:600;">0</span>
-          </div>
           <div class="modal-summary-row" id="reviewModalResultRow">
             <span class="modal-summary-label">Resultado</span>
             <span class="modal-summary-value" id="reviewModalResult">Revisada</span>
           </div>
+        </div>
+
+        <!-- Sección anomalías detectadas -->
+        <div id="reviewAnomalySection" style="display:none; margin-top:16px; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <svg width="16" height="16" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86l-8.6 14.86A2 2 0 003.41 21h17.18a2 2 0 001.72-2.99L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            <span style="font-size:13px; font-weight:600; color:#1a1a2e;">Anomalías detectadas</span>
+          </div>
+          <table id="reviewAnomalyTable" style="width:100%; border-collapse:separate; border-spacing:0; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; font-size:13px;">
+            <thead>
+              <tr style="background:#f8fafc;">
+                <th style="text-align:left; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Tipo</th>
+                <th style="text-align:left; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Código</th>
+                <th style="text-align:right; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Líneas</th>
+                <th style="text-align:right; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Unidades</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="reviewModalSobrantesRow" style="display:none; border-top:1px solid #f1f5f9;">
+                <td style="padding:7px 12px;">Sobrantes</td>
+                <td id="reviewModalSobrantesCode" style="padding:7px 12px;"><code style="background:#dbeafe; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:11px;">SOB-0034</code></td>
+                <td id="reviewModalSobrantes" style="text-align:right; padding:7px 12px; color:#3b82f6; font-weight:600;">0</td>
+                <td id="reviewModalSobrantesQty" style="text-align:right; padding:7px 12px; color:#3b82f6; font-weight:700;">0</td>
+              </tr>
+              <tr id="reviewModalFaltantesRow" style="display:none; border-top:1px solid #f1f5f9;">
+                <td style="padding:7px 12px;">Faltantes</td>
+                <td id="reviewModalFaltantesCode" style="padding:7px 12px;"><code style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px;">FAL-0035</code></td>
+                <td id="reviewModalFaltantes" style="text-align:right; padding:7px 12px; color:#f59e0b; font-weight:600;">0</td>
+                <td id="reviewModalFaltantesQty" style="text-align:right; padding:7px 12px; color:#f59e0b; font-weight:700;">0</td>
+              </tr>
+              <tr id="reviewModalDanadosRow" style="display:none; border-top:1px solid #f1f5f9;">
+                <td style="padding:7px 12px;">Dañados</td>
+                <td id="reviewModalDanadosCode" style="padding:7px 12px;"><code style="background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:11px;">DAÑ-0036</code></td>
+                <td id="reviewModalDanados" style="text-align:right; padding:7px 12px; color:#ef4444; font-weight:600;">0</td>
+                <td id="reviewModalDanadosQty" style="text-align:right; padding:7px 12px; color:#ef4444; font-weight:700;">0</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="modal-form-row">
           <div class="modal-form-group">
@@ -3816,7 +3855,38 @@
 
       document.getElementById('reviewModalCode').textContent = reviewOrderCode;
       document.getElementById('reviewModalOk').textContent = okCount;
-      document.getElementById('reviewModalAnomalies').textContent = anomalyCount;
+
+      // Compute anomaly type counts (lines + total units)
+      const inputs = document.querySelectorAll('#reviewTableBody .qty-input');
+      const dmgInputs = document.querySelectorAll('#reviewTableBody .dmg-input');
+      let linesSob = 0, linesFal = 0, linesDan = 0;
+      let qtySob = 0, qtyFal = 0, qtyDan = 0;
+
+      inputs.forEach((inp, idx) => {
+        const expected = parseInt(inp.dataset.expected);
+        const received = inp.value === '' ? null : parseInt(inp.value);
+        const damaged = dmgInputs[idx] ? parseInt(dmgInputs[idx].value) || 0 : 0;
+        if (received !== null && received > expected) { linesSob++; qtySob += (received - expected); }
+        if (received !== null && received < expected) { linesFal++; qtyFal += (expected - received); }
+        if (damaged > 0) { linesDan++; qtyDan += damaged; }
+      });
+
+      // Show/hide rows and section + generate codes
+      const hasAnyAnomaly = linesSob > 0 || linesFal > 0 || linesDan > 0;
+      document.getElementById('reviewAnomalySection').style.display = hasAnyAnomaly ? '' : 'none';
+      let anomalySeq = 34; // Simulación de correlativo
+      document.getElementById('reviewModalSobrantesRow').style.display = linesSob > 0 ? 'table-row' : 'none';
+      if (linesSob > 0) { document.getElementById('reviewModalSobrantesCode').innerHTML = '<code style="background:#dbeafe; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:11px;">SOB-' + String(anomalySeq).padStart(4,'0') + '</code>'; anomalySeq++; }
+      document.getElementById('reviewModalSobrantes').textContent = linesSob;
+      document.getElementById('reviewModalSobrantesQty').textContent = qtySob;
+      document.getElementById('reviewModalFaltantesRow').style.display = linesFal > 0 ? 'table-row' : 'none';
+      if (linesFal > 0) { document.getElementById('reviewModalFaltantesCode').innerHTML = '<code style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px;">FAL-' + String(anomalySeq).padStart(4,'0') + '</code>'; anomalySeq++; }
+      document.getElementById('reviewModalFaltantes').textContent = linesFal;
+      document.getElementById('reviewModalFaltantesQty').textContent = qtyFal;
+      document.getElementById('reviewModalDanadosRow').style.display = linesDan > 0 ? 'table-row' : 'none';
+      if (linesDan > 0) { document.getElementById('reviewModalDanadosCode').innerHTML = '<code style="background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:11px;">DAÑ-' + String(anomalySeq).padStart(4,'0') + '</code>'; anomalySeq++; }
+      document.getElementById('reviewModalDanados').textContent = linesDan;
+      document.getElementById('reviewModalDanadosQty').textContent = qtyDan;
 
       const result = anomalyCount > 0 ? 'Revisada ⚠' : 'Revisada';
       document.getElementById('reviewModalResult').textContent = result;
