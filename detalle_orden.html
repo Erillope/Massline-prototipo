@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MassLine — Detalle de orden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">ML</div>
+      <span class="logo-text">MassLine</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section open">
+        <div class="nav-section-header active" onclick="toggleSection(this)">
+          <div class="nav-section-left">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+            </svg>
+            <span class="nav-label">Compras</span>
+            <span class="nav-badge">2</span>
+          </div>
+          <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <div class="nav-submenu">
+          <a href="ingreso_orden.html">Ingresar</a>
+          <a href="index.html" class="active">Consultar</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection(this)">
+          <div class="nav-section-left">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            <span class="nav-label">Traslado</span>
+            <span class="nav-badge">1</span>
+          </div>
+          <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <div class="nav-submenu">
+          <a href="#">Crear</a>
+          <a href="#">Consultar</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="breadcrumb">
+        <a href="index.html">Compras</a>
+        <span>›</span>
+        <a href="index.html">Consultar órdenes</a>
+        <span>›</span>
+        <span class="current">Detalle</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="avatar" title="Usuario">US</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <!-- ===== VISTA DETALLE ===== -->
+      <div id="viewDetail">
+        <div class="detail-header">
+          <button class="detail-back" onclick="window.location.href='index.html'" title="Volver al listado">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <div>
+            <h1 class="detail-title">Orden <code id="detailCode">—</code></h1>
+          </div>
+          <span id="detailStatusBadge" class="status-badge en-bodega" style="margin-left:auto;">
+            <span class="dot"></span> <span id="detailStatusText">—</span>
+          </span>
+          <button id="detailArrivalBtn" class="btn-arrival-lg" style="display:none; margin-left:12px;" onclick="openArrivalModal(detailParams.code, detailParams.proveedor, '8')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            Registrar llegada a bodega
+          </button>
+          <button id="detailReviewBtn" class="btn-review-lg" style="display:none; margin-left:12px;" onclick="goToReview()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            Iniciar revisión
+          </button>
+          <button id="detailStoreBtn" class="btn-store-lg" style="display:none; margin-left:12px;" onclick="openStorageModal(detailParams.code, detailParams.proveedor, '8')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            Almacenar
+          </button>
+        </div>
+
+        <!-- Info general -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon detail">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <h2>Información de la orden</h2>
+          </div>
+          <div class="card-body">
+            <div class="detail-grid">
+              <div class="detail-field">
+                <span class="detail-label">Código</span>
+                <span class="detail-value" id="detailInfoCode">—</span>
+              </div>
+              <div class="detail-field">
+                <span class="detail-label">Proveedor</span>
+                <span class="detail-value" id="detailInfoProveedor">—</span>
+              </div>
+              <div class="detail-field">
+                <span class="detail-label">Fecha de ingreso</span>
+                <span class="detail-value" id="detailInfoFecha">—</span>
+              </div>
+              <div class="detail-field">
+                <span class="detail-label">Fecha entrega estimada</span>
+                <span class="detail-value">23/04/2026</span>
+              </div>
+              <div class="detail-field">
+                <span class="detail-label">Ingresada por</span>
+                <span class="detail-value">Usuario Sistema</span>
+              </div>
+              <div class="detail-field">
+                <span class="detail-label">Estado</span>
+                <span id="detailInfoStatus" class="status-badge en-bodega"><span class="dot"></span> <span id="detailInfoStatusText">—</span></span>
+              </div>
+              <div class="detail-field" id="detailReviewerField" style="display:none;">
+                <span class="detail-label">Revisada por</span>
+                <span class="detail-value" id="detailReviewer"></span>
+              </div>
+              <div class="detail-field" id="detailReviewDateField" style="display:none;">
+                <span class="detail-label">Fecha y hora de revisión</span>
+                <span class="detail-value" id="detailReviewDate"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Productos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon" style="background:#fff3e6; color:#f59e0b;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+            </div>
+            <h2>Productos de la orden</h2>
+          </div>
+          <div class="card-body" style="padding: 0 0 0 0;">
+            <div style="padding: 16px 24px 0;">
+              <div class="detail-section-title">
+                Ítems <span class="item-count">8</span>
+              </div>
+            </div>
+            <div class="table-wrapper" style="border:none; border-radius:0;">
+              <table class="data-table" id="detailProductTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Unidad</th>
+                    <th>Cantidad</th>
+                    <th>Precio unit.</th>
+                    <th>Subtotal</th>
+                    <th id="detailBoxesColHeader" style="display:none; width:40px;"></th>
+                    <th id="detailAnomalyColHeader" style="display:none; width:40px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="detailProductTableBody"></tbody>
+                <tfoot>
+                  <tr>
+                    <td id="detailTotalColspan" colspan="6" style="text-align:right; font-weight:600; border-top: 2px solid #e8e8f0;">Total</td>
+                    <td style="font-weight:700; color:#1a1a2e; border-top: 2px solid #e8e8f0;">$3.138.000</td>
+                    <td id="detailTotalBoxesCol" style="display:none; border-top: 2px solid #e8e8f0;"></td>
+                    <td id="detailTotalExtraCol" style="display:none; border-top: 2px solid #e8e8f0;"></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documentos adjuntos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon" style="background:#eef0ff; color:#6c63ff;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+              </svg>
+            </div>
+            <h2>Documentos adjuntos</h2>
+          </div>
+          <div class="card-body">
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#f7f8fa; border-radius:10px; font-size:13px;">
+                <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#dbeafe;color:#3b82f6;">DOC</div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:500; color:#1a1a2e;" id="docExcelName">orden_PO-2026-0460.xlsx</div>
+                  <div style="color:#8b8fa3; font-size:12px;">124.3 KB</div>
+                </div>
+                <button class="btn-download" title="Descargar" onclick="return false">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                </button>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#f7f8fa; border-radius:10px; font-size:13px;">
+                <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#fee2e2;color:#ef4444;">PDF</div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:500; color:#1a1a2e;">email_confirmacion_proveedor.pdf</div>
+                  <div style="color:#8b8fa3; font-size:12px;">89.7 KB</div>
+                </div>
+                <button class="btn-download" title="Descargar" onclick="return false">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                </button>
+              </div>
+              <div id="detailAnomalyReportDoc" style="display:none; align-items:center; gap:12px; padding:10px 14px; background:#fefce8; border:1px solid #fde68a; border-radius:10px; font-size:13px;">
+                <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#fef3c7;color:#f59e0b;">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:500; color:#1a1a2e;">reporte_anomalias_<span id="detailAnomalyReportCode">—</span>.eml</div>
+                  <div style="color:#92400e; font-size:12px;">Enviado a jefe.bodega, compras, calidad</div>
+                </div>
+                <span style="font-size:11px; font-weight:600; padding:3px 8px; background:#fde68a; color:#92400e; border-radius:6px;">Anomalías</span>
+                <button class="btn-download" title="Descargar" onclick="return false">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Registrar llegada a bodega -->
+  <div class="modal-overlay" id="arrivalModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        </div>
+        <div>
+          <h3>Registrar llegada a bodega</h3>
+          <p>Confirmar la recepción de la orden de compra</p>
+        </div>
+        <button class="modal-close" onclick="closeArrivalModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Orden</span>
+            <span class="modal-summary-value" id="modalOrderCode">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Proveedor</span>
+            <span class="modal-summary-value" id="modalOrderProveedor">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Ítems</span>
+            <span class="modal-summary-value" id="modalOrderItems">—</span>
+          </div>
+        </div>
+        <div class="modal-form-row">
+          <div class="modal-form-group">
+            <label class="modal-form-label">Fecha de llegada</label>
+            <input type="text" class="modal-form-input" value="17/04/2026" readonly>
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-form-label">Hora</label>
+            <input type="text" class="modal-form-input" value="09:15" readonly>
+          </div>
+        </div>
+        <div class="modal-form-group" style="margin-top:14px;">
+          <label class="modal-form-label">Recibido por</label>
+          <input type="text" class="modal-form-input" value="Usuario Sistema" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeArrivalModal()">Cancelar</button>
+        <button class="btn-modal-confirm" onclick="confirmArrival()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmar llegada
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirmar almacenamiento -->
+  <div class="modal-overlay" id="storageModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background: linear-gradient(135deg, rgba(129,140,248,0.15), rgba(99,102,241,0.15)); color:#6366f1;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+        </div>
+        <div>
+          <h3>Confirmar almacenamiento</h3>
+          <p>Revisar posiciones recomendadas y confirmar</p>
+        </div>
+        <button class="modal-close" onclick="closeStorageModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Orden</span>
+            <span class="modal-summary-value" id="storageModalCode">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Proveedor</span>
+            <span class="modal-summary-value" id="storageModalProveedor">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Ítems</span>
+            <span class="modal-summary-value" id="storageModalItems">—</span>
+          </div>
+        </div>
+        <div id="storageAnomaliesSection" style="display:none;"></div>
+        <div class="storage-products" id="storageProductsList"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeStorageModal()">Cancelar</button>
+        <button class="btn-modal-confirm" style="background: linear-gradient(135deg, #818cf8, #6366f1);" onclick="confirmStorage()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmar almacenamiento
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo lightbox -->
+  <div class="photo-lightbox" id="photoLightbox" onclick="closePhotoLightbox()">
+    <button class="photo-lightbox-close" onclick="closePhotoLightbox()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="Evidencia fotográfica" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="arrivalToast">
+    <div class="toast-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">Acción completada</div>
+      <div class="toast-message" id="toastMessage"></div>
+    </div>
+    <button class="toast-close" onclick="hideToast()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/detalle_orden.js"></script>
+</body>
+</html>

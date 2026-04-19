@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MassLine — Revisión de orden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">ML</div>
+      <span class="logo-text">MassLine</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section open">
+        <div class="nav-section-header active" onclick="toggleSection(this)">
+          <div class="nav-section-left">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+            </svg>
+            <span class="nav-label">Compras</span>
+            <span class="nav-badge">2</span>
+          </div>
+          <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <div class="nav-submenu">
+          <a href="ingreso_orden.html">Ingresar</a>
+          <a href="index.html" class="active">Consultar</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection(this)">
+          <div class="nav-section-left">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            <span class="nav-label">Traslado</span>
+            <span class="nav-badge">1</span>
+          </div>
+          <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <div class="nav-submenu">
+          <a href="#">Crear</a>
+          <a href="#">Consultar</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="breadcrumb">
+        <a href="index.html">Compras</a>
+        <span>›</span>
+        <a href="index.html">Consultar órdenes</a>
+        <span>›</span>
+        <span class="current">Revisión</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="avatar" title="Usuario">US</div>
+      </div>
+    </header>
+
+    <!-- Vista de revisión de orden -->
+    <div id="viewReview" class="page-content">
+      <div class="content-area">
+
+        <!-- Header de revisión -->
+        <div class="review-header">
+          <button class="btn-back" onclick="cancelReview()">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div class="detail-title">
+            <h1>Revisión de <span id="reviewCode">—</span></h1>
+            <div class="review-order-meta">Proveedor: <span id="reviewProveedor">—</span></div>
+          </div>
+          <span class="status-badge en-revision"><span class="dot"></span> En revisión</span>
+        </div>
+
+        <!-- Tabla de verificación de productos -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Verificación de productos</h2>
+            <span class="card-header-right" id="reviewItemsCount">0 de 8 verificados</span>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table class="data-table review-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Producto</th>
+                  <th>Unidad</th>
+                  <th>Cant. esperada</th>
+                  <th>Cant. recibida</th>
+                  <th>Dañados</th>
+                  <th>Cajas</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="reviewTableBody">
+                <tr data-idx="0">
+                  <td><code>ART-3010</code></td>
+                  <td>Tela algodón 100% orgánico (rollo)</td>
+                  <td>Rollo</td>
+                  <td>50</td>
+                  <td><input type="number" class="qty-input" data-expected="50" oninput="updateRowReview(0)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(0)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes0" onclick="event.stopPropagation(); toggleBoxPanel(0)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(0)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow0" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel0"></div></td></tr>
+                <tr id="anomalyRow0" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel0"></div></td></tr>
+
+                <tr data-idx="1">
+                  <td><code>ART-3011</code></td>
+                  <td>Tela poliéster reciclado (rollo)</td>
+                  <td>Rollo</td>
+                  <td>30</td>
+                  <td><input type="number" class="qty-input" data-expected="30" oninput="updateRowReview(1)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(1)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes1" onclick="event.stopPropagation(); toggleBoxPanel(1)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(1)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow1" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel1"></div></td></tr>
+                <tr id="anomalyRow1" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel1"></div></td></tr>
+
+                <tr data-idx="2">
+                  <td><code>ART-3012</code></td>
+                  <td>Hilo industrial blanco 5000m</td>
+                  <td>Unidad</td>
+                  <td>200</td>
+                  <td><input type="number" class="qty-input" data-expected="200" oninput="updateRowReview(2)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(2)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes2" onclick="event.stopPropagation(); toggleBoxPanel(2)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(2)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow2" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel2"></div></td></tr>
+                <tr id="anomalyRow2" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel2"></div></td></tr>
+
+                <tr data-idx="3">
+                  <td><code>ART-3013</code></td>
+                  <td>Cierre metálico 20cm surtido</td>
+                  <td>Paquete</td>
+                  <td>500</td>
+                  <td><input type="number" class="qty-input" data-expected="500" oninput="updateRowReview(3)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(3)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes3" onclick="event.stopPropagation(); toggleBoxPanel(3)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(3)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow3" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel3"></div></td></tr>
+                <tr id="anomalyRow3" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel3"></div></td></tr>
+
+                <tr data-idx="4">
+                  <td><code>ART-3014</code></td>
+                  <td>Botones madera natural 15mm</td>
+                  <td>Bolsa (100u)</td>
+                  <td>80</td>
+                  <td><input type="number" class="qty-input" data-expected="80" oninput="updateRowReview(4)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(4)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes4" onclick="event.stopPropagation(); toggleBoxPanel(4)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(4)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow4" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel4"></div></td></tr>
+                <tr id="anomalyRow4" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel4"></div></td></tr>
+
+                <tr data-idx="5">
+                  <td><code>ART-3015</code></td>
+                  <td>Elástico plano 3cm (rollo 50m)</td>
+                  <td>Rollo</td>
+                  <td>40</td>
+                  <td><input type="number" class="qty-input" data-expected="40" oninput="updateRowReview(5)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(5)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes5" onclick="event.stopPropagation(); toggleBoxPanel(5)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(5)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow5" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel5"></div></td></tr>
+                <tr id="anomalyRow5" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel5"></div></td></tr>
+
+                <tr data-idx="6">
+                  <td><code>ART-3016</code></td>
+                  <td>Etiqueta tejida marca personalizada</td>
+                  <td>Millar</td>
+                  <td>10</td>
+                  <td><input type="number" class="qty-input" data-expected="10" oninput="updateRowReview(6)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(6)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes6" onclick="event.stopPropagation(); toggleBoxPanel(6)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(6)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow6" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel6"></div></td></tr>
+                <tr id="anomalyRow6" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel6"></div></td></tr>
+
+                <tr data-idx="7">
+                  <td><code>ART-3017</code></td>
+                  <td>Papel tissue embalaje 50x70cm</td>
+                  <td>Resma</td>
+                  <td>25</td>
+                  <td><input type="number" class="qty-input" data-expected="25" oninput="updateRowReview(7)" min="0"></td>
+                  <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(7)"></td>
+                  <td><button class="btn-boxes" id="btnBoxes7" onclick="event.stopPropagation(); toggleBoxPanel(7)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
+                  <td><span class="review-status pending">Pendiente</span></td>
+                  <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(7)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
+                </tr>
+                <tr id="boxRow7" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel7"></div></td></tr>
+                <tr id="anomalyRow7" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel7"></div></td></tr>
+              </tbody>
+            </table>
+
+            <!-- Barra de progreso sticky -->
+            <div class="review-progress-bar">
+              <div class="review-progress-info">
+                <div class="review-progress-item">
+                  <svg width="14" height="14" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <span class="count" id="reviewOkCount">0</span> OK
+                </div>
+                <div class="review-progress-item anomalies">
+                  <svg width="14" height="14" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                  <span class="count" id="reviewAnomalyCount">0</span> Anomalías
+                </div>
+                <div class="review-progress-item">
+                  <span class="count" id="reviewPendingCount">8</span> Pendientes
+                </div>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="reviewProgressFill" style="width:0%"></div>
+              </div>
+              <button class="btn-finish-review" id="btnFinishReview" disabled onclick="openReviewModal()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Finalizar revisión
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirmar revisión -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.15)); color:#059669;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h3>Finalizar revisión</h3>
+          <p>Confirmar resultado de la revisión de la orden</p>
+        </div>
+        <button class="modal-close" onclick="closeReviewModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Orden</span>
+            <span class="modal-summary-value" id="reviewModalCode">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Ítems OK</span>
+            <span class="modal-summary-value" id="reviewModalOk" style="color:#059669; font-weight:600;">0</span>
+          </div>
+          <div class="modal-summary-row" id="reviewModalResultRow">
+            <span class="modal-summary-label">Resultado</span>
+            <span class="modal-summary-value" id="reviewModalResult">Revisada</span>
+          </div>
+        </div>
+
+        <!-- Sección anomalías detectadas -->
+        <div id="reviewAnomalySection" style="display:none; margin-top:16px; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <svg width="16" height="16" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86l-8.6 14.86A2 2 0 003.41 21h17.18a2 2 0 001.72-2.99L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            <span style="font-size:13px; font-weight:600; color:#1a1a2e;">Anomalías detectadas</span>
+          </div>
+          <table id="reviewAnomalyTable" style="width:100%; border-collapse:separate; border-spacing:0; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; font-size:13px;">
+            <thead>
+              <tr style="background:#f8fafc;">
+                <th style="text-align:left; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Tipo</th>
+                <th style="text-align:left; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Código</th>
+                <th style="text-align:right; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Líneas</th>
+                <th style="text-align:right; padding:6px 12px; font-weight:600; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Unidades</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="reviewModalSobrantesRow" style="display:none; border-top:1px solid #f1f5f9;">
+                <td style="padding:7px 12px;">Sobrantes</td>
+                <td id="reviewModalSobrantesCode" style="padding:7px 12px;"><code style="background:#dbeafe; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:11px;">SOB-0034</code></td>
+                <td id="reviewModalSobrantes" style="text-align:right; padding:7px 12px; color:#3b82f6; font-weight:600;">0</td>
+                <td id="reviewModalSobrantesQty" style="text-align:right; padding:7px 12px; color:#3b82f6; font-weight:700;">0</td>
+              </tr>
+              <tr id="reviewModalFaltantesRow" style="display:none; border-top:1px solid #f1f5f9;">
+                <td style="padding:7px 12px;">Faltantes</td>
+                <td id="reviewModalFaltantesCode" style="padding:7px 12px;"><code style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px;">FAL-0035</code></td>
+                <td id="reviewModalFaltantes" style="text-align:right; padding:7px 12px; color:#f59e0b; font-weight:600;">0</td>
+                <td id="reviewModalFaltantesQty" style="text-align:right; padding:7px 12px; color:#f59e0b; font-weight:700;">0</td>
+              </tr>
+              <tr id="reviewModalDanadosRow" style="display:none; border-top:1px solid #f1f5f9;">
+                <td style="padding:7px 12px;">Dañados</td>
+                <td id="reviewModalDanadosCode" style="padding:7px 12px;"><code style="background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:11px;">DAÑ-0036</code></td>
+                <td id="reviewModalDanados" style="text-align:right; padding:7px 12px; color:#ef4444; font-weight:600;">0</td>
+                <td id="reviewModalDanadosQty" style="text-align:right; padding:7px 12px; color:#ef4444; font-weight:700;">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-form-row">
+          <div class="modal-form-group">
+            <label class="modal-form-label">Fecha de revisión</label>
+            <input type="text" class="modal-form-input" id="reviewModalFecha" value="17/04/2026" readonly>
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-form-label">Hora</label>
+            <input type="text" class="modal-form-input" id="reviewModalHora" value="10:30" readonly>
+          </div>
+        </div>
+        <div class="modal-form-group" style="margin-top:14px;">
+          <label class="modal-form-label">Revisada por</label>
+          <input type="text" class="modal-form-input" id="reviewModalReviewer" value="Usuario Sistema" readonly>
+        </div>
+
+        <!-- Destinatarios del reporte de anomalías -->
+        <div id="reviewRecipientsSection" style="display:none; margin-top:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <svg width="16" height="16" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span style="font-size:13px; font-weight:600; color:#1a1a2e;">Reporte de anomalías se enviará a:</span>
+          </div>
+          <div class="recipients-container" id="recipientsContainer"></div>
+          <div class="recipient-add-row">
+            <input type="email" class="recipient-input" id="recipientInput" placeholder="correo@empresa.com" onkeydown="if(event.key==='Enter'){event.preventDefault();addRecipient();}">
+            <button type="button" class="btn-add-recipient" onclick="addRecipient()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeReviewModal()">Cancelar</button>
+        <button class="btn-modal-confirm" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="confirmReview()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmar revisión
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo lightbox -->
+  <div class="photo-lightbox" id="photoLightbox" onclick="closePhotoLightbox()">
+    <button class="photo-lightbox-close" onclick="closePhotoLightbox()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="Evidencia fotográfica" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="arrivalToast">
+    <div class="toast-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">Acción completada</div>
+      <div class="toast-message" id="toastMessage"></div>
+    </div>
+    <button class="toast-close" onclick="hideToast()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Botón oculto para alternar modo de simulación de revisión -->
+  <button class="toggle-error-mode" id="btnToggleReviewMode" onclick="toggleReviewSimMode()" title="Revisión: Normal (limpia) (clic para cambiar)">
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+    </svg>
+    <span class="mode-label">Normal (limpia)</span>
+  </button>
+
+  <script src="js/data.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/revision_orden.js"></script>
+</body>
+</html>
