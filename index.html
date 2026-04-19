@@ -579,6 +579,26 @@
       color: #f59e0b;
     }
 
+    .status-badge.por-almacenar {
+      background: #eef0ff;
+      color: #4338ca;
+    }
+    .status-badge.por-almacenar .dot { background: #818cf8; }
+
+    .status-badge.por-almacenar-anomalia {
+      background: linear-gradient(135deg, #eef0ff 50%, #fef3c7 100%);
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+    }
+    .status-badge.por-almacenar-anomalia .dot { background: #f59e0b; }
+    .status-badge.por-almacenar-anomalia .warning-icon {
+      width: 12px;
+      height: 12px;
+      margin-left: 2px;
+      flex-shrink: 0;
+      color: #f59e0b;
+    }
+
     .status-badge.ingresada {
       background: #f0f9ff;
       color: #075985;
@@ -1120,6 +1140,300 @@
       color: #1a1a2e;
     }
 
+    /* ===== Store action button (table) ===== */
+    .btn-store {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 8px;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid #818cf8;
+      background: #eef0ff;
+      color: #4338ca;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      position: relative;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .btn-store:hover {
+      background: #e0e2ff;
+      border-color: #6366f1;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn-store::after {
+      content: 'Almacenar';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-store:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== Storage modal product/box table ===== */
+    .storage-products {
+      margin-top: 14px;
+    }
+
+    .storage-product-item {
+      border: 1.5px solid #e2e4e9;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .storage-product-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #f8f9fb;
+      font-size: 13px;
+    }
+
+    .storage-product-code {
+      font-weight: 600;
+      color: #6c63ff;
+      background: #ede9fe;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 11.5px;
+    }
+
+    .storage-product-name {
+      color: #1a1a2e;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .storage-product-qty {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .storage-box-list {
+      padding: 8px 14px;
+    }
+
+    .storage-box-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 12.5px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .storage-box-row:last-child {
+      border-bottom: none;
+    }
+
+    .storage-box-code {
+      font-weight: 600;
+      color: #6c63ff;
+      background: #ede9fe;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .storage-box-qty {
+      color: #374151;
+      min-width: 60px;
+    }
+
+    .storage-box-position {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .storage-box-position svg {
+      flex-shrink: 0;
+    }
+
+    .storage-no-boxes {
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #9ca3af;
+      font-style: italic;
+    }
+
+    /* ===== Storage anomalies section ===== */
+    .storage-anomalies-section {
+      margin-top: 18px;
+      border: 1.5px solid #fde68a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .storage-anomalies-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: #fffbeb;
+      font-size: 13px;
+      font-weight: 600;
+      color: #92400e;
+    }
+
+    .storage-anomalies-header svg {
+      flex-shrink: 0;
+    }
+
+    .storage-anomaly-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-top: 1px solid #fef3c7;
+      font-size: 12.5px;
+    }
+
+    .storage-anomaly-severity {
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .storage-anomaly-severity.grave {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .storage-anomaly-severity.moderada {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .storage-anomaly-severity.leve {
+      background: #f0f9ff;
+      color: #075985;
+    }
+
+    .storage-anomaly-product {
+      flex: 1;
+    }
+
+    .storage-anomaly-product-name {
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .storage-anomaly-desc {
+      color: #6b7280;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .storage-anomaly-stats {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+      font-size: 11.5px;
+      color: #6b7280;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .storage-anomaly-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .storage-anomaly-stat.faltante {
+      color: #d97706;
+    }
+
+    .storage-anomaly-stat.danado {
+      color: #dc2626;
+    }
+
+    .storage-anomaly-photos {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .storage-anomaly-photo-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1.5px solid #e2e4e9;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .storage-anomaly-photo-thumb:hover {
+      border-color: #6c63ff;
+      box-shadow: 0 2px 8px rgba(108, 99, 255, 0.25);
+      transform: scale(1.08);
+    }
+
+    .storage-anomaly-photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .storage-anomaly-photo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      border: 1px solid #e2e4e9;
+      background: #f8f9fb;
+      color: #6b7280;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .storage-anomaly-photo-btn:hover {
+      background: #ede9fe;
+      border-color: #6c63ff;
+      color: #6c63ff;
+    }
+
     /* ===== Review action button (table) ===== */
     .btn-review {
       width: 30px;
@@ -1190,6 +1504,30 @@
     .btn-review-lg:hover {
       background: linear-gradient(135deg, #059669, #047857);
       box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Store action button (detail) ===== */
+    .btn-store-lg {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-store-lg:hover {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
       transform: translateY(-1px);
     }
 
@@ -1609,6 +1947,138 @@
       visibility: visible;
     }
 
+    /* ===== View boxes button (detail product table) ===== */
+    .btn-view-boxes {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1.5px solid #c7d2fe;
+      background: #eef0ff;
+      color: #6366f1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .btn-view-boxes:hover {
+      background: #e0e2ff;
+      border-color: #818cf8;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.18);
+    }
+
+    .btn-view-boxes.expanded {
+      background: #818cf8;
+      border-color: #6366f1;
+      color: #fff;
+    }
+
+    .detail-box-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #818cf8;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #fff;
+    }
+
+    .btn-view-boxes.expanded .detail-box-badge {
+      background: #fff;
+      color: #6366f1;
+    }
+
+    .btn-view-boxes::after {
+      content: attr(title);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-view-boxes:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Detail box panel (inline below row) */
+    .detail-box-panel {
+      background: #f8f7ff;
+      border: 1px solid #e0e2ff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 8px 0 4px;
+    }
+
+    .detail-box-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .detail-box-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4338ca;
+    }
+
+    .detail-box-panel-title svg {
+      color: #818cf8;
+    }
+
+    .detail-box-count {
+      font-size: 11px;
+      font-weight: 600;
+      background: #eef0ff;
+      color: #6366f1;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid #c7d2fe;
+    }
+
+    .detail-box-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .detail-box-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e8e8f0;
+    }
+
+    .detail-box-item:hover {
+      border-color: #c7d2fe;
+    }
+
     /* Read-only anomaly view panel */
     .anomaly-view-panel {
       background: #fffbeb;
@@ -1973,6 +2443,194 @@
     }
 
     /* Review progress bar (sticky bottom) */
+
+    /* ===== Box distribution (review) ===== */
+    .btn-boxes {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1.5px solid #e2e4e9;
+      background: #f8f9fb;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #6b7280;
+      transition: all 0.2s;
+      position: relative;
+      padding: 0;
+    }
+
+    .btn-boxes:hover {
+      border-color: #6c63ff;
+      color: #6c63ff;
+      background: #f5f3ff;
+    }
+
+    .btn-boxes.has-boxes {
+      border-color: #6c63ff;
+      color: #6c63ff;
+      background: #ede9fe;
+    }
+
+    .btn-boxes .box-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #6c63ff;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      line-height: 1;
+    }
+
+    .box-panel {
+      padding: 16px 20px;
+      background: #faf9ff;
+      border-top: 2px solid #ede9fe;
+    }
+
+    .box-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .box-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .box-panel-title svg {
+      color: #6c63ff;
+    }
+
+    .box-panel-status {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .box-panel-status.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .box-panel-status.complete {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .box-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .box-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1.5px solid #e2e4e9;
+      border-radius: 10px;
+      transition: all 0.15s;
+    }
+
+    .box-item:hover {
+      border-color: #c4b5fd;
+    }
+
+    .box-item-code {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6c63ff;
+      background: #ede9fe;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .box-item-input {
+      width: 80px;
+      padding: 6px 10px;
+      border: 1.5px solid #e2e4e9;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #1a1a2e;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .box-item-input:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    }
+
+    .box-item-label {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .box-item-remove {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #9ca3af;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+
+    .box-item-remove:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .box-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: #fff;
+      border: 1.5px dashed #c4b5fd;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #6c63ff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .box-add-btn:hover {
+      background: #ede9fe;
+      border-style: solid;
+    }
+
     .review-progress-bar {
       position: sticky;
       bottom: 0;
@@ -2326,7 +2984,7 @@
             <!-- Filtros por estado -->
             <div class="estado-tabs">
               <button class="estado-tab active" onclick="setTab(this)">
-                Todos <span class="tab-count">8</span>
+                Todos <span class="tab-count">9</span>
               </button>
               <button class="estado-tab" onclick="setTab(this)">
                 En bodega <span class="tab-count">2</span>
@@ -2336,6 +2994,9 @@
               </button>
               <button class="estado-tab" onclick="setTab(this)">
                 Revisada <span class="tab-count">3</span>
+              </button>
+              <button class="estado-tab" onclick="setTab(this)">
+                Por almacenar <span class="tab-count">1</span>
               </button>
               <button class="estado-tab" onclick="setTab(this)">
                 Almacenada <span class="tab-count">2</span>
@@ -2356,7 +3017,7 @@
               </svg>
             </div>
             <h2>Resultados</h2>
-            <span class="card-header-right">8 órdenes encontradas</span>
+            <span class="card-header-right">9 órdenes encontradas</span>
           </div>
           <div class="card-body" style="padding:0;">
             <div class="table-wrapper" style="border:none; border-radius:0;">
@@ -2399,7 +3060,7 @@
                     <td>Importadora Andina S.A.</td>
                     <td>11/04/2026 15:10</td>
                     <td>6</td>
-                    <td><span class="status-badge revisada-anomalia"><span class="dot"></span> Revisada <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></span></td>
+                    <td><span class="status-badge revisada-anomalia"><span class="dot"></span> Revisada <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0455','Importadora Andina S.A.','6')" style="position:relative;"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
@@ -2410,7 +3071,7 @@
                     <td>Distribuidora ABC Ltda.</td>
                     <td>13/04/2026 11:05</td>
                     <td>5</td>
-                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span></td>
+                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0457','Distribuidora ABC Ltda.','5')" style="position:relative;"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
@@ -2420,7 +3081,18 @@
                     <td>Textiles Oriente SpA</td>
                     <td>09/04/2026 09:50</td>
                     <td>4</td>
-                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span></td>
+                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0453','Textiles Oriente SpA','4')" style="position:relative;"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
+                    <td>
+                      <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </td>
+                  </tr>
+                  <!-- Prioridad 3.5: Por almacenar -->
+                  <tr onclick="showDetail('PO-2026-0456','Textiles Oriente SpA','10/04/2026 16:20','por-almacenar','Por almacenar','Carlos Méndez','11/04/2026 09:00')">
+                    <td><code>PO-2026-0456</code></td>
+                    <td>Textiles Oriente SpA</td>
+                    <td>10/04/2026 16:20</td>
+                    <td>5</td>
+                    <td><span class="status-badge por-almacenar"><span class="dot"></span> Por almacenar</span></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
@@ -2516,6 +3188,10 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             Iniciar revisión
           </button>
+          <button id="detailStoreBtn" class="btn-store-lg" style="display:none; margin-left:12px;" onclick="openStorageModal(document.getElementById('detailCode').textContent, document.getElementById('detailInfoProveedor').textContent, '5')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            Almacenar
+          </button>
         </div>
 
         <!-- Info general -->
@@ -2593,6 +3269,7 @@
                     <th>Cantidad</th>
                     <th>Precio unit.</th>
                     <th>Subtotal</th>
+                    <th id="detailBoxesColHeader" style="display:none; width:40px;"></th>
                     <th id="detailAnomalyColHeader" style="display:none; width:40px;"></th>
                   </tr>
                 </thead>
@@ -2674,6 +3351,7 @@
                   <tr>
                     <td id="detailTotalColspan" colspan="6" style="text-align:right; font-weight:600; border-top: 2px solid #e8e8f0;">Total</td>
                     <td style="font-weight:700; color:#1a1a2e; border-top: 2px solid #e8e8f0;">$3.138.000</td>
+                    <td id="detailTotalBoxesCol" style="display:none; border-top: 2px solid #e8e8f0;"></td>
                     <td id="detailTotalExtraCol" style="display:none; border-top: 2px solid #e8e8f0;"></td>
                   </tr>
                 </tfoot>
@@ -2766,6 +3444,7 @@
                 <th>Cant. esperada</th>
                 <th>Cant. recibida</th>
                 <th>Dañados</th>
+                <th>Cajas</th>
                 <th>Estado</th>
                 <th></th>
               </tr>
@@ -2778,10 +3457,12 @@
                 <td>50</td>
                 <td><input type="number" class="qty-input" data-expected="50" oninput="updateRowReview(0)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(0)"></td>
+                <td><button class="btn-boxes" id="btnBoxes0" onclick="event.stopPropagation(); toggleBoxPanel(0)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(0)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow0" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel0"></div></td></tr>
+              <tr id="boxRow0" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel0"></div></td></tr>
+              <tr id="anomalyRow0" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel0"></div></td></tr>
 
               <tr data-idx="1">
                 <td><code>ART-3011</code></td>
@@ -2790,10 +3471,12 @@
                 <td>30</td>
                 <td><input type="number" class="qty-input" data-expected="30" oninput="updateRowReview(1)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(1)"></td>
+                <td><button class="btn-boxes" id="btnBoxes1" onclick="event.stopPropagation(); toggleBoxPanel(1)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(1)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow1" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel1"></div></td></tr>
+              <tr id="boxRow1" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel1"></div></td></tr>
+              <tr id="anomalyRow1" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel1"></div></td></tr>
 
               <tr data-idx="2">
                 <td><code>ART-3012</code></td>
@@ -2802,10 +3485,12 @@
                 <td>200</td>
                 <td><input type="number" class="qty-input" data-expected="200" oninput="updateRowReview(2)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(2)"></td>
+                <td><button class="btn-boxes" id="btnBoxes2" onclick="event.stopPropagation(); toggleBoxPanel(2)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(2)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow2" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel2"></div></td></tr>
+              <tr id="boxRow2" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel2"></div></td></tr>
+              <tr id="anomalyRow2" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel2"></div></td></tr>
 
               <tr data-idx="3">
                 <td><code>ART-3013</code></td>
@@ -2814,10 +3499,12 @@
                 <td>500</td>
                 <td><input type="number" class="qty-input" data-expected="500" oninput="updateRowReview(3)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(3)"></td>
+                <td><button class="btn-boxes" id="btnBoxes3" onclick="event.stopPropagation(); toggleBoxPanel(3)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(3)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow3" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel3"></div></td></tr>
+              <tr id="boxRow3" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel3"></div></td></tr>
+              <tr id="anomalyRow3" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel3"></div></td></tr>
 
               <tr data-idx="4">
                 <td><code>ART-3014</code></td>
@@ -2826,10 +3513,12 @@
                 <td>80</td>
                 <td><input type="number" class="qty-input" data-expected="80" oninput="updateRowReview(4)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(4)"></td>
+                <td><button class="btn-boxes" id="btnBoxes4" onclick="event.stopPropagation(); toggleBoxPanel(4)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(4)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow4" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel4"></div></td></tr>
+              <tr id="boxRow4" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel4"></div></td></tr>
+              <tr id="anomalyRow4" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel4"></div></td></tr>
 
               <tr data-idx="5">
                 <td><code>ART-3015</code></td>
@@ -2838,10 +3527,12 @@
                 <td>40</td>
                 <td><input type="number" class="qty-input" data-expected="40" oninput="updateRowReview(5)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(5)"></td>
+                <td><button class="btn-boxes" id="btnBoxes5" onclick="event.stopPropagation(); toggleBoxPanel(5)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(5)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow5" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel5"></div></td></tr>
+              <tr id="boxRow5" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel5"></div></td></tr>
+              <tr id="anomalyRow5" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel5"></div></td></tr>
 
               <tr data-idx="6">
                 <td><code>ART-3016</code></td>
@@ -2850,10 +3541,12 @@
                 <td>10</td>
                 <td><input type="number" class="qty-input" data-expected="10" oninput="updateRowReview(6)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(6)"></td>
+                <td><button class="btn-boxes" id="btnBoxes6" onclick="event.stopPropagation(); toggleBoxPanel(6)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(6)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow6" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel6"></div></td></tr>
+              <tr id="boxRow6" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel6"></div></td></tr>
+              <tr id="anomalyRow6" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel6"></div></td></tr>
 
               <tr data-idx="7">
                 <td><code>ART-3017</code></td>
@@ -2862,10 +3555,12 @@
                 <td>25</td>
                 <td><input type="number" class="qty-input" data-expected="25" oninput="updateRowReview(7)" min="0"></td>
                 <td><input type="number" class="dmg-input" value="0" min="0" oninput="updateRowReview(7)"></td>
+                <td><button class="btn-boxes" id="btnBoxes7" onclick="event.stopPropagation(); toggleBoxPanel(7)" title="Distribuir en cajas"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button></td>
                 <td><span class="review-status pending">Pendiente</span></td>
                 <td><button class="btn-anomaly" onclick="event.stopPropagation(); toggleAnomalyPanel(7)"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>
               </tr>
-              <tr id="anomalyRow7" style="display:none;"><td colspan="8"><div class="anomaly-panel" id="anomalyPanel7"></div></td></tr>
+              <tr id="boxRow7" style="display:none;"><td colspan="9"><div class="box-panel" id="boxPanel7"></div></td></tr>
+              <tr id="anomalyRow7" style="display:none;"><td colspan="9"><div class="anomaly-panel" id="anomalyPanel7"></div></td></tr>
             </tbody>
           </table>
 
@@ -3066,6 +3761,55 @@
     </div>
   </div>
 
+  <!-- Modal: Confirmar almacenamiento -->
+  <div class="modal-overlay" id="storageModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background: linear-gradient(135deg, rgba(129,140,248,0.15), rgba(99,102,241,0.15)); color:#6366f1;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+        </div>
+        <div>
+          <h3>Confirmar almacenamiento</h3>
+          <p>Revisar posiciones recomendadas y confirmar</p>
+        </div>
+        <button class="modal-close" onclick="closeStorageModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Orden</span>
+            <span class="modal-summary-value" id="storageModalCode">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Proveedor</span>
+            <span class="modal-summary-value" id="storageModalProveedor">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Ítems</span>
+            <span class="modal-summary-value" id="storageModalItems">—</span>
+          </div>
+        </div>
+
+        <div id="storageAnomaliesSection" style="display:none;">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="storage-products" id="storageProductsList">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeStorageModal()">Cancelar</button>
+        <button class="btn-modal-confirm" style="background: linear-gradient(135deg, #818cf8, #6366f1);" onclick="confirmStorage()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirmar almacenamiento
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Photo lightbox -->
   <div class="photo-lightbox" id="photoLightbox" onclick="closePhotoLightbox()">
     <button class="photo-lightbox-close" onclick="closePhotoLightbox()">
@@ -3187,18 +3931,40 @@
       const anomalyByItem = {};
       anomalies.forEach(a => { anomalyByItem[a.item] = a; });
 
-      // Show/hide extra column header
+      // Box data for this order
+      const boxes = orderBoxes[code] || [];
+      const boxByCode = {};
+      boxes.forEach(b => { boxByCode[b.codigo] = b; });
+      const hasBoxes = boxes.length > 0;
+
+      // Show/hide extra column headers
+      document.getElementById('detailBoxesColHeader').style.display = hasBoxes ? '' : 'none';
+      document.getElementById('detailTotalBoxesCol').style.display = hasBoxes ? '' : 'none';
       document.getElementById('detailAnomalyColHeader').style.display = hasAnomalias ? '' : 'none';
       document.getElementById('detailTotalExtraCol').style.display = hasAnomalias ? '' : 'none';
-      document.getElementById('detailTotalColspan').setAttribute('colspan', hasAnomalias ? '6' : '6');
+
+      // Calculate colspan for total row
+      let totalCols = 6;
+      if (hasBoxes) totalCols++;
+      if (hasAnomalias) totalCols++;
+      document.getElementById('detailTotalColspan').setAttribute('colspan', totalCols.toString());
 
       const tbody = document.getElementById('detailProductTableBody');
       let html = '';
 
       detailProducts.forEach(p => {
         const a = anomalyByItem[p.num];
-        const extraCol = hasAnomalias
+        const b = boxByCode[p.codigo];
+
+        // Anomaly column
+        const anomalyCol = hasAnomalias
           ? (a ? '<td style="text-align:center;"><button class="btn-view-anomaly" onclick="toggleDetailAnomaly(' + p.num + ', this)" title="Ver anomalía"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></button></td>'
+            : '<td></td>')
+          : '';
+
+        // Boxes column
+        const boxesCol = hasBoxes
+          ? (b ? '<td style="text-align:center;"><button class="btn-view-boxes" onclick="toggleDetailBoxes(\'' + p.codigo + '\', this)" title="Ver cajas"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg><span class="detail-box-badge">' + b.cajas.length + '</span></button></td>'
             : '<td></td>')
           : '';
 
@@ -3210,11 +3976,22 @@
         html += '<td>' + p.cantidad + '</td>';
         html += '<td>' + p.precio + '</td>';
         html += '<td>' + p.subtotal + '</td>';
-        html += extraCol;
+        html += boxesCol;
+        html += anomalyCol;
         html += '</tr>';
 
+        // Box expandable row
+        if (b) {
+          const cols = 7 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
+          html += '<tr class="detail-box-row" id="detailBoxRow-' + p.codigo + '" style="display:none;">';
+          html += '<td colspan="' + cols + '" style="padding:0 16px 12px; background:#fff;">';
+          html += buildDetailBoxPanel(b, currentDetailStatusClass);
+          html += '</td></tr>';
+        }
+
+        // Anomaly expandable row
         if (a) {
-          const cols = hasAnomalias ? 8 : 7;
+          const cols = 7 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
           html += '<tr class="detail-anomaly-row" id="detailAnomalyRow-' + p.num + '" style="display:none;">';
           html += '<td colspan="' + cols + '" style="padding:0 16px 12px; background:#fff;">';
           html += buildAnomalyViewPanel(a);
@@ -3287,10 +4064,12 @@
       document.getElementById('lightboxImg').src = '';
     }
 
+    let currentDetailStatusClass = '';
+
     function showDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, reviewDate) {
       // Icono de advertencia SVG para almacenada con anomalías
       const warningIconSVG = '<svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
-      const hasAnomalias = (statusClass === 'almacenada-anomalia' || statusClass === 'revisada-anomalia');
+      const hasAnomalias = (statusClass === 'almacenada-anomalia' || statusClass === 'revisada-anomalia' || statusClass === 'por-almacenar-anomalia');
 
       // Actualizar header
       document.getElementById('detailCode').textContent = code;
@@ -3336,12 +4115,52 @@
       const reviewBtn = document.getElementById('detailReviewBtn');
       reviewBtn.style.display = (statusClass === 'en-bodega') ? 'inline-flex' : 'none';
 
-      // Renderizar tabla de productos con botones de anomalía si corresponde
+      // Mostrar/ocultar botón de almacenar (solo para "Revisada")
+      const storeBtn = document.getElementById('detailStoreBtn');
+      storeBtn.style.display = (statusClass === 'revisada' || statusClass === 'revisada-anomalia') ? 'inline-flex' : 'none';
+
+      // Renderizar tabla de productos con botones de anomalía y cajas si corresponde
+      currentDetailStatusClass = statusClass;
       renderDetailProductTable(code);
 
       document.getElementById('viewList').style.display = 'none';
       document.getElementById('viewDetail').style.display = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function buildDetailBoxPanel(prodBoxes, statusClass) {
+      const showPositions = (statusClass === 'revisada' || statusClass === 'revisada-anomalia' || statusClass === 'por-almacenar' || statusClass === 'por-almacenar-anomalia' || statusClass === 'almacenada' || statusClass === 'almacenada-anomalia');
+
+      let html = '<div class="detail-box-panel">';
+      html += '<div class="detail-box-panel-header">';
+      html += '<div class="detail-box-panel-title"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg> Distribución en cajas — ' + prodBoxes.producto + '</div>';
+      html += '<span class="detail-box-count">' + prodBoxes.cajas.length + (prodBoxes.cajas.length === 1 ? ' caja' : ' cajas') + '</span>';
+      html += '</div>';
+      html += '<div class="detail-box-list">';
+      prodBoxes.cajas.forEach(caja => {
+        const pos = getRecommendedPosition(caja.code);
+        html += '<div class="detail-box-item">';
+        html += '<span class="storage-box-code">' + caja.code + '</span>';
+        html += '<span class="storage-box-qty">' + caja.qty + ' uds</span>';
+        if (showPositions) {
+          html += '<span class="storage-box-position"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> ' + pos + '</span>';
+        }
+        html += '</div>';
+      });
+      html += '</div></div>';
+      return html;
+    }
+
+    function toggleDetailBoxes(codigo, btn) {
+      const row = document.getElementById('detailBoxRow-' + codigo);
+      const isVisible = row.style.display !== 'none';
+      // Close all other open box panels
+      document.querySelectorAll('.detail-box-row').forEach(r => r.style.display = 'none');
+      document.querySelectorAll('.btn-view-boxes').forEach(b => b.classList.remove('expanded'));
+      if (!isVisible) {
+        row.style.display = '';
+        btn.classList.add('expanded');
+      }
     }
 
     function showList() {
@@ -3418,18 +4237,237 @@
       document.getElementById('detailArrivalBtn').style.display = 'none';
     }
 
+    /* === Confirmar almacenamiento (Revisada → Por almacenar) === */
+    let storageOrderCode = '';
+
+    // Datos simulados de cajas por orden
+    const orderBoxes = {
+      'PO-2026-0455': [
+        { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-001',qty:25},{code:'CAJA-002',qty:25}] },
+        { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-003',qty:15},{code:'CAJA-004',qty:15}] },
+        { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-005',qty:100},{code:'CAJA-006',qty:100}] },
+        { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-007',qty:250},{code:'CAJA-008',qty:250}] },
+        { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-009',qty:40}] },
+      ],
+      'PO-2026-0457': [
+        { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-010',qty:30},{code:'CAJA-011',qty:20}] },
+        { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-012',qty:200}] },
+        { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-013',qty:80}] },
+        { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-014',qty:10}] },
+        { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-015',qty:25}] },
+      ],
+      'PO-2026-0453': [
+        { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-016',qty:30}] },
+        { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-017',qty:300},{code:'CAJA-018',qty:200}] },
+        { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-019',qty:80}] },
+        { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-020',qty:25}] },
+      ],
+      'PO-2026-0452': [
+        { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-021',qty:30},{code:'CAJA-022',qty:20}] },
+        { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-023',qty:120},{code:'CAJA-024',qty:80}] },
+        { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-025',qty:500}] },
+        { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-026',qty:80}] },
+        { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-027',qty:40}] },
+        { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-028',qty:25}] },
+      ],
+      'PO-2026-0449': [
+        { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-029',qty:25},{code:'CAJA-030',qty:25}] },
+        { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-031',qty:15},{code:'CAJA-032',qty:15}] },
+        { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-033',qty:100},{code:'CAJA-034',qty:100}] },
+        { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-035',qty:10}] },
+        { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-036',qty:25}] },
+      ],
+      'PO-2026-0456': [
+        { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-037',qty:20},{code:'CAJA-038',qty:30}] },
+        { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-039',qty:15},{code:'CAJA-040',qty:15}] },
+        { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-041',qty:100},{code:'CAJA-042',qty:100}] },
+        { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-043',qty:250},{code:'CAJA-044',qty:250}] },
+        { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-045',qty:80}] },
+        { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-046',qty:40}] },
+      ]
+    };
+
+    // Posiciones de bodega simuladas
+    const warehousePositions = [
+      'A-01-01','A-01-02','A-01-03','A-02-01','A-02-02','A-03-01',
+      'B-01-01','B-01-02','B-02-01','B-02-02','B-03-01','B-03-02',
+      'C-01-01','C-01-02','C-02-01','C-02-02','C-03-01','C-03-02',
+      'D-01-01','D-01-02','D-02-01','D-02-02','D-03-01','D-03-02'
+    ];
+
+    function getRecommendedPosition(boxCode) {
+      // Generar posición determinística basada en el código de caja
+      const num = parseInt(boxCode.replace('CAJA-',''));
+      return warehousePositions[(num - 1) % warehousePositions.length];
+    }
+
+    function openStorageModal(code, proveedor, items) {
+      storageOrderCode = code;
+      document.getElementById('storageModalCode').textContent = code;
+      document.getElementById('storageModalProveedor').textContent = proveedor;
+      document.getElementById('storageModalItems').textContent = items;
+
+      // Renderizar productos y cajas
+      const container = document.getElementById('storageProductsList');
+      const boxes = orderBoxes[code];
+
+      if (!boxes || boxes.length === 0) {
+        container.innerHTML = '<div class="storage-no-boxes">No hay datos de cajas disponibles para esta orden.</div>';
+      } else {
+        const totalBoxes = boxes.reduce((s, p) => s + p.cajas.length, 0);
+        let html = '<div class="storage-anomalies-header" style="background:#f0f4ff; border-bottom:1.5px solid #dde3f0; color:#3730a3; margin-bottom:10px; border-radius:10px 10px 0 0;">';
+        html += '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>';
+        html += 'Cajas y posiciones recomendadas (' + totalBoxes + ' cajas)';
+        html += '</div>';
+        boxes.forEach(prod => {
+          const totalQty = prod.cajas.reduce((s, c) => s + c.qty, 0);
+          html += '<div class="storage-product-item">';
+          html += '<div class="storage-product-header">';
+          html += '<span class="storage-product-code">' + prod.codigo + '</span>';
+          html += '<span class="storage-product-name">' + prod.producto + '</span>';
+          html += '<span class="storage-product-qty">' + totalQty + ' uds · ' + prod.cajas.length + ' caja' + (prod.cajas.length > 1 ? 's' : '') + '</span>';
+          html += '</div>';
+          html += '<div class="storage-box-list">';
+          prod.cajas.forEach(caja => {
+            const pos = getRecommendedPosition(caja.code);
+            html += '<div class="storage-box-row">';
+            html += '<span class="storage-box-code">' + caja.code + '</span>';
+            html += '<span class="storage-box-qty">' + caja.qty + ' uds</span>';
+            html += '<span class="storage-box-position"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> ' + pos + '</span>';
+            html += '</div>';
+          });
+          html += '</div></div>';
+        });
+        container.innerHTML = html;
+      }
+
+      // Renderizar anomalías si existen
+      const anomSection = document.getElementById('storageAnomaliesSection');
+      const anomalies = orderAnomalies[code];
+      if (anomalies && anomalies.length > 0) {
+        let anomHtml = '<div class="storage-anomalies-section">';
+        anomHtml += '<div class="storage-anomalies-header">';
+        anomHtml += '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
+        anomHtml += 'Anomalías registradas (' + anomalies.length + ')';
+        anomHtml += '</div>';
+        anomalies.forEach(a => {
+          const faltante = a.esperado - a.recibido;
+          anomHtml += '<div class="storage-anomaly-item">';
+          anomHtml += '<span class="storage-anomaly-severity ' + a.severity + '">' + a.severity.charAt(0).toUpperCase() + a.severity.slice(1) + '</span>';
+          anomHtml += '<div class="storage-anomaly-product">';
+          anomHtml += '<div class="storage-anomaly-product-name">' + a.codigo + ' — ' + a.producto + '</div>';
+          anomHtml += '<div class="storage-anomaly-desc">' + a.desc + '</div>';
+          if (a.fotos && a.fotos.length > 0) {
+            anomHtml += '<div class="storage-anomaly-photos">';
+            a.fotos.forEach(function(f, i) {
+              anomHtml += '<div class="storage-anomaly-photo-thumb" onclick="event.stopPropagation(); openPhotoLightbox(\'' + f.replace(/'/g, "\\'") + '\')"><img src="' + f + '" alt="Foto ' + (i+1) + '"></div>';
+            });
+            anomHtml += '</div>';
+          }
+          anomHtml += '</div>';
+          anomHtml += '<div class="storage-anomaly-stats">';
+          if (faltante > 0) {
+            anomHtml += '<span class="storage-anomaly-stat faltante"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg> ' + faltante + ' faltantes</span>';
+          }
+          if (a.danados > 0) {
+            anomHtml += '<span class="storage-anomaly-stat danado"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg> ' + a.danados + ' dañados</span>';
+          }
+          if (a.fotos && a.fotos.length > 0) {
+            anomHtml += '<button class="storage-anomaly-photo-btn" onclick="event.stopPropagation(); openPhotoLightbox(\'' + a.fotos[0].replace(/'/g, "\\'") + '\')"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> ' + a.fotos.length + ' foto' + (a.fotos.length > 1 ? 's' : '') + '</button>';
+          }
+          anomHtml += '</div>';
+          anomHtml += '</div>';
+        });
+        anomHtml += '</div>';
+        anomSection.innerHTML = anomHtml;
+        anomSection.style.display = '';
+      } else {
+        anomSection.innerHTML = '';
+        anomSection.style.display = 'none';
+      }
+
+      document.getElementById('storageModal').classList.add('active');
+    }
+
+    function closeStorageModal() {
+      document.getElementById('storageModal').classList.remove('active');
+      storageOrderCode = '';
+    }
+
+    function confirmStorage() {
+      const code = storageOrderCode;
+      closeStorageModal();
+
+      // Detectar si la orden tiene anomalías
+      let hadAnomaly = false;
+
+      // Buscar fila en la tabla y actualizar estado
+      const rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
+      rows.forEach(row => {
+        const codeCell = row.querySelector('td:first-child code');
+        if (codeCell && codeCell.textContent === code) {
+          const oldBadge = row.querySelector('.status-badge');
+          hadAnomaly = oldBadge && oldBadge.classList.contains('revisada-anomalia');
+          const statusTd = oldBadge.closest('td');
+          if (hadAnomaly) {
+            statusTd.innerHTML = '<span class="status-badge por-almacenar-anomalia"><span class="dot"></span> Por almacenar <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></span>';
+          } else {
+            statusTd.innerHTML = '<span class="status-badge por-almacenar"><span class="dot"></span> Por almacenar</span>';
+          }
+
+          // Actualizar onclick de la fila
+          const newStatus = hadAnomaly ? 'por-almacenar-anomalia' : 'por-almacenar';
+          const onclick = row.getAttribute('onclick');
+          row.setAttribute('onclick', onclick
+            .replace(/'revisada-anomalia'/g, "'" + newStatus + "'")
+            .replace(/'revisada'/g, "'" + newStatus + "'")
+            .replace(/'Revisada'/g, "'Por almacenar'"));
+        }
+      });
+
+      // Si estamos en detalle, actualizar allí también
+      if (document.getElementById('viewDetail').style.display !== 'none') {
+        const detailCode = document.getElementById('detailCode').textContent;
+        if (detailCode === code) {
+          updateDetailToPorAlmacenar(hadAnomaly);
+        }
+      }
+
+      updateTabCounts();
+
+      document.getElementById('toastMessage').textContent = 'La orden ' + code + ' fue marcada para almacenar.';
+      showToast();
+    }
+
+    function updateDetailToPorAlmacenar(hasAnomaly) {
+      const statusClass = hasAnomaly ? 'status-badge por-almacenar-anomalia' : 'status-badge por-almacenar';
+      const warningHtml = hasAnomaly ? ' <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>' : '';
+
+      const headerBadge = document.getElementById('detailStatusBadge');
+      headerBadge.className = statusClass;
+      headerBadge.style.marginLeft = 'auto';
+      document.getElementById('detailStatusText').innerHTML = 'Por almacenar' + warningHtml;
+
+      const infoBadge = document.getElementById('detailInfoStatus');
+      infoBadge.className = statusClass;
+      document.getElementById('detailInfoStatusText').innerHTML = 'Por almacenar' + warningHtml;
+
+      document.getElementById('detailStoreBtn').style.display = 'none';
+    }
+
     function updateTabCounts() {
       // Recount statuses from table
       const rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
-      let total = 0, enBodega = 0, conAnomalias = 0, revisada = 0, almacenada = 0, porLlegar = 0;
+      let total = 0, enBodega = 0, conAnomalias = 0, revisada = 0, porAlmacenar = 0, almacenada = 0, porLlegar = 0;
       rows.forEach(row => {
         const badge = row.querySelector('.status-badge');
         if (!badge) return;
         total++;
         const cls = badge.className;
         if (cls.includes('en-bodega')) enBodega++;
-        if (cls.includes('revisada-anomalia') || cls.includes('almacenada-anomalia')) conAnomalias++;
+        if (cls.includes('revisada-anomalia') || cls.includes('almacenada-anomalia') || cls.includes('por-almacenar-anomalia')) conAnomalias++;
         if (cls.includes('revisada')) revisada++;
+        if (cls.includes('por-almacenar')) porAlmacenar++;
         if (cls.includes('almacenada') && !cls.includes('almacenada-anomalia')) almacenada++;
         if (cls.includes('almacenada-anomalia')) almacenada++;
         if (cls.includes('ingresada')) porLlegar++;
@@ -3444,6 +4482,7 @@
         else if (text.startsWith('En bodega')) countEl.textContent = enBodega;
         else if (text.startsWith('Con anomalías')) countEl.textContent = conAnomalias;
         else if (text.startsWith('Revisada')) countEl.textContent = revisada;
+        else if (text.startsWith('Por almacenar')) countEl.textContent = porAlmacenar;
         else if (text.startsWith('Almacenada')) countEl.textContent = almacenada;
         else if (text.startsWith('Por llegar')) countEl.textContent = porLlegar;
       });
@@ -3485,16 +4524,23 @@
         inp.value = '0';
         inp.classList.remove('has-damaged');
       });
-      const statusCells = document.querySelectorAll('#reviewTableBody tr[data-idx] td:nth-child(7)');
+      const statusCells = document.querySelectorAll('#reviewTableBody tr[data-idx] td:nth-child(8)');
       statusCells.forEach(td => {
         td.innerHTML = '<span class="review-status pending">Pendiente</span>';
       });
       // Reset anomaly buttons
       document.querySelectorAll('#reviewTableBody .btn-anomaly').forEach(btn => btn.classList.remove('active'));
-      // Hide anomaly panels
+      // Reset box buttons
+      document.querySelectorAll('#reviewTableBody .btn-boxes').forEach(btn => btn.classList.remove('has-boxes'));
+      document.querySelectorAll('#reviewTableBody .btn-boxes .box-badge').forEach(b => b.remove());
+      reviewBoxes = {};
+      boxCounter = 1;
+      // Hide anomaly and box panels
       for (let i = 0; i < 8; i++) {
         document.getElementById('anomalyRow' + i).style.display = 'none';
         document.getElementById('anomalyPanel' + i).innerHTML = '';
+        document.getElementById('boxRow' + i).style.display = 'none';
+        document.getElementById('boxPanel' + i).innerHTML = '';
       }
 
       // If sim mode = "con anomalías", pre-fill items #3 and #6
@@ -3517,7 +4563,7 @@
         dmgInputs[5].value = 8;
         dmgInputs[5].classList.add('has-damaged');
         // Mark row 5 as anomaly even though qty matches
-        const statusTd5 = document.querySelectorAll('#reviewTableBody tr[data-idx="5"] td:nth-child(7)')[0];
+        const statusTd5 = document.querySelectorAll('#reviewTableBody tr[data-idx="5"] td:nth-child(8)')[0];
         if (statusTd5) {
           statusTd5.innerHTML = '<span class="review-status anomaly">⚠ Anomalía</span>';
         }
@@ -3546,7 +4592,7 @@
       const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
       const input = row.querySelector('.qty-input');
       const dmgInput = row.querySelector('.dmg-input');
-      const statusTd = row.querySelector('td:nth-child(7)');
+      const statusTd = row.querySelector('td:nth-child(8)');
       const expected = parseInt(input.dataset.expected);
       const received = input.value === '' ? null : parseInt(input.value);
       const damaged = dmgInput ? parseInt(dmgInput.value) || 0 : 0;
@@ -3766,7 +4812,7 @@
       // Update button and row status
       document.querySelectorAll('#reviewTableBody .btn-anomaly')[idx].classList.add('active');
       const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
-      const statusTd = row.querySelector('td:nth-child(7)');
+      const statusTd = row.querySelector('td:nth-child(8)');
       statusTd.innerHTML = '<span class="review-status anomaly">⚠ Anomalía</span>';
 
       // Close panel
@@ -3847,6 +4893,107 @@
     function removeRecipient(index) {
       extraRecipients.splice(index, 1);
       renderRecipients();
+    }
+
+    // === Box distribution per product ===
+    let reviewBoxes = {}; // { idx: [ { code: 'CAJA-001', qty: 100 }, ... ] }
+    let boxCounter = 1;
+
+    function toggleBoxPanel(idx) {
+      const boxRow = document.getElementById('boxRow' + idx);
+      const isVisible = boxRow.style.display !== 'none';
+
+      if (isVisible) {
+        boxRow.style.display = 'none';
+        return;
+      }
+
+      // Initialize boxes for this product if not yet
+      if (!reviewBoxes[idx]) {
+        reviewBoxes[idx] = [];
+      }
+
+      boxRow.style.display = 'table-row';
+      renderBoxPanel(idx);
+    }
+
+    function renderBoxPanel(idx) {
+      const panel = document.getElementById('boxPanel' + idx);
+      const boxes = reviewBoxes[idx] || [];
+      const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
+      const qtyInput = row.querySelector('.qty-input');
+      const received = qtyInput.value === '' ? 0 : parseInt(qtyInput.value) || 0;
+      const distributed = boxes.reduce((sum, b) => sum + (b.qty || 0), 0);
+      const isComplete = received > 0 && distributed === received;
+
+      let html = '<div class="box-panel-header">';
+      html += '<div class="box-panel-title"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg> Distribución en cajas</div>';
+      html += '<span class="box-panel-status ' + (isComplete ? 'complete' : 'pending') + '">' + distributed + ' / ' + received + ' unidades</span>';
+      html += '</div>';
+
+      html += '<div class="box-list">';
+      boxes.forEach((box, i) => {
+        html += '<div class="box-item">';
+        html += '<span class="box-item-code">' + box.code + '</span>';
+        html += '<input type="number" class="box-item-input" value="' + (box.qty || '') + '" min="0" oninput="updateBoxQty(' + idx + ', ' + i + ', this.value)" placeholder="0">';
+        html += '<span class="box-item-label">unidades</span>';
+        html += '<button class="box-item-remove" onclick="removeBox(' + idx + ', ' + i + ')" title="Eliminar caja">✕</button>';
+        html += '</div>';
+      });
+      html += '</div>';
+
+      html += '<button class="box-add-btn" onclick="addBox(' + idx + ')">+ Agregar caja</button>';
+
+      panel.innerHTML = html;
+    }
+
+    function addBox(idx) {
+      if (!reviewBoxes[idx]) reviewBoxes[idx] = [];
+      const code = 'CAJA-' + String(boxCounter).padStart(3, '0');
+      boxCounter++;
+      reviewBoxes[idx].push({ code: code, qty: 0 });
+      renderBoxPanel(idx);
+      updateBoxButton(idx);
+    }
+
+    function removeBox(idx, boxIndex) {
+      reviewBoxes[idx].splice(boxIndex, 1);
+      renderBoxPanel(idx);
+      updateBoxButton(idx);
+    }
+
+    function updateBoxQty(idx, boxIndex, value) {
+      reviewBoxes[idx][boxIndex].qty = parseInt(value) || 0;
+      // Update status indicator
+      const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
+      const received = parseInt(row.querySelector('.qty-input').value) || 0;
+      const distributed = reviewBoxes[idx].reduce((sum, b) => sum + (b.qty || 0), 0);
+      const isComplete = received > 0 && distributed === received;
+      const statusEl = document.querySelector('#boxPanel' + idx + ' .box-panel-status');
+      if (statusEl) {
+        statusEl.className = 'box-panel-status ' + (isComplete ? 'complete' : 'pending');
+        statusEl.textContent = distributed + ' / ' + received + ' unidades';
+      }
+      updateBoxButton(idx);
+    }
+
+    function updateBoxButton(idx) {
+      const btn = document.getElementById('btnBoxes' + idx);
+      const boxes = reviewBoxes[idx] || [];
+      const count = boxes.length;
+      // Remove existing badge
+      const existingBadge = btn.querySelector('.box-badge');
+      if (existingBadge) existingBadge.remove();
+
+      if (count > 0) {
+        btn.classList.add('has-boxes');
+        const badge = document.createElement('span');
+        badge.className = 'box-badge';
+        badge.textContent = count;
+        btn.appendChild(badge);
+      } else {
+        btn.classList.remove('has-boxes');
+      }
     }
 
     function openReviewModal() {
