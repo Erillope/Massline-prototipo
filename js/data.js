@@ -69,14 +69,14 @@ const orderAnomalies = {
 
 /* Productos base para la tabla de detalle */
 const detailProducts = [
-  { num: 1, codigo: 'ART-3010', desc: 'Tela algodón 100% orgánico (rollo)', unidad: 'Rollo', cantidad: 50, precio: '$18.500', subtotal: '$925.000' },
-  { num: 2, codigo: 'ART-3011', desc: 'Tela poliéster reciclado (rollo)', unidad: 'Rollo', cantidad: 30, precio: '$14.200', subtotal: '$426.000' },
-  { num: 3, codigo: 'ART-3012', desc: 'Hilo industrial blanco 5000m', unidad: 'Unidad', cantidad: 200, precio: '$3.400', subtotal: '$680.000' },
-  { num: 4, codigo: 'ART-3013', desc: 'Cierre metálico 20cm surtido', unidad: 'Paquete', cantidad: 500, precio: '$850', subtotal: '$425.000' },
-  { num: 5, codigo: 'ART-3014', desc: 'Botones madera natural 15mm', unidad: 'Bolsa (100u)', cantidad: 80, precio: '$2.100', subtotal: '$168.000' },
-  { num: 6, codigo: 'ART-3015', desc: 'Elástico plano 3cm (rollo 50m)', unidad: 'Rollo', cantidad: 40, precio: '$5.600', subtotal: '$224.000' },
-  { num: 7, codigo: 'ART-3016', desc: 'Etiqueta tejida marca personalizada', unidad: 'Millar', cantidad: 10, precio: '$12.000', subtotal: '$120.000' },
-  { num: 8, codigo: 'ART-3017', desc: 'Papel tissue embalaje 50x70cm', unidad: 'Resma', cantidad: 25, precio: '$6.800', subtotal: '$170.000' }
+  { num: 1, codigo: 'ART-3010', desc: 'Tela algodón 100% orgánico (rollo)', unidad: 'Rollo', cantidad: 50 },
+  { num: 2, codigo: 'ART-3011', desc: 'Tela poliéster reciclado (rollo)', unidad: 'Rollo', cantidad: 30 },
+  { num: 3, codigo: 'ART-3012', desc: 'Hilo industrial blanco 5000m', unidad: 'Unidad', cantidad: 200 },
+  { num: 4, codigo: 'ART-3013', desc: 'Cierre metálico 20cm surtido', unidad: 'Paquete', cantidad: 500 },
+  { num: 5, codigo: 'ART-3014', desc: 'Botones madera natural 15mm', unidad: 'Bolsa (100u)', cantidad: 80 },
+  { num: 6, codigo: 'ART-3015', desc: 'Elástico plano 3cm (rollo 50m)', unidad: 'Rollo', cantidad: 40 },
+  { num: 7, codigo: 'ART-3016', desc: 'Etiqueta tejida marca personalizada', unidad: 'Millar', cantidad: 10 },
+  { num: 8, codigo: 'ART-3017', desc: 'Papel tissue embalaje 50x70cm', unidad: 'Resma', cantidad: 25 }
 ];
 
 /* Datos simulados de cajas por orden */
@@ -87,6 +87,9 @@ const orderBoxes = {
     { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-005',qty:100},{code:'CAJA-006',qty:100}] },
     { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-007',qty:250},{code:'CAJA-008',qty:250}] },
     { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-009',qty:40}] },
+    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-047',qty:80}] },
+    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-048',qty:10}] },
+    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-049',qty:25}] },
   ],
   'PO-2026-0457': [
     { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-010',qty:30},{code:'CAJA-011',qty:20}] },
@@ -94,12 +97,19 @@ const orderBoxes = {
     { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-013',qty:80}] },
     { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-014',qty:10}] },
     { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-015',qty:25}] },
+    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-050',qty:15},{code:'CAJA-051',qty:15}] },
+    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-052',qty:250},{code:'CAJA-053',qty:250}] },
+    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-054',qty:40}] },
   ],
   'PO-2026-0453': [
     { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-016',qty:30}] },
     { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-017',qty:300},{code:'CAJA-018',qty:200}] },
     { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-019',qty:80}] },
     { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-020',qty:25}] },
+    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-055',qty:25},{code:'CAJA-056',qty:25}] },
+    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-057',qty:100},{code:'CAJA-058',qty:100}] },
+    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-059',qty:40}] },
+    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-060',qty:10}] },
   ],
   'PO-2026-0452': [
     { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-021',qty:30},{code:'CAJA-022',qty:20}] },
@@ -108,6 +118,8 @@ const orderBoxes = {
     { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-026',qty:80}] },
     { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-027',qty:40}] },
     { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-028',qty:25}] },
+    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-061',qty:15},{code:'CAJA-062',qty:15}] },
+    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-063',qty:10}] },
   ],
   'PO-2026-0449': [
     { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-029',qty:25},{code:'CAJA-030',qty:25}] },
@@ -115,6 +127,9 @@ const orderBoxes = {
     { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-033',qty:100},{code:'CAJA-034',qty:100}] },
     { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-035',qty:10}] },
     { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-036',qty:25}] },
+    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-064',qty:250},{code:'CAJA-065',qty:250}] },
+    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-066',qty:80}] },
+    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-067',qty:40}] },
   ],
   'PO-2026-0456': [
     { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-037',qty:20},{code:'CAJA-038',qty:30}] },
@@ -123,6 +138,8 @@ const orderBoxes = {
     { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-043',qty:250},{code:'CAJA-044',qty:250}] },
     { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-045',qty:80}] },
     { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-046',qty:40}] },
+    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-068',qty:10}] },
+    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-069',qty:25}] },
   ]
 };
 

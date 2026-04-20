@@ -83,20 +83,21 @@ function renderDetailProductTable(code) {
   // Show/hide box and anomaly columns
   document.getElementById('detailBoxesColHeader').style.display = hasBoxes ? '' : 'none';
   document.getElementById('detailAnomalyColHeader').style.display = hasAnomalias ? '' : 'none';
-  document.getElementById('detailTotalColspan').colSpan = 6;
-  document.getElementById('detailTotalBoxesCol').style.display = hasBoxes ? '' : 'none';
-  document.getElementById('detailTotalExtraCol').style.display = hasAnomalias ? '' : 'none';
 
   let html = '';
   detailProducts.forEach((prod, idx) => {
+    const mlMatch = masslineCatalog[idx] || null;
+    const mlCode = mlMatch ? mlMatch.code : '';
+    const mlDesc = mlMatch ? mlMatch.desc : '';
+    const filledClass = mlMatch ? ' filled' : '';
     html += '<tr>';
     html += '<td>' + prod.num + '</td>';
     html += '<td><code>' + prod.codigo + '</code></td>';
     html += '<td>' + prod.desc + '</td>';
+    html += '<td class="ml-ac-cell"><div class="ml-autocomplete"><input type="text" class="ml-ac-input' + filledClass + '" data-field="code" placeholder="Buscar código..." value="' + mlCode + '" onfocus="showMlDropdown(this)" oninput="filterMassline(this)"><div class="ml-ac-dropdown"></div></div></td>';
+    html += '<td class="ml-desc-cell ml-ac-cell"><div class="ml-autocomplete"><input type="text" class="ml-ac-input' + filledClass + '" data-field="desc" placeholder="Buscar descripción..." value="' + mlDesc + '" onfocus="showMlDropdown(this)" oninput="filterMassline(this)"><div class="ml-ac-dropdown"></div></div></td>';
     html += '<td>' + prod.unidad + '</td>';
     html += '<td>' + prod.cantidad + '</td>';
-    html += '<td>' + prod.precio + '</td>';
-    html += '<td>' + prod.subtotal + '</td>';
     if (hasBoxes) {
       const prodBoxes = (orderBoxes[code] || []).find(b => b.codigo === prod.codigo);
       if (prodBoxes) {
