@@ -16,7 +16,7 @@ const orderAnomalies = {
     {
       item: 5,
       producto: 'Elástico plano 3cm (rollo 50m)',
-      codigo: 'ART-3014',
+      codigo: 'FAL-0035',
       esperado: 80,
       recibido: 80,
       danados: 5,
@@ -69,14 +69,14 @@ const orderAnomalies = {
 
 /* Productos base para la tabla de detalle */
 const detailProducts = [
-  { num: 1, codigo: 'ART-3010', desc: 'Tela algodón 100% orgánico (rollo)', unidad: 'Rollo', cantidad: 50 },
-  { num: 2, codigo: 'ART-3011', desc: 'Tela poliéster reciclado (rollo)', unidad: 'Rollo', cantidad: 30 },
-  { num: 3, codigo: 'ART-3012', desc: 'Hilo industrial blanco 5000m', unidad: 'Unidad', cantidad: 200 },
-  { num: 4, codigo: 'ART-3013', desc: 'Cierre metálico 20cm surtido', unidad: 'Paquete', cantidad: 500 },
-  { num: 5, codigo: 'ART-3014', desc: 'Botones madera natural 15mm', unidad: 'Bolsa (100u)', cantidad: 80 },
-  { num: 6, codigo: 'ART-3015', desc: 'Elástico plano 3cm (rollo 50m)', unidad: 'Rollo', cantidad: 40 },
-  { num: 7, codigo: 'ART-3016', desc: 'Etiqueta tejida marca personalizada', unidad: 'Millar', cantidad: 10 },
-  { num: 8, codigo: 'ART-3017', desc: 'Papel tissue embalaje 50x70cm', unidad: 'Resma', cantidad: 25 }
+  { num: 1, codigo: 'ART-3010', desc: 'Tela algodón 100% orgánico (rollo)', unidad: 'Rollo', cantidad: 50, precioUnitario: 18200 },
+  { num: 2, codigo: 'ART-3011', desc: 'Tela poliéster reciclado (rollo)', unidad: 'Rollo', cantidad: 30, precioUnitario: 12500 },
+  { num: 3, codigo: 'ART-3012', desc: 'Hilo industrial blanco 5000m', unidad: 'Unidad', cantidad: 200, precioUnitario: 3450 },
+  { num: 4, codigo: 'ART-3013', desc: 'Cierre metálico 20cm surtido', unidad: 'Paquete', cantidad: 500, precioUnitario: 960 },
+  { num: 5, codigo: 'ART-3014', desc: 'Botones madera natural 15mm', unidad: 'Bolsa (100u)', cantidad: 80, precioUnitario: 4200 },
+  { num: 6, codigo: 'ART-3015', desc: 'Elástico plano 3cm (rollo 50m)', unidad: 'Rollo', cantidad: 40, precioUnitario: 2450 },
+  { num: 7, codigo: 'ART-3016', desc: 'Etiqueta tejida marca personalizada', unidad: 'Millar', cantidad: 10, precioUnitario: 13500 },
+  { num: 8, codigo: 'ART-3017', desc: 'Papel tissue embalaje 50x70cm', unidad: 'Resma', cantidad: 25, precioUnitario: 4560 }
 ];
 
 /* Datos simulados de cajas por orden */
@@ -140,6 +140,16 @@ const orderBoxes = {
     { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-046',qty:40,size:'mediano'}] },
     { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-068',qty:10,size:'pequeño'}] },
     { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-069',qty:25,size:'pequeño'}] },
+  ],
+  'PO-2026-0448': [
+    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-070',qty:25,size:'grande'},{code:'CAJA-071',qty:25,size:'grande'}] },
+    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-072',qty:30,size:'grande'}] },
+    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-073',qty:100,size:'grande'},{code:'CAJA-074',qty:100,size:'grande'}] },
+    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-075',qty:500,size:'grande'}] },
+    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-076',qty:80,size:'mediano'}] },
+    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-077',qty:40,size:'mediano'}] },
+    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-078',qty:10,size:'pequeño'}] },
+    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-079',qty:25,size:'pequeño'}] },
   ]
 };
 
@@ -173,6 +183,7 @@ const orderCatalog = {
   'PO-2026-0456': { proveedor: 'Textiles Oriente SpA', fecha: '10/04/2026 16:20', status: 'por-almacenar', label: 'Por almacenar', reviewer: 'Carlos Méndez', reviewDate: '11/04/2026 09:00', confirmer: 'Carlos Méndez', confirmDate: '12/04/2026 10:30', tipo: 'Externa' },
   'PO-2026-0452': { proveedor: 'Importadora Andina S.A.', fecha: '08/04/2026 14:30', status: 'almacenada', label: 'Almacenada', reviewer: 'Carlos Méndez', reviewDate: '09/04/2026 11:00', confirmer: 'Carlos Méndez', confirmDate: '10/04/2026 15:00', tipo: 'Externa' },
   'PO-2026-0449': { proveedor: 'Logística Global Ltda.', fecha: '05/04/2026 16:00', status: 'almacenada-anomalia', label: 'Almacenada', reviewer: 'Ana López', reviewDate: '06/04/2026 16:45', confirmer: 'Ana López', confirmDate: '07/04/2026 11:20', tipo: 'Local' },
+  'PO-2026-0448': { proveedor: 'Distribuidora ABC Ltda.', fecha: '03/04/2026 10:15', status: 'valorada', label: 'Valorada', reviewer: 'Carlos Méndez', reviewDate: '04/04/2026 09:30', confirmer: 'Carlos Méndez', confirmDate: '05/04/2026 14:00', tipo: 'Externa' },
   'PO-2026-0461': { proveedor: 'Distribuidora ABC Ltda.', fecha: '16/04/2026 07:30', status: 'ingresada', label: 'Por llegar', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Local' }
 };
 
@@ -232,6 +243,15 @@ const orderHistory = {
     { type: 'edicion-codigos', date: '06/04/2026 18:00', user: 'Ana López', desc: 'Códigos Massline actualizados en 4 productos.' },
     { type: 'confirmacion', date: '07/04/2026 10:50', user: 'Ana López', desc: 'Confirmación de almacenamiento. Productos asignados a posiciones de bodega.' },
     { type: 'almacenada', date: '07/04/2026 11:20', user: 'Ana López', desc: 'Orden almacenada en bodega.' }
+  ],
+  'PO-2026-0448': [
+    { type: 'ingreso', date: '03/04/2026 10:15', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
+    { type: 'llegada', date: '04/04/2026 08:00', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
+    { type: 'revision', date: '04/04/2026 09:30', user: 'Carlos Méndez', desc: 'Revisión completada. Sin anomalías detectadas.' },
+    { type: 'edicion-codigos', date: '04/04/2026 10:00', user: 'Carlos Méndez', desc: 'Códigos Massline actualizados en 4 productos.' },
+    { type: 'confirmacion', date: '05/04/2026 13:30', user: 'Carlos Méndez', desc: 'Confirmación de almacenamiento. Productos asignados a posiciones de bodega.' },
+    { type: 'almacenada', date: '05/04/2026 14:00', user: 'Carlos Méndez', desc: 'Orden almacenada en bodega.' },
+    { type: 'valoracion', date: '06/04/2026 10:45', user: 'Carlos Méndez', desc: 'Orden valorada con código VAL-2026-0112.' }
   ]
 };
 

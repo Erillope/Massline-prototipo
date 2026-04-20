@@ -1,5 +1,9 @@
 const warningIconSVG = '<svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
 
+function formatCLP(n) {
+  return '$' + n.toLocaleString('es-CL');
+}
+
 let detailParams = {};
 let currentDetailStatusClass = '';
 
@@ -30,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadDetail(p) {
-  const hasAnomalias = (p.status === 'almacenada-anomalia' || p.status === 'revisada-anomalia' || p.status === 'por-almacenar-anomalia');
+  const hasAnomalias = (p.status === 'almacenada-anomalia' || p.status === 'revisada-anomalia' || p.status === 'por-almacenar-anomalia' || p.status === 'valorada-anomalia');
 
   // Header
   document.getElementById('detailCode').textContent = p.code;
@@ -68,6 +72,7 @@ function loadDetail(p) {
   document.getElementById('detailReviewBtn').style.display = (p.status === 'en-bodega') ? 'inline-flex' : 'none';
   document.getElementById('detailEditReviewBtn').style.display = (p.status === 'revisada' || p.status === 'revisada-anomalia') ? 'inline-flex' : 'none';
   document.getElementById('detailStoreBtn').style.display = (p.status === 'revisada' || p.status === 'revisada-anomalia') ? 'inline-flex' : 'none';
+  document.getElementById('detailValorateBtn').style.display = (p.status === 'almacenada' || p.status === 'almacenada-anomalia') ? 'inline-flex' : 'none';
 
   currentDetailStatusClass = p.status;
   renderDetailProductTable(p.code);
@@ -90,8 +95,8 @@ function renderDetailProductTable(code) {
   const statusClass = currentDetailStatusClass;
   let hasBoxes = !!orderBoxes[code];
   let anomalies = orderAnomalies[code];
-  let hasAnomalias = (statusClass === 'revisada-anomalia' || statusClass === 'almacenada-anomalia' || statusClass === 'por-almacenar-anomalia');
-  const isLocked = (statusClass === 'almacenada' || statusClass === 'almacenada-anomalia' || statusClass === 'por-almacenar' || statusClass === 'por-almacenar-anomalia');
+  let hasAnomalias = (statusClass === 'revisada-anomalia' || statusClass === 'almacenada-anomalia' || statusClass === 'por-almacenar-anomalia' || statusClass === 'valorada-anomalia');
+  const isLocked = (statusClass === 'almacenada' || statusClass === 'almacenada-anomalia' || statusClass === 'por-almacenar' || statusClass === 'por-almacenar-anomalia' || statusClass === 'valorada' || statusClass === 'valorada-anomalia');
 
   // Snapshot overrides for historical view
   let snapshotMlHighlight = false;
@@ -193,6 +198,10 @@ function renderDetailProductTable(code) {
     }
     html += '<td>' + prod.unidad + '</td>';
     html += '<td>' + prod.cantidad + '</td>';
+    const precioUnit = prod.precioUnitario || 0;
+    const precioTotal = precioUnit * prod.cantidad;
+    html += '<td style="text-align:right; color:#6b7280;">' + formatCLP(precioUnit) + '</td>';
+    html += '<td style="text-align:right; font-weight:500;">' + formatCLP(precioTotal) + '</td>';
     if (hasBoxes) {
       const prodBoxes = (orderBoxes[code] || []).find(b => b.codigo === prod.codigo);
       const prevProdBoxes = snapshotBoxDiff ? ((orderBoxesPrev[code] || []).find(b => b.codigo === prod.codigo) || null) : null;
@@ -245,7 +254,7 @@ function renderDetailProductTable(code) {
         });
       }
       if (prodBoxes2) {
-        const colSpan = 7 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
+        const colSpan = 9 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
         html += '<tr class="detail-box-row' + (boxHasChanges2 ? ' snapshot-box-row' : '') + '" id="detailBoxRow-' + prod.codigo + '" style="display:none;"><td colspan="' + colSpan + '" style="padding:0 16px 12px; background:' + (boxHasChanges2 ? '#f0fdf4' : '#fff') + ';">' + buildDetailBoxPanel(prodBoxes2, statusClass, prevProdBoxes2) + '</td></tr>';
       }
     }
@@ -254,7 +263,7 @@ function renderDetailProductTable(code) {
     if (hasAnomalias && anomalies) {
       const anomaly = anomalies.find(a => a.codigo === prod.codigo);
       if (anomaly) {
-        const colSpan = 7 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
+        const colSpan = 9 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
         const aDiffType = anomaly._diffType || '';
         const hasADiff = (aDiffType === 'new' || aDiffType === 'edited' || aDiffType === 'deleted');
         const aRowClass = aDiffType === 'new' ? ' snapshot-new-row' : aDiffType === 'edited' ? ' snapshot-edited-row' : aDiffType === 'deleted' ? ' snapshot-deleted-row' : '';
@@ -264,11 +273,24 @@ function renderDetailProductTable(code) {
     }
   });
 
+  // Suma total
+  let sumaTotal = 0;
+  detailProducts.forEach((prod) => {
+    const precioUnit = prod.precioUnitario || 0;
+    sumaTotal += precioUnit * prod.cantidad;
+  });
+  html += '<tr style="background:#f8fafc; font-weight:600; color:#1a1a2e;">';
+  html += '<td colspan="8" style="text-align:right; border-top:2px solid #e5e7eb;">TOTAL ORDEN</td>';
+  html += '<td style="text-align:right; border-top:2px solid #e5e7eb;">' + formatCLP(sumaTotal) + '</td>';
+  if (hasBoxes) html += '<td></td>';
+  if (hasAnomalias) html += '<td></td>';
+  html += '</tr>';
+
   tbody.innerHTML = html;
 }
 
 function buildDetailBoxPanel(prodBoxes, statusClass, prevProdBoxes) {
-  const showPositions = (statusClass === 'revisada' || statusClass === 'revisada-anomalia' || statusClass === 'por-almacenar' || statusClass === 'por-almacenar-anomalia' || statusClass === 'almacenada' || statusClass === 'almacenada-anomalia');
+  const showPositions = (statusClass === 'revisada' || statusClass === 'revisada-anomalia' || statusClass === 'por-almacenar' || statusClass === 'por-almacenar-anomalia' || statusClass === 'almacenada' || statusClass === 'almacenada-anomalia' || statusClass === 'valorada' || statusClass === 'valorada-anomalia');
   let html = '<div class="detail-box-panel">';
   html += '<div class="detail-box-panel-header">';
   html += '<div class="detail-box-panel-title"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg> Distribución en cajas — ' + prodBoxes.producto + '</div>';
@@ -583,6 +605,79 @@ function confirmStorage() {
   renderDetailProductTable(code);
 }
 
+/* === Valoración modal === */
+var valoracionFileUploaded = false;
+
+function openValoracionModal() {
+  document.getElementById('valoracionModalCode').textContent = detailParams.code;
+  document.getElementById('valoracionModalProveedor').textContent = detailParams.proveedor;
+  document.getElementById('valoracionCodigo').value = '';
+  removeValoracionFile();
+  document.getElementById('valoracionConfirmBtn').disabled = true;
+  document.getElementById('valoracionModal').classList.add('active');
+}
+
+function closeValoracionModal() {
+  document.getElementById('valoracionModal').classList.remove('active');
+}
+
+function handleValoracionFile(input) {
+  if (input.files && input.files.length > 0) {
+    valoracionFileUploaded = true;
+    document.getElementById('valoracionFileName').textContent = input.files[0].name;
+    document.getElementById('valoracionUploadContent').style.display = 'none';
+    document.getElementById('valoracionFileInfo').style.display = 'flex';
+    document.getElementById('valoracionUploadZone').style.borderColor = '#D916A8';
+    document.getElementById('valoracionUploadZone').style.background = '#fdf4ff';
+    checkValoracionForm();
+  }
+}
+
+function removeValoracionFile() {
+  valoracionFileUploaded = false;
+  document.getElementById('valoracionFileInput').value = '';
+  document.getElementById('valoracionUploadContent').style.display = '';
+  document.getElementById('valoracionFileInfo').style.display = 'none';
+  document.getElementById('valoracionUploadZone').style.borderColor = '#d1d5db';
+  document.getElementById('valoracionUploadZone').style.background = '';
+  checkValoracionForm();
+}
+
+function checkValoracionForm() {
+  var codigo = document.getElementById('valoracionCodigo').value.trim();
+  var btn = document.getElementById('valoracionConfirmBtn');
+  btn.disabled = !(codigo && valoracionFileUploaded);
+}
+
+function confirmValoracion() {
+  const code = detailParams.code;
+  const codigoVal = document.getElementById('valoracionCodigo').value.trim();
+  const hasAnomalias = !!(orderAnomalies[code] && orderAnomalies[code].length);
+  const newStatus = hasAnomalias ? 'valorada-anomalia' : 'valorada';
+  closeValoracionModal();
+
+  // Update detail view
+  const headerBadge = document.getElementById('detailStatusBadge');
+  headerBadge.className = 'status-badge ' + newStatus;
+  document.getElementById('detailStatusText').innerHTML = 'Valorada' + (hasAnomalias ? ' ' + warningIconSVG : '');
+  const infoBadge = document.getElementById('detailInfoStatus');
+  infoBadge.className = 'status-badge ' + newStatus;
+  document.getElementById('detailInfoStatusText').innerHTML = 'Valorada' + (hasAnomalias ? ' ' + warningIconSVG : '');
+  document.getElementById('detailValorateBtn').style.display = 'none';
+  detailParams.status = newStatus;
+  detailParams.label = 'Valorada';
+  currentDetailStatusClass = newStatus;
+
+  addHistoryEntry('valoracion', 'Orden valorada con código ' + codigoVal + '.');
+
+  document.getElementById('arrivalToast').querySelector('.toast-title').textContent = 'Valoración registrada';
+  document.getElementById('toastMessage').textContent = 'La orden ' + code + ' fue valorada exitosamente.';
+  showToast();
+
+  mlEditMode = false;
+  renderDetailProductTable(code);
+}
+
 /* === Toggle ML edit mode === */
 function toggleMlEdit() {
   if (mlEditMode) {
@@ -650,7 +745,8 @@ function renderHistory(code) {
     'edicion-revision':  { label: 'Edición revisión',             icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' },
     'edicion-codigos':   { label: 'Edición códigos Massline',     icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' },
     confirmacion:        { label: 'Confirmación almacenamiento',  icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' },
-    almacenada:          { label: 'Almacenada',                   icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>' }
+    almacenada:          { label: 'Almacenada',                   icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>' },
+    valoracion:          { label: 'Valorada',                    icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' }
   };
   sorted.forEach(function(entry, i) {
     var cfg = typeConfig[entry.type] || { label: entry.type, icon: '' };
@@ -701,7 +797,8 @@ function getStateForHistoryType(type, code) {
     'edicion-revision':  { status: hasAnom ? 'revisada-anomalia' : 'revisada',        label: 'Revisada' },
     'edicion-codigos':   { status: hasAnom ? 'revisada-anomalia' : 'revisada',        label: 'Revisada' },
     'confirmacion':      { status: hasAnom ? 'por-almacenar-anomalia' : 'por-almacenar', label: 'Por almacenar' },
-    'almacenada':        { status: hasAnom ? 'almacenada-anomalia' : 'almacenada',    label: 'Almacenada' }
+    'almacenada':        { status: hasAnom ? 'almacenada-anomalia' : 'almacenada',    label: 'Almacenada' },
+    'valoracion':        { status: hasAnom ? 'valorada-anomalia' : 'valorada',        label: 'Valorada' }
   };
   return stateMap[type] || { status: 'en-bodega', label: 'En bodega' };
 }
@@ -740,7 +837,8 @@ function viewHistoricalState(entryIndex) {
   var typeLabels = {
     ingreso: 'Ingreso', llegada: 'Llegada', revision: 'Revisión',
     'edicion-revision': 'Edición revisión', 'edicion-codigos': 'Edición códigos Massline',
-    confirmacion: 'Confirmación almacenamiento', almacenada: 'Almacenada'
+    confirmacion: 'Confirmación almacenamiento', almacenada: 'Almacenada',
+    valoracion: 'Valorada'
   };
   var state = getStateForHistoryType(entry.type, code);
   var hasAnomalias = (state.status.indexOf('anomalia') !== -1);
@@ -763,6 +861,7 @@ function viewHistoricalState(entryIndex) {
   document.getElementById('detailReviewBtn').style.display = 'none';
   document.getElementById('detailEditReviewBtn').style.display = 'none';
   document.getElementById('detailStoreBtn').style.display = 'none';
+  document.getElementById('detailValorateBtn').style.display = 'none';
   var editMlBtn = document.getElementById('detailEditMlBtn');
   if (editMlBtn) editMlBtn.style.display = 'none';
 

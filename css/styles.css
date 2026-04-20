@@ -644,7 +644,8 @@ body {
 
 .status-badge.revisada-anomalia .warning-icon,
 .status-badge.almacenada-anomalia .warning-icon,
-.status-badge.por-almacenar-anomalia .warning-icon {
+.status-badge.por-almacenar-anomalia .warning-icon,
+.status-badge.valorada-anomalia .warning-icon {
     width: 14px;
     height: 14px;
     color: #f59e0b;
@@ -691,6 +692,28 @@ body {
 }
 
 .status-badge.por-almacenar-anomalia .dot {
+    background: #f59e0b;
+}
+
+/* Valorada */
+.status-badge.valorada {
+    background: #fdf4ff;
+    color: #86198f;
+    border: 1px solid #f0abfc;
+}
+
+.status-badge.valorada .dot {
+    background: #D916A8;
+}
+
+/* Valorada con anomalía */
+.status-badge.valorada-anomalia {
+    background: linear-gradient(135deg, #fdf4ff 50%, #fef3c7 100%);
+    color: #86198f;
+    border: 1px solid #f0abfc;
+}
+
+.status-badge.valorada-anomalia .dot {
     background: #f59e0b;
 }
 
@@ -1068,6 +1091,50 @@ body {
     opacity: 1;
 }
 
+.btn-valorate {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1.5px solid #f0abfc;
+    background: #fdf4ff;
+    color: #D916A8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.btn-valorate:hover {
+    background: #D916A8;
+    color: #fff;
+    border-color: #D916A8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(217, 22, 168, 0.4);
+}
+
+.btn-valorate::after {
+    content: 'Valorar';
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a2e;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.btn-valorate:hover::after {
+    opacity: 1;
+}
+
 .btn-store-lg {
     padding: 8px 16px;
     border-radius: 10px;
@@ -1089,6 +1156,30 @@ body {
     color: #fff;
     border-color: #6366f1;
     box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-valorate-lg {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #f0abfc;
+    background: #fdf4ff;
+    color: #86198f;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-valorate-lg:hover {
+    background: #D916A8;
+    color: #fff;
+    border-color: #D916A8;
+    box-shadow: 0 2px 8px rgba(217, 22, 168, 0.4);
     transform: translateY(-1px);
 }
 
@@ -1312,6 +1403,11 @@ body {
 .btn-modal-confirm:hover {
     box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
     transform: translateY(-1px);
+}
+
+.btn-modal-confirm:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .btn-modal-confirm:disabled:hover {
@@ -2975,6 +3071,33 @@ code.ml-code-badge {
     background: #f5f4ff;
 }
 
+#listValoracionModal .upload-zone,
+#valoracionModal .upload-zone {
+    border-color: #e8b4d9;
+    background: #fef8fc;
+}
+
+#listValoracionModal .upload-zone:hover,
+#valoracionModal .upload-zone:hover {
+    border-color: #d975bc;
+    background: #fdf2f9;
+}
+
+#listValoracionModal .upload-zone-icon,
+#valoracionModal .upload-zone-icon {
+    background: rgba(217, 22, 168, 0.07);
+}
+
+#listValoracionModal .upload-zone-icon svg,
+#valoracionModal .upload-zone-icon svg {
+    color: #c44da0;
+}
+
+#listValoracionModal .upload-zone-text strong,
+#valoracionModal .upload-zone-text strong {
+    color: #c44da0;
+}
+
 /* ── Selector tipo de orden ── */
 .order-type-selector {
     display: flex;
@@ -3228,6 +3351,11 @@ code.ml-code-badge {
     color: #7c3aed;
 }
 
+.history-dot.valoracion {
+    background: #fdf4ff;
+    color: #D916A8;
+}
+
 .history-content {
     flex: 1;
     min-width: 0;
@@ -3281,6 +3409,11 @@ code.ml-code-badge {
 .history-type-badge.almacenada {
     background: #ede9fe;
     color: #5b21b6;
+}
+
+.history-type-badge.valoracion {
+    background: #fdf4ff;
+    color: #86198f;
 }
 
 .history-date {

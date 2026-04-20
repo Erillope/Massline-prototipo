@@ -497,11 +497,19 @@ function openReviewModal() {
   document.getElementById('reviewModalSobrantes').textContent = linesSob;
   document.getElementById('reviewModalSobrantesQty').textContent = qtySob;
   document.getElementById('reviewModalFaltantesRow').style.display = linesFal > 0 ? 'table-row' : 'none';
-  if (linesFal > 0) { document.getElementById('reviewModalFaltantesCode').innerHTML = '<code style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px;">FAL-' + String(anomalySeq).padStart(4,'0') + '</code>'; anomalySeq++; }
+  let codigoFaltantes = '';
+  if (linesFal > 0) {
+    codigoFaltantes = 'FAL-' + String(anomalySeq).padStart(4,'0');
+    document.getElementById('reviewModalFaltantesCode').innerHTML = '<code style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px;">' + codigoFaltantes + '</code>';
+    anomalySeq++;
+  }
   document.getElementById('reviewModalFaltantes').textContent = linesFal;
   document.getElementById('reviewModalFaltantesQty').textContent = qtyFal;
   document.getElementById('reviewModalDanadosRow').style.display = linesDan > 0 ? 'table-row' : 'none';
-  if (linesDan > 0) { document.getElementById('reviewModalDanadosCode').innerHTML = '<code style="background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:11px;">DAÑ-' + String(anomalySeq).padStart(4,'0') + '</code>'; anomalySeq++; }
+  if (linesDan > 0) {
+    document.getElementById('reviewModalDanadosCode').innerHTML = '<code style="background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:11px;">' + (codigoFaltantes || 'FAL-0000') + '</code>';
+    anomalySeq++;
+  }
   document.getElementById('reviewModalDanados').textContent = linesDan;
   document.getElementById('reviewModalDanadosQty').textContent = qtyDan;
 

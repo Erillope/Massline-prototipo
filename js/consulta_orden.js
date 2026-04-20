@@ -227,21 +227,126 @@ function confirmStorage() {
   showToast();
 }
 
+/* === Valorar orden desde lista === */
+var listValoracionOrderCode = '';
+var listValoracionFileUploaded = false;
+
+function openListValoracionModal(code, proveedor) {
+  listValoracionOrderCode = code;
+  listValoracionFileUploaded = false;
+  document.getElementById('listValoracionCode').textContent = code;
+  document.getElementById('listValoracionProveedor').textContent = proveedor;
+  document.getElementById('listValoracionCodigo').value = '';
+  document.getElementById('listValoracionUploadContent').style.display = '';
+  document.getElementById('listValoracionFileInfo').style.display = 'none';
+  document.getElementById('listValoracionConfirmBtn').disabled = true;
+  document.getElementById('listValoracionModal').classList.add('active');
+}
+
+function closeListValoracionModal() {
+  document.getElementById('listValoracionModal').classList.remove('active');
+  listValoracionOrderCode = '';
+  listValoracionFileUploaded = false;
+}
+
+function handleListValoracionFile(input) {
+  if (input.files && input.files[0]) {
+    listValoracionFileUploaded = true;
+    document.getElementById('listValoracionFileName').textContent = input.files[0].name;
+    document.getElementById('listValoracionUploadContent').style.display = 'none';
+    document.getElementById('listValoracionFileInfo').style.display = 'flex';
+    var zone = document.getElementById('listValoracionUploadZone');
+    zone.style.borderColor = '#D916A8';
+    zone.style.background = '#fdf4ff';
+    checkListValoracionForm();
+  }
+}
+
+function removeListValoracionFile() {
+  listValoracionFileUploaded = false;
+  document.getElementById('listValoracionFileInput').value = '';
+  document.getElementById('listValoracionUploadContent').style.display = '';
+  document.getElementById('listValoracionFileInfo').style.display = 'none';
+  var zone = document.getElementById('listValoracionUploadZone');
+  zone.style.borderColor = '';
+  zone.style.background = '';
+  checkListValoracionForm();
+}
+
+function checkListValoracionForm() {
+  var code = document.getElementById('listValoracionCodigo').value.trim();
+  document.getElementById('listValoracionConfirmBtn').disabled = !(code.length > 0 && listValoracionFileUploaded);
+}
+
+function confirmListValoracion() {
+  var code = listValoracionOrderCode;
+  var valCode = document.getElementById('listValoracionCodigo').value.trim();
+  closeListValoracionModal();
+
+  // Agregar entrada al historial
+  if (typeof orderHistory !== 'undefined' && orderHistory[code]) {
+    var now = new Date();
+    var dd = String(now.getDate()).padStart(2, '0');
+    var mm = String(now.getMonth() + 1).padStart(2, '0');
+    var yyyy = now.getFullYear();
+    var hh = String(now.getHours()).padStart(2, '0');
+    var mi = String(now.getMinutes()).padStart(2, '0');
+    var dateStr = dd + '/' + mm + '/' + yyyy + ' ' + hh + ':' + mi;
+    orderHistory[code].push({
+      type: 'valoracion',
+      date: dateStr,
+      user: 'Usuario Sistema',
+      desc: 'Orden valorada con código ' + valCode + '.'
+    });
+  }
+
+  // Actualizar fila en la tabla
+  var rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
+  rows.forEach(function(row) {
+    var codeCell = row.querySelector('td:first-child code');
+    if (codeCell && codeCell.textContent === code) {
+      var oldBadge = row.querySelector('.status-badge');
+      var hadAnomaly = oldBadge && (oldBadge.classList.contains('almacenada-anomalia'));
+      var statusTd = oldBadge.closest('td');
+      if (hadAnomaly) {
+        statusTd.innerHTML = '<span class="status-badge valorada-anomalia"><span class="dot"></span> Valorada <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></span>';
+      } else {
+        statusTd.innerHTML = '<span class="status-badge valorada"><span class="dot"></span> Valorada</span>';
+      }
+
+      var newStatus = hadAnomaly ? 'valorada-anomalia' : 'valorada';
+      var onclick = row.getAttribute('onclick');
+      row.setAttribute('onclick', onclick
+        .replace(/'almacenada-anomalia'/g, "'" + newStatus + "'")
+        .replace(/'almacenada'/g, "'" + newStatus + "'")
+        .replace(/'Almacenada'/g, "'Valorada'"));
+    }
+  });
+
+  updateTabCounts();
+
+  document.getElementById('toastMessage').textContent = 'La orden ' + code + ' fue valorada exitosamente.';
+  document.getElementById('arrivalToast').querySelector('.toast-title').textContent = 'Valoración confirmada';
+  showToast();
+}
+
 /* === Contadores de tabs === */
 function updateTabCounts() {
   var rows = document.querySelectorAll('#ordersTableCard .data-table tbody tr');
-  var total = 0, enBodega = 0, conAnomalias = 0, revisada = 0, porAlmacenar = 0, almacenada = 0, porLlegar = 0;
+  var total = 0, enBodega = 0, conAnomalias = 0, revisada = 0, porAlmacenar = 0, almacenada = 0, valorada = 0, porLlegar = 0;
   rows.forEach(function(row) {
     var badge = row.querySelector('.status-badge');
     if (!badge) return;
     total++;
     var cls = badge.className;
     if (cls.includes('en-bodega')) enBodega++;
-    if (cls.includes('revisada-anomalia') || cls.includes('almacenada-anomalia') || cls.includes('por-almacenar-anomalia')) conAnomalias++;
+    if (cls.includes('revisada-anomalia') || cls.includes('almacenada-anomalia') || cls.includes('por-almacenar-anomalia') || cls.includes('valorada-anomalia')) conAnomalias++;
     if (cls.includes('revisada')) revisada++;
     if (cls.includes('por-almacenar')) porAlmacenar++;
     if (cls.includes('almacenada') && !cls.includes('almacenada-anomalia')) almacenada++;
     if (cls.includes('almacenada-anomalia')) almacenada++;
+    if (cls.includes('valorada') && !cls.includes('valorada-anomalia')) valorada++;
+    if (cls.includes('valorada-anomalia')) valorada++;
     if (cls.includes('ingresada')) porLlegar++;
   });
 
@@ -256,6 +361,7 @@ function updateTabCounts() {
     else if (text.startsWith('Revisada')) countEl.textContent = revisada;
     else if (text.startsWith('Por almacenar')) countEl.textContent = porAlmacenar;
     else if (text.startsWith('Almacenada')) countEl.textContent = almacenada;
+    else if (text.startsWith('Valorada')) countEl.textContent = valorada;
     else if (text.startsWith('Por llegar')) countEl.textContent = porLlegar;
   });
 }
