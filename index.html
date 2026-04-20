@@ -100,8 +100,12 @@
                 <input type="text" class="filter-input" placeholder="Nombre del proveedor">
               </div>
               <div class="filter-group">
-                <label class="filter-label">Fecha ingreso</label>
+                <label class="filter-label">Fecha desde</label>
                 <input type="date" class="filter-input" value="2026-04-01">
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Fecha hasta</label>
+                <input type="date" class="filter-input" value="2026-04-19">
               </div>
               <button class="btn btn-primary btn-sm" style="height:40px;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,7 +168,7 @@
                 </thead>
                 <tbody>
                   <!-- Prioridad 1: En bodega sin revisar -->
-                  <tr onclick="goToDetail('PO-2026-0460','Textiles Oriente SpA','16/04/2026 08:45','en-bodega','En bodega')">
+                  <tr onclick="goToDetail('PO-2026-0460','Textiles Oriente SpA','16/04/2026 08:45','en-bodega','En bodega','','','','','Externa')">
                     <td><code>PO-2026-0460</code></td>
                     <td>Textiles Oriente SpA</td>
                     <td>16/04/2026 08:45</td>
@@ -174,7 +178,7 @@
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
                   </tr>
-                  <tr onclick="goToDetail('PO-2026-0458','Logística Global Ltda.','14/04/2026 10:20','en-bodega','En bodega')">
+                  <tr onclick="goToDetail('PO-2026-0458','Logística Global Ltda.','14/04/2026 10:20','en-bodega','En bodega','','','','','Local')">
                     <td><code>PO-2026-0458</code></td>
                     <td>Logística Global Ltda.</td>
                     <td>14/04/2026 10:20</td>
@@ -185,39 +189,39 @@
                     </td>
                   </tr>
                   <!-- Prioridad 2: Revisada con anomalías -->
-                  <tr onclick="goToDetail('PO-2026-0455','Importadora Andina S.A.','11/04/2026 15:10','revisada-anomalia','Revisada','Ana López','12/04/2026 10:40')">
+                  <tr onclick="goToDetail('PO-2026-0455','Importadora Andina S.A.','11/04/2026 15:10','revisada-anomalia','Revisada','Ana López','12/04/2026 10:40','','','Local')">
                     <td><code>PO-2026-0455</code></td>
                     <td>Importadora Andina S.A.</td>
                     <td>11/04/2026 15:10</td>
                     <td>6</td>
-                    <td><span class="status-badge revisada-anomalia"><span class="dot"></span> Revisada <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0455','Importadora Andina S.A.','6')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
+                    <td><span class="status-badge revisada-anomalia"><span class="dot"></span> Revisada <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0455','Importadora Andina S.A.','6','Local')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
                   </tr>
                   <!-- Prioridad 3: Revisada -->
-                  <tr onclick="goToDetail('PO-2026-0457','Distribuidora ABC Ltda.','13/04/2026 11:05','revisada','Revisada','Carlos Méndez','14/04/2026 09:30')">
+                  <tr onclick="goToDetail('PO-2026-0457','Distribuidora ABC Ltda.','13/04/2026 11:05','revisada','Revisada','Carlos Méndez','14/04/2026 09:30','','','Local')">
                     <td><code>PO-2026-0457</code></td>
                     <td>Distribuidora ABC Ltda.</td>
                     <td>13/04/2026 11:05</td>
                     <td>5</td>
-                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0457','Distribuidora ABC Ltda.','5')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
+                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0457','Distribuidora ABC Ltda.','5','Local')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
                   </tr>
-                  <tr onclick="goToDetail('PO-2026-0453','Textiles Oriente SpA','09/04/2026 09:50','revisada','Revisada','Ana López','10/04/2026 14:15')">
+                  <tr onclick="goToDetail('PO-2026-0453','Textiles Oriente SpA','09/04/2026 09:50','revisada','Revisada','Ana López','10/04/2026 14:15','','','Externa')">
                     <td><code>PO-2026-0453</code></td>
                     <td>Textiles Oriente SpA</td>
                     <td>09/04/2026 09:50</td>
                     <td>4</td>
-                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0453','Textiles Oriente SpA','4')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
+                    <td><span class="status-badge revisada"><span class="dot"></span> Revisada</span> <button class="btn-store" onclick="event.stopPropagation(); openStorageModal('PO-2026-0453','Textiles Oriente SpA','4','Externa')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
                   </tr>
                   <!-- Prioridad 3.5: Por almacenar -->
-                  <tr onclick="goToDetail('PO-2026-0456','Textiles Oriente SpA','10/04/2026 16:20','por-almacenar','Por almacenar','Carlos Méndez','11/04/2026 09:00')">
+                  <tr onclick="goToDetail('PO-2026-0456','Textiles Oriente SpA','10/04/2026 16:20','por-almacenar','Por almacenar','Carlos Méndez','11/04/2026 09:00','Carlos Méndez','12/04/2026 10:30','Externa')">
                     <td><code>PO-2026-0456</code></td>
                     <td>Textiles Oriente SpA</td>
                     <td>10/04/2026 16:20</td>
@@ -228,7 +232,7 @@
                     </td>
                   </tr>
                   <!-- Prioridad 4: Almacenada -->
-                  <tr onclick="goToDetail('PO-2026-0452','Importadora Andina S.A.','08/04/2026 14:30','almacenada','Almacenada','Carlos Méndez','09/04/2026 11:00')">
+                  <tr onclick="goToDetail('PO-2026-0452','Importadora Andina S.A.','08/04/2026 14:30','almacenada','Almacenada','Carlos Méndez','09/04/2026 11:00','Carlos Méndez','10/04/2026 15:00','Externa')">
                     <td><code>PO-2026-0452</code></td>
                     <td>Importadora Andina S.A.</td>
                     <td>08/04/2026 14:30</td>
@@ -238,7 +242,7 @@
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
                   </tr>
-                  <tr onclick="goToDetail('PO-2026-0449','Logística Global Ltda.','05/04/2026 16:00','almacenada-anomalia','Almacenada','Ana López','06/04/2026 16:45')">
+                  <tr onclick="goToDetail('PO-2026-0449','Logística Global Ltda.','05/04/2026 16:00','almacenada-anomalia','Almacenada','Ana López','06/04/2026 16:45','Ana López','07/04/2026 11:20','Local')">
                     <td><code>PO-2026-0449</code></td>
                     <td>Logística Global Ltda.</td>
                     <td>05/04/2026 16:00</td>
@@ -249,7 +253,7 @@
                     </td>
                   </tr>
                   <!-- Por llegar (más baja prioridad) -->
-                  <tr onclick="goToDetail('PO-2026-0461','Distribuidora ABC Ltda.','16/04/2026 07:30','ingresada','Por llegar')">
+                  <tr onclick="goToDetail('PO-2026-0461','Distribuidora ABC Ltda.','16/04/2026 07:30','ingresada','Por llegar','','','','','Local')">
                     <td><code>PO-2026-0461</code></td>
                     <td>Distribuidora ABC Ltda.</td>
                     <td>16/04/2026 07:30</td>
@@ -378,6 +382,10 @@
           <div class="modal-summary-row">
             <span class="modal-summary-label">Proveedor</span>
             <span class="modal-summary-value" id="storageModalProveedor">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Tipo</span>
+            <span class="modal-summary-value" id="storageModalTipo">—</span>
           </div>
           <div class="modal-summary-row">
             <span class="modal-summary-label">Ítems</span>

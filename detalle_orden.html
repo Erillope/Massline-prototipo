@@ -95,9 +95,28 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             Iniciar revisión
           </button>
+          <button id="detailEditReviewBtn" class="btn-edit-review-lg" style="display:none; margin-left:12px;" onclick="goToReview()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            Editar revisión
+          </button>
           <button id="detailStoreBtn" class="btn-store-lg" style="display:none; margin-left:12px;" onclick="openStorageModal(detailParams.code, detailParams.proveedor, '8')">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
             Almacenar
+          </button>
+        </div>
+
+        <!-- Banner estado histórico -->
+        <div class="history-snapshot-banner" id="snapshotBanner" style="display:none;">
+          <div class="snapshot-banner-content">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div>
+              <span>Viendo estado al momento de: <strong id="snapshotLabel">—</strong> (<span id="snapshotDate">—</span>)</span>
+              <div class="snapshot-change-detail" id="snapshotChangeDetail" style="display:none;"></div>
+            </div>
+          </div>
+          <button class="snapshot-banner-btn" onclick="restoreCurrentState()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            Volver al estado actual
           </button>
         </div>
 
@@ -129,21 +148,13 @@
                 <span class="detail-label">Fecha entrega estimada</span>
                 <span class="detail-value">23/04/2026</span>
               </div>
-              <div class="detail-field">
-                <span class="detail-label">Ingresada por</span>
-                <span class="detail-value">Usuario Sistema</span>
+              <div class="detail-field" id="detailTipoField" style="display:none;">
+                <span class="detail-label">Tipo de orden</span>
+                <span class="detail-value" id="detailInfoTipo">—</span>
               </div>
               <div class="detail-field">
                 <span class="detail-label">Estado</span>
                 <span id="detailInfoStatus" class="status-badge en-bodega"><span class="dot"></span> <span id="detailInfoStatusText">—</span></span>
-              </div>
-              <div class="detail-field" id="detailReviewerField" style="display:none;">
-                <span class="detail-label">Revisada por</span>
-                <span class="detail-value" id="detailReviewer"></span>
-              </div>
-              <div class="detail-field" id="detailReviewDateField" style="display:none;">
-                <span class="detail-label">Fecha y hora de revisión</span>
-                <span class="detail-value" id="detailReviewDate"></span>
               </div>
             </div>
           </div>
@@ -158,6 +169,10 @@
               </svg>
             </div>
             <h2>Productos de la orden</h2>
+            <button id="detailEditMlBtn" class="btn-edit-ml" style="display:none; margin-left:auto;" onclick="toggleMlEdit()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Editar códigos
+            </button>
           </div>
           <div class="card-body" style="padding: 0 0 0 0;">
             <div style="padding: 16px 24px 0;">
@@ -234,6 +249,26 @@
             </div>
           </div>
         </div>
+
+        <!-- Historial de cambios -->
+        <div class="card" id="historyCard" style="display:none;">
+          <div class="card-header" style="cursor:pointer;" onclick="toggleHistoryPanel()">
+            <div class="card-header-icon" style="background:#f0fdf4; color:#16a34a;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h2>Historial de cambios</h2>
+            <span class="history-count" id="historyCount">0</span>
+            <svg class="history-chevron" id="historyChevron" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-left:auto; transition:transform 0.2s;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="card-body" id="historyBody" style="display:none; padding:16px 24px 20px;">
+            <div class="history-timeline" id="historyTimeline"></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

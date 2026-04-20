@@ -41,8 +41,12 @@ function initReview() {
     document.getElementById('boxPanel' + i).innerHTML = '';
   }
 
-  // Sim mode: pre-fill anomalies
-  if (reviewSimMode === 1) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get('mode');
+
+  if (mode === 'edit') {
+    loadExistingReview();
+  } else if (reviewSimMode === 1) {
     inputs[2].value = 180;
     updateRowReview(2);
     reviewAnomalies[2] = { damaged: '20', desc: 'Se recibieron 180 unidades en lugar de 200. Faltan 20 unidades.', severity: 'moderada' };
@@ -62,8 +66,72 @@ function initReview() {
   updateReviewProgress();
 }
 
+/* === Cargar datos de revisión existente === */
+function loadExistingReview() {
+  const inputs = document.querySelectorAll('#reviewTableBody .qty-input');
+  const dmgInputs = document.querySelectorAll('#reviewTableBody .dmg-input');
+  const anomalyBtns = document.querySelectorAll('#reviewTableBody .btn-anomaly');
+
+  /* Construir mapa de código producto → índice en la tabla */
+  var codeToIdx = {};
+  detailProducts.forEach(function(p, i) { codeToIdx[p.codigo] = i; });
+
+  /* Cargar anomalías si existen */
+  var anomalies = orderAnomalies[reviewOrderCode] || [];
+  var anomalyIdxSet = {};
+  anomalies.forEach(function(a) {
+    var idx = a.item - 1;
+    anomalyIdxSet[idx] = true;
+    inputs[idx].value = a.recibido;
+    if (a.danados > 0 && dmgInputs[idx]) {
+      dmgInputs[idx].value = a.danados;
+      dmgInputs[idx].classList.add('has-damaged');
+    }
+    reviewAnomalies[idx] = {
+      damaged: String(a.danados || 0),
+      desc: a.desc || '',
+      severity: a.severity || '',
+      photos: a.fotos || []
+    };
+    if (a.fotos && a.fotos.length > 0) {
+      anomalyPhotos[idx] = a.fotos.slice();
+    }
+    anomalyBtns[idx].classList.add('active');
+    updateRowReview(idx);
+  });
+
+  /* Cargar cantidades para ítems sin anomalía (se asume recibido = esperado) */
+  inputs.forEach(function(inp, idx) {
+    if (!anomalyIdxSet[idx]) {
+      inp.value = inp.dataset.expected;
+      updateRowReview(idx);
+    }
+  });
+
+  /* Cargar cajas si existen */
+  var boxes = orderBoxes[reviewOrderCode] || [];
+  var maxBoxNum = 0;
+  boxes.forEach(function(entry) {
+    var idx = codeToIdx[entry.codigo];
+    if (idx === undefined) return;
+    reviewBoxes[idx] = entry.cajas.map(function(c) {
+      var num = parseInt(c.code.replace('CAJA-', ''));
+      if (num > maxBoxNum) maxBoxNum = num;
+      return { code: c.code, qty: c.qty, size: c.size || 'mediano' };
+    });
+    updateBoxButton(idx);
+  });
+  boxCounter = maxBoxNum + 1;
+}
+
 function cancelReview() {
-  window.location.href = 'index.html';
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'edit') {
+    window.location.href = 'detalle_orden.html?code=' + encodeURIComponent(reviewOrderCode)
+      + '&proveedor=' + encodeURIComponent(reviewProveedor);
+  } else {
+    window.location.href = 'index.html';
+  }
 }
 
 function updateRowReview(idx) {
@@ -337,6 +405,11 @@ function renderBoxPanel(idx) {
   html += '<div class="box-list">';
   boxes.forEach((box, i) => {
     html += '<div class="box-item"><span class="box-item-code">' + box.code + '</span>';
+    html += '<select class="box-size-select" onchange="updateBoxSize(' + idx + ', ' + i + ', this.value)">';
+    html += '<option value="pequeño"' + (box.size === 'pequeño' ? ' selected' : '') + '>Pequeña</option>';
+    html += '<option value="mediano"' + (box.size === 'mediano' ? ' selected' : '') + '>Mediana</option>';
+    html += '<option value="grande"' + (box.size === 'grande' ? ' selected' : '') + '>Grande</option>';
+    html += '</select>';
     html += '<input type="number" class="box-item-input" value="' + (box.qty || '') + '" min="0" oninput="updateBoxQty(' + idx + ', ' + i + ', this.value)" placeholder="0">';
     html += '<span class="box-item-label">unidades</span>';
     html += '<button class="box-item-remove" onclick="removeBox(' + idx + ', ' + i + ')" title="Eliminar caja">✕</button></div>';
@@ -348,7 +421,7 @@ function renderBoxPanel(idx) {
 
 function addBox(idx) {
   if (!reviewBoxes[idx]) reviewBoxes[idx] = [];
-  reviewBoxes[idx].push({ code: 'CAJA-' + String(boxCounter).padStart(3, '0'), qty: 0 });
+  reviewBoxes[idx].push({ code: 'CAJA-' + String(boxCounter).padStart(3, '0'), qty: 0, size: 'mediano' });
   boxCounter++;
   renderBoxPanel(idx);
   updateBoxButton(idx);
@@ -358,6 +431,10 @@ function removeBox(idx, boxIndex) {
   reviewBoxes[idx].splice(boxIndex, 1);
   renderBoxPanel(idx);
   updateBoxButton(idx);
+}
+
+function updateBoxSize(idx, boxIndex, value) {
+  reviewBoxes[idx][boxIndex].size = value;
 }
 
 function updateBoxQty(idx, boxIndex, value) {
@@ -453,8 +530,16 @@ function confirmReview() {
   const anomalyCount = parseInt(document.getElementById('reviewAnomalyCount').textContent);
   closeReviewModal();
 
-  // Redirect to index with toast
-  window.location.href = 'index.html?toast=review&code=' + encodeURIComponent(code) + '&anomalies=' + anomalyCount;
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'edit') {
+    // Edit mode — go back to detail page
+    window.location.href = 'detalle_orden.html?code=' + encodeURIComponent(code)
+      + '&proveedor=' + encodeURIComponent(reviewProveedor)
+      + '&reviewEdited=1';
+  } else {
+    // New review — redirect to index with toast
+    window.location.href = 'index.html?toast=review&code=' + encodeURIComponent(code) + '&anomalies=' + anomalyCount;
+  }
 }
 
 /* === Toggle de simulación de revisión === */

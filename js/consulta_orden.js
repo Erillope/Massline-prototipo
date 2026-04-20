@@ -5,7 +5,7 @@ function setTab(tab) {
 }
 
 /* === Navegación a detalle === */
-function goToDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, reviewDate) {
+function goToDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, reviewDate, confirmer, confirmDate, tipo) {
   var url = 'detalle_orden.html?code=' + encodeURIComponent(code)
     + '&proveedor=' + encodeURIComponent(proveedor)
     + '&fecha=' + encodeURIComponent(fecha)
@@ -13,6 +13,9 @@ function goToDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, 
     + '&label=' + encodeURIComponent(statusLabel);
   if (reviewer) url += '&reviewer=' + encodeURIComponent(reviewer);
   if (reviewDate) url += '&reviewDate=' + encodeURIComponent(reviewDate);
+  if (confirmer) url += '&confirmer=' + encodeURIComponent(confirmer);
+  if (confirmDate) url += '&confirmDate=' + encodeURIComponent(confirmDate);
+  if (tipo) url += '&tipo=' + encodeURIComponent(tipo);
   window.location.href = url;
 }
 
@@ -64,10 +67,11 @@ function confirmArrival() {
 /* === Confirmar almacenamiento === */
 var storageOrderCode = '';
 
-function openStorageModal(code, proveedor, items) {
+function openStorageModal(code, proveedor, items, tipo) {
   storageOrderCode = code;
   document.getElementById('storageModalCode').textContent = code;
   document.getElementById('storageModalProveedor').textContent = proveedor;
+  document.getElementById('storageModalTipo').textContent = tipo || 'Local';
   document.getElementById('storageModalItems').textContent = items;
 
   // Renderizar productos y cajas
@@ -86,15 +90,21 @@ function openStorageModal(code, proveedor, items) {
       var totalQty = prod.cajas.reduce(function(s, c) { return s + c.qty; }, 0);
       html += '<div class="storage-product-item">';
       html += '<div class="storage-product-header">';
-      html += '<span class="storage-product-code">' + prod.codigo + '</span>';
-      html += '<span class="storage-product-name">' + prod.producto + '</span>';
+      var mlInfo = (typeof artToMassline !== 'undefined' && artToMassline[prod.codigo]) ? artToMassline[prod.codigo] : null;
+      var mlCode = mlInfo ? mlInfo.code : prod.codigo;
+      var mlDesc = mlInfo ? mlInfo.desc : '';
+      html += '<span class="storage-product-code ml-code-badge">' + mlCode + '</span>';
+      if (mlDesc) html += '<span class="storage-product-name">' + mlDesc + '</span>';
       html += '<span class="storage-product-qty">' + totalQty + ' uds · ' + prod.cajas.length + ' caja' + (prod.cajas.length > 1 ? 's' : '') + '</span>';
       html += '</div>';
       html += '<div class="storage-box-list">';
       prod.cajas.forEach(function(caja) {
         var pos = getRecommendedPosition(caja.code);
+        var sizeLabel = caja.size === 'grande' ? 'Grande' : caja.size === 'mediano' ? 'Mediana' : 'Pequeña';
+        var sizeClass = 'box-size-' + caja.size;
         html += '<div class="storage-box-row">';
         html += '<span class="storage-box-code">' + caja.code + '</span>';
+        html += '<span class="storage-box-size ' + sizeClass + '">' + sizeLabel + '</span>';
         html += '<span class="storage-box-qty">' + caja.qty + ' uds</span>';
         html += '<span class="storage-box-position"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> ' + pos + '</span>';
         html += '</div>';
@@ -147,6 +157,30 @@ function openStorageModal(code, proveedor, items) {
   } else {
     anomSection.innerHTML = '';
     anomSection.style.display = 'none';
+  }
+
+  // Bloquear confirmación si es Local con anomalías
+  var confirmBtn = document.querySelector('#storageModal .btn-modal-confirm');
+  var blockedMsg = document.getElementById('storageBlockedMsg');
+  var isLocalWithAnomalies = (tipo === 'Local') && anomalies && anomalies.length > 0;
+
+  if (isLocalWithAnomalies) {
+    confirmBtn.disabled = true;
+    confirmBtn.style.opacity = '0.45';
+    confirmBtn.style.cursor = 'not-allowed';
+    if (!blockedMsg) {
+      blockedMsg = document.createElement('div');
+      blockedMsg.id = 'storageBlockedMsg';
+      confirmBtn.parentNode.insertBefore(blockedMsg, confirmBtn);
+    }
+    blockedMsg.className = 'storage-blocked-msg';
+    blockedMsg.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg> Las anomalías deben resolverse antes de almacenar órdenes locales.';
+    blockedMsg.style.display = '';
+  } else {
+    confirmBtn.disabled = false;
+    confirmBtn.style.opacity = '';
+    confirmBtn.style.cursor = '';
+    if (blockedMsg) blockedMsg.style.display = 'none';
   }
 
   document.getElementById('storageModal').classList.add('active');

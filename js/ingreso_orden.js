@@ -131,6 +131,13 @@ function goToStep3() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ── Selector tipo de orden ── */
+function selectOrderType(el, type) {
+  document.querySelectorAll('.order-type-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input[type="radio"]').checked = true;
+}
+
 function resetForm() {
   document.getElementById('step3').style.display = 'none';
   document.getElementById('step1').style.display = '';
@@ -138,6 +145,9 @@ function resetForm() {
   document.getElementById('fileListEmail').innerHTML = '';
   document.querySelectorAll('#step1 .upload-zone').forEach(z => z.style.display = '');
   hideAllPoAlerts();
+  // Reset order type to Local
+  const localOption = document.querySelector('.order-type-option');
+  if (localOption) selectOrderType(localOption, 'local');
   validateForm();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
