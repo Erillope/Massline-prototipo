@@ -246,7 +246,7 @@ function renderDetailProductTable(code) {
       }
       if (prodBoxes2) {
         const colSpan = 7 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
-        html += '<tr class="detail-box-row' + (boxHasChanges2 ? ' snapshot-box-row' : '') + '" id="detailBoxRow-' + prod.codigo + '" style="display:' + (boxHasChanges2 ? '' : 'none') + ';"><td colspan="' + colSpan + '" style="padding:0 16px 12px; background:' + (boxHasChanges2 ? '#f0fdf4' : '#fff') + ';">' + buildDetailBoxPanel(prodBoxes2, statusClass, prevProdBoxes2) + '</td></tr>';
+        html += '<tr class="detail-box-row' + (boxHasChanges2 ? ' snapshot-box-row' : '') + '" id="detailBoxRow-' + prod.codigo + '" style="display:none;"><td colspan="' + colSpan + '" style="padding:0 16px 12px; background:' + (boxHasChanges2 ? '#f0fdf4' : '#fff') + ';">' + buildDetailBoxPanel(prodBoxes2, statusClass, prevProdBoxes2) + '</td></tr>';
       }
     }
 
@@ -259,7 +259,7 @@ function renderDetailProductTable(code) {
         const hasADiff = (aDiffType === 'new' || aDiffType === 'edited' || aDiffType === 'deleted');
         const aRowClass = aDiffType === 'new' ? ' snapshot-new-row' : aDiffType === 'edited' ? ' snapshot-edited-row' : aDiffType === 'deleted' ? ' snapshot-deleted-row' : '';
         const aRowBg = aDiffType === 'new' ? '#fffbeb' : aDiffType === 'edited' ? '#eff6ff' : aDiffType === 'deleted' ? '#fef2f2' : '#fff';
-        html += '<tr class="detail-anomaly-row' + aRowClass + '" id="detailAnomalyRow-' + prod.codigo + '" style="display:' + (hasADiff ? '' : 'none') + ';"><td colspan="' + colSpan + '" style="padding:0 16px 12px; background:' + aRowBg + ';">' + buildAnomalyViewPanel(anomaly) + '</td></tr>';
+        html += '<tr class="detail-anomaly-row' + aRowClass + '" id="detailAnomalyRow-' + prod.codigo + '" style="display:none;"><td colspan="' + colSpan + '" style="padding:0 16px 12px; background:' + aRowBg + ';">' + buildAnomalyViewPanel(anomaly) + '</td></tr>';
       }
     }
   });
