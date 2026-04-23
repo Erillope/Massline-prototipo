@@ -1,27 +1,27 @@
-/* ===== MassLine — Datos compartidos ===== */
+﻿/* ===== MassLine — Datos compartidos ===== */
 
 /* === Anomalías predefinidas por orden (datos de demostración) === */
 const orderAnomalies = {
-  'PO-2026-0455': [
+  'NIR1-000055': [
     {
       item: 3,
-      producto: 'Hilo industrial blanco 5000m',
-      codigo: 'ART-3012',
-      esperado: 200,
-      recibido: 180,
+      producto: 'CABLE DE EMBRAGUE',
+      codigo: 'WUX-003',
+      esperado: 60,
+      recibido: 52,
       danados: 0,
       severity: 'moderada',
-      desc: 'Se recibieron 180 unidades en lugar de las 200 solicitadas. Faltan 20 unidades según guía de despacho.'
+      desc: 'Se recibieron 52 unidades en lugar de las 60 solicitadas. Faltan 8 unidades según guía de despacho.'
     },
     {
       item: 5,
-      producto: 'Elástico plano 3cm (rollo 50m)',
-      codigo: 'FAL-0035',
-      esperado: 80,
-      recibido: 80,
-      danados: 5,
+      producto: 'PASTILLAS DE FRENO',
+      codigo: 'WUX-005',
+      esperado: 100,
+      recibido: 100,
+      danados: 14,
       severity: 'grave',
-      desc: '5 bolsas presentan humedad y moho visible. Producto no utilizable. Se registró evidencia fotográfica.',
+      desc: '14 juegos presentan deformación visible en las pastillas. Producto no utilizable. Se registró evidencia fotográfica.',
       fotos: [
         'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fde68a" width="200" height="200"/><rect fill="%23f59e0b" x="30" y="60" width="140" height="80" rx="8"/><text x="100" y="108" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="14" font-weight="600">Foto 1 — Daño</text></svg>'),
         'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fee2e2" width="200" height="200"/><rect fill="%23ef4444" x="30" y="60" width="140" height="80" rx="8"/><text x="100" y="108" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="14" font-weight="600">Foto 2 — Daño</text></svg>'),
@@ -29,127 +29,127 @@ const orderAnomalies = {
       ]
     }
   ],
-  'PO-2026-0449': [
+  'NIR1-000049': [
     {
       item: 2,
-      producto: 'Tela poliéster reciclado (rollo)',
-      codigo: 'ART-3011',
-      esperado: 30,
-      recibido: 27,
-      danados: 2,
+      producto: 'CABLE DE ACELERADOR',
+      codigo: 'WUX-002',
+      esperado: 70,
+      recibido: 63,
+      danados: 3,
       severity: 'grave',
-      desc: '3 rollos faltantes y 2 rollos con manchas de aceite. Embalaje exterior dañado durante el transporte.',
+      desc: '7 unidades faltantes y 3 cables con funda rota. Embalaje exterior dañado durante el transporte.',
       fotos: [
-        'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fee2e2" width="200" height="200"/><rect fill="%23991b1b" x="20" y="55" width="160" height="90" rx="8"/><text x="100" y="105" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="13" font-weight="600">Manchas aceite</text></svg>'),
+        'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fee2e2" width="200" height="200"/><rect fill="%23991b1b" x="20" y="55" width="160" height="90" rx="8"/><text x="100" y="105" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="13" font-weight="600">Funda rota</text></svg>'),
         'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23fef3c7" width="200" height="200"/><rect fill="%23b45309" x="20" y="55" width="160" height="90" rx="8"/><text x="100" y="105" text-anchor="middle" fill="%23fff" font-family="sans-serif" font-size="13" font-weight="600">Embalaje dañado</text></svg>')
       ]
     },
     {
       item: 7,
-      producto: 'Etiqueta tejida marca personalizada',
-      codigo: 'ART-3016',
-      esperado: 10,
-      recibido: 10,
+      producto: 'LLAVE DE PASO DE COMBUSTIBLE',
+      codigo: 'WUX-007',
+      esperado: 100,
+      recibido: 100,
       danados: 0,
       severity: 'leve',
-      desc: 'Etiquetas con leve decoloración en los bordes. Producto utilizable pero no cumple estándar de calidad óptimo.'
+      desc: 'Llaves con leve oxidación en la rosca. Producto utilizable pero no cumple estándar de calidad óptimo.'
     },
     {
       item: 8,
-      producto: 'Papel tissue embalaje 50x70cm',
-      codigo: 'ART-3017',
-      esperado: 25,
-      recibido: 20,
+      producto: 'PIÑON DE VELOCIMETRO',
+      codigo: 'WUX-008',
+      esperado: 110,
+      recibido: 98,
       danados: 0,
       severity: 'moderada',
-      desc: 'Se recibieron 20 resmas en lugar de 25. Proveedor indica que las 5 restantes serán enviadas en despacho complementario.'
+      desc: 'Se recibieron 98 unidades en lugar de 110. Proveedor indica que las 12 restantes serán enviadas en despacho complementario.'
     }
   ]
 };
 
 /* Productos base para la tabla de detalle */
 const detailProducts = [
-  { num: 1, codigo: 'ART-3010', desc: 'Tela algodón 100% orgánico (rollo)', unidad: 'Rollo', cantidad: 50, precioUnitario: 18200 },
-  { num: 2, codigo: 'ART-3011', desc: 'Tela poliéster reciclado (rollo)', unidad: 'Rollo', cantidad: 30, precioUnitario: 12500 },
-  { num: 3, codigo: 'ART-3012', desc: 'Hilo industrial blanco 5000m', unidad: 'Unidad', cantidad: 200, precioUnitario: 3450 },
-  { num: 4, codigo: 'ART-3013', desc: 'Cierre metálico 20cm surtido', unidad: 'Paquete', cantidad: 500, precioUnitario: 960 },
-  { num: 5, codigo: 'ART-3014', desc: 'Botones madera natural 15mm', unidad: 'Bolsa (100u)', cantidad: 80, precioUnitario: 4200 },
-  { num: 6, codigo: 'ART-3015', desc: 'Elástico plano 3cm (rollo 50m)', unidad: 'Rollo', cantidad: 40, precioUnitario: 2450 },
-  { num: 7, codigo: 'ART-3016', desc: 'Etiqueta tejida marca personalizada', unidad: 'Millar', cantidad: 10, precioUnitario: 13500 },
-  { num: 8, codigo: 'ART-3017', desc: 'Papel tissue embalaje 50x70cm', unidad: 'Resma', cantidad: 25, precioUnitario: 4560 }
+  { num: 1, codigo: 'WUX-001', desc: 'CABLE DE VELOCIMETRO - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 150, precioUnitario: 8500 },
+  { num: 2, codigo: 'WUX-002', desc: 'CABLE DE ACELERADOR - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 70, precioUnitario: 8500 },
+  { num: 3, codigo: 'WUX-003', desc: 'CABLE DE EMBRAGUE - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 60, precioUnitario: 8500 },
+  { num: 4, codigo: 'WUX-004', desc: 'DECORATIVO FRONTAL SUPERIOR - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 30, precioUnitario: 15000 },
+  { num: 5, codigo: 'WUX-005', desc: 'PASTILLAS DE FRENO - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 100, precioUnitario: 12000 },
+  { num: 6, codigo: 'WUX-006', desc: 'JUEGO DE RETENEDORES - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 200, precioUnitario: 5500 },
+  { num: 7, codigo: 'WUX-007', desc: 'LLAVE DE PASO DE COMBUSTIBLE - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 100, precioUnitario: 7500 },
+  { num: 8, codigo: 'WUX-008', desc: 'PIÑON DE VELOCIMETRO - WUXI HUAHENG - CHINA', unidad: 'Unidad', cantidad: 110, precioUnitario: 9500 }
 ];
 
 /* Datos simulados de cajas por orden */
 const orderBoxes = {
-  'PO-2026-0455': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-001',qty:25,size:'grande'},{code:'CAJA-002',qty:25,size:'grande'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-003',qty:15,size:'mediano'},{code:'CAJA-004',qty:15,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-005',qty:100,size:'grande'},{code:'CAJA-006',qty:100,size:'grande'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-007',qty:250,size:'grande'},{code:'CAJA-008',qty:250,size:'grande'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-009',qty:40,size:'mediano'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-047',qty:80,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-048',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-049',qty:25,size:'pequeño'}] },
+  'NIR1-000055': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-001',qty:75,size:'mediano'},{code:'CAJA-002',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-003',qty:35,size:'pequeño'},{code:'CAJA-004',qty:35,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-005',qty:30,size:'pequeño'},{code:'CAJA-006',qty:30,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-007',qty:15,size:'mediano'},{code:'CAJA-008',qty:15,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-009',qty:50,size:'mediano'},{code:'CAJA-047',qty:50,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-048',qty:100,size:'grande'},{code:'CAJA-049',qty:100,size:'grande'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-050',qty:50,size:'pequeño'},{code:'CAJA-051',qty:50,size:'pequeño'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-052',qty:55,size:'pequeño'},{code:'CAJA-053',qty:55,size:'pequeño'}] },
   ],
-  'PO-2026-0457': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-010',qty:30,size:'grande'},{code:'CAJA-011',qty:20,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-012',qty:200,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-013',qty:80,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-014',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-015',qty:25,size:'pequeño'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-050',qty:15,size:'mediano'},{code:'CAJA-051',qty:15,size:'mediano'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-052',qty:250,size:'grande'},{code:'CAJA-053',qty:250,size:'grande'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-054',qty:40,size:'mediano'}] },
+  'NIR1-000057': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-010',qty:75,size:'mediano'},{code:'CAJA-011',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-012',qty:35,size:'pequeño'},{code:'CAJA-054',qty:35,size:'pequeño'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-013',qty:50,size:'mediano'},{code:'CAJA-055',qty:50,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-014',qty:100,size:'grande'},{code:'CAJA-056',qty:100,size:'grande'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-015',qty:50,size:'pequeño'},{code:'CAJA-057',qty:50,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-058',qty:30,size:'pequeño'},{code:'CAJA-059',qty:30,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-060',qty:15,size:'mediano'},{code:'CAJA-061',qty:15,size:'mediano'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-062',qty:55,size:'pequeño'},{code:'CAJA-063',qty:55,size:'pequeño'}] },
   ],
-  'PO-2026-0453': [
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-016',qty:30,size:'grande'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-017',qty:300,size:'grande'},{code:'CAJA-018',qty:200,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-019',qty:80,size:'mediano'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-020',qty:25,size:'pequeño'}] },
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-055',qty:25,size:'grande'},{code:'CAJA-056',qty:25,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-057',qty:100,size:'grande'},{code:'CAJA-058',qty:100,size:'grande'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-059',qty:40,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-060',qty:10,size:'pequeño'}] },
+  'NIR1-000053': [
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-016',qty:35,size:'pequeño'},{code:'CAJA-017',qty:35,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-018',qty:15,size:'mediano'},{code:'CAJA-019',qty:15,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-020',qty:50,size:'mediano'},{code:'CAJA-064',qty:50,size:'mediano'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-021',qty:55,size:'pequeño'},{code:'CAJA-022',qty:55,size:'pequeño'}] },
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-023',qty:75,size:'mediano'},{code:'CAJA-065',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-066',qty:30,size:'pequeño'},{code:'CAJA-067',qty:30,size:'pequeño'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-068',qty:100,size:'grande'},{code:'CAJA-069',qty:100,size:'grande'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-070',qty:50,size:'pequeño'},{code:'CAJA-071',qty:50,size:'pequeño'}] },
   ],
-  'PO-2026-0452': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-021',qty:30,size:'grande'},{code:'CAJA-022',qty:20,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-023',qty:120,size:'grande'},{code:'CAJA-024',qty:80,size:'grande'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-025',qty:500,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-026',qty:80,size:'mediano'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-027',qty:40,size:'mediano'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-028',qty:25,size:'pequeño'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-061',qty:15,size:'mediano'},{code:'CAJA-062',qty:15,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-063',qty:10,size:'pequeño'}] },
+  'NIR1-000052': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-024',qty:75,size:'mediano'},{code:'CAJA-025',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-026',qty:30,size:'pequeño'},{code:'CAJA-027',qty:30,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-028',qty:30,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-029',qty:50,size:'mediano'},{code:'CAJA-030',qty:50,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-031',qty:100,size:'grande'},{code:'CAJA-072',qty:100,size:'grande'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-032',qty:55,size:'pequeño'},{code:'CAJA-033',qty:55,size:'pequeño'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-073',qty:35,size:'pequeño'},{code:'CAJA-074',qty:35,size:'pequeño'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-075',qty:50,size:'pequeño'},{code:'CAJA-076',qty:50,size:'pequeño'}] },
   ],
-  'PO-2026-0449': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-029',qty:25,size:'grande'},{code:'CAJA-030',qty:25,size:'grande'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-031',qty:15,size:'mediano'},{code:'CAJA-032',qty:15,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-033',qty:100,size:'grande'},{code:'CAJA-034',qty:100,size:'grande'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-035',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-036',qty:25,size:'pequeño'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-064',qty:250,size:'grande'},{code:'CAJA-065',qty:250,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-066',qty:80,size:'mediano'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-067',qty:40,size:'mediano'}] },
+  'NIR1-000049': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-034',qty:75,size:'mediano'},{code:'CAJA-035',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-036',qty:33,size:'pequeño'},{code:'CAJA-037',qty:30,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-038',qty:30,size:'pequeño'},{code:'CAJA-039',qty:30,size:'pequeño'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-040',qty:50,size:'pequeño'},{code:'CAJA-077',qty:50,size:'pequeño'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-041',qty:49,size:'pequeño'},{code:'CAJA-042',qty:49,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-078',qty:15,size:'mediano'},{code:'CAJA-079',qty:15,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-080',qty:50,size:'mediano'},{code:'CAJA-081',qty:50,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-082',qty:100,size:'grande'},{code:'CAJA-083',qty:100,size:'grande'}] },
   ],
-  'PO-2026-0456': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-037',qty:20,size:'mediano'},{code:'CAJA-038',qty:30,size:'grande'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-039',qty:15,size:'mediano'},{code:'CAJA-040',qty:15,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-041',qty:100,size:'grande'},{code:'CAJA-042',qty:100,size:'grande'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-043',qty:250,size:'grande'},{code:'CAJA-044',qty:250,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-045',qty:80,size:'mediano'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-046',qty:40,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-068',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-069',qty:25,size:'pequeño'}] },
+  'NIR1-000056': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-043',qty:75,size:'mediano'},{code:'CAJA-044',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-045',qty:35,size:'pequeño'},{code:'CAJA-046',qty:35,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-084',qty:30,size:'pequeño'},{code:'CAJA-085',qty:30,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-086',qty:15,size:'mediano'},{code:'CAJA-087',qty:15,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-088',qty:50,size:'mediano'},{code:'CAJA-089',qty:50,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-090',qty:100,size:'grande'},{code:'CAJA-091',qty:100,size:'grande'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-092',qty:50,size:'pequeño'},{code:'CAJA-093',qty:50,size:'pequeño'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-094',qty:55,size:'pequeño'},{code:'CAJA-095',qty:55,size:'pequeño'}] },
   ],
-  'PO-2026-0448': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-070',qty:25,size:'grande'},{code:'CAJA-071',qty:25,size:'grande'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-072',qty:30,size:'grande'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-073',qty:100,size:'grande'},{code:'CAJA-074',qty:100,size:'grande'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-075',qty:500,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-076',qty:80,size:'mediano'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-077',qty:40,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-078',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-079',qty:25,size:'pequeño'}] },
+  'NIR1-000048': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-096',qty:75,size:'mediano'},{code:'CAJA-097',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-098',qty:70,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-099',qty:30,size:'pequeño'},{code:'CAJA-100',qty:30,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-101',qty:30,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-102',qty:50,size:'mediano'},{code:'CAJA-103',qty:50,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-104',qty:100,size:'grande'},{code:'CAJA-105',qty:100,size:'grande'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-106',qty:50,size:'pequeño'},{code:'CAJA-107',qty:50,size:'pequeño'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-108',qty:55,size:'pequeño'},{code:'CAJA-109',qty:55,size:'pequeño'}] },
   ]
 };
 
@@ -175,58 +175,58 @@ const defaultRecipients = [
 
 /* Catálogo de órdenes (fallback cuando URL params están incompletos) */
 const orderCatalog = {
-  'PO-2026-0460': { proveedor: 'Textiles Oriente SpA', fecha: '16/04/2026 08:45', status: 'en-bodega', label: 'En bodega', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Externa' },
-  'PO-2026-0458': { proveedor: 'Logística Global Ltda.', fecha: '14/04/2026 10:20', status: 'en-bodega', label: 'En bodega', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Local' },
-  'PO-2026-0455': { proveedor: 'Importadora Andina S.A.', fecha: '11/04/2026 15:10', status: 'revisada-anomalia', label: 'Revisada', reviewer: 'Ana López', reviewDate: '12/04/2026 10:40', confirmer: '', confirmDate: '', tipo: 'Local' },
-  'PO-2026-0457': { proveedor: 'Distribuidora ABC Ltda.', fecha: '13/04/2026 11:05', status: 'revisada', label: 'Revisada', reviewer: 'Carlos Méndez', reviewDate: '14/04/2026 09:30', confirmer: '', confirmDate: '', tipo: 'Local' },
-  'PO-2026-0453': { proveedor: 'Textiles Oriente SpA', fecha: '09/04/2026 09:50', status: 'revisada', label: 'Revisada', reviewer: 'Ana López', reviewDate: '10/04/2026 14:15', confirmer: '', confirmDate: '', tipo: 'Externa' },
-  'PO-2026-0456': { proveedor: 'Textiles Oriente SpA', fecha: '10/04/2026 16:20', status: 'por-almacenar', label: 'Por almacenar', reviewer: 'Carlos Méndez', reviewDate: '11/04/2026 09:00', confirmer: 'Carlos Méndez', confirmDate: '12/04/2026 10:30', tipo: 'Externa' },
-  'PO-2026-0452': { proveedor: 'Importadora Andina S.A.', fecha: '08/04/2026 14:30', status: 'almacenada', label: 'Almacenada', reviewer: 'Carlos Méndez', reviewDate: '09/04/2026 11:00', confirmer: 'Carlos Méndez', confirmDate: '10/04/2026 15:00', tipo: 'Externa' },
-  'PO-2026-0449': { proveedor: 'Logística Global Ltda.', fecha: '05/04/2026 16:00', status: 'almacenada-anomalia', label: 'Almacenada', reviewer: 'Ana López', reviewDate: '06/04/2026 16:45', confirmer: 'Ana López', confirmDate: '07/04/2026 11:20', tipo: 'Local' },
-  'PO-2026-0448': { proveedor: 'Distribuidora ABC Ltda.', fecha: '03/04/2026 10:15', status: 'valorada', label: 'Valorada', reviewer: 'Carlos Méndez', reviewDate: '04/04/2026 09:30', confirmer: 'Carlos Méndez', confirmDate: '05/04/2026 14:00', tipo: 'Externa' },
-  'PO-2026-0461': { proveedor: 'Distribuidora ABC Ltda.', fecha: '16/04/2026 07:30', status: 'ingresada', label: 'Por llegar', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Local' }
+  'NIR1-000060': { proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.', fecha: '16/04/2026 08:45', status: 'en-bodega', label: 'En bodega', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Externa' },
+  'NIR1-000058': { proveedor: 'MOTORALMOR CIA. LTDA.', fecha: '14/04/2026 10:20', status: 'en-bodega', label: 'En bodega', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Local' },
+  'NIR1-000055': { proveedor: 'MOTORALMOR CIA. LTDA.', fecha: '11/04/2026 15:10', status: 'revisada-anomalia', label: 'Revisada', reviewer: 'Ana López', reviewDate: '12/04/2026 10:40', confirmer: '', confirmDate: '', tipo: 'Local' },
+  'NIR1-000057': { proveedor: 'ECOLOGIA Y ENERGIA ECOENERGY CIA. LTDA', fecha: '13/04/2026 11:05', status: 'revisada', label: 'Revisada', reviewer: 'Carlos Méndez', reviewDate: '14/04/2026 09:30', confirmer: '', confirmDate: '', tipo: 'Local' },
+  'NIR1-000053': { proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.', fecha: '09/04/2026 09:50', status: 'revisada', label: 'Revisada', reviewer: 'Ana López', reviewDate: '10/04/2026 14:15', confirmer: '', confirmDate: '', tipo: 'Externa' },
+  'NIR1-000056': { proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.', fecha: '10/04/2026 16:20', status: 'por-almacenar', label: 'Por almacenar', reviewer: 'Carlos Méndez', reviewDate: '11/04/2026 09:00', confirmer: 'Carlos Méndez', confirmDate: '12/04/2026 10:30', tipo: 'Externa' },
+  'NIR1-000052': { proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.', fecha: '08/04/2026 14:30', status: 'almacenada', label: 'Almacenada', reviewer: 'Carlos Méndez', reviewDate: '09/04/2026 11:00', confirmer: 'Carlos Méndez', confirmDate: '10/04/2026 15:00', tipo: 'Externa' },
+  'NIR1-000049': { proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.', fecha: '05/04/2026 16:00', status: 'almacenada-anomalia', label: 'Almacenada', reviewer: 'Ana López', reviewDate: '06/04/2026 16:45', confirmer: 'Ana López', confirmDate: '07/04/2026 11:20', tipo: 'Externa' },
+  'NIR1-000048': { proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.', fecha: '03/04/2026 10:15', status: 'valorada', label: 'Valorada', reviewer: 'Carlos Méndez', reviewDate: '04/04/2026 09:30', confirmer: 'Carlos Méndez', confirmDate: '05/04/2026 14:00', tipo: 'Externa', valoracionCode: 'VAL-2026-0112' },
+  'NIR1-000061': { proveedor: 'MOTORALMOR CIA. LTDA.', fecha: '16/04/2026 07:30', status: 'ingresada', label: 'Por llegar', reviewer: '', reviewDate: '', confirmer: '', confirmDate: '', tipo: 'Local' }
 };
 
 const orderHistory = {
-  'PO-2026-0461': [
+  'NIR1-000061': [
     { type: 'ingreso', date: '16/04/2026 07:30', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' }
   ],
-  'PO-2026-0460': [
+  'NIR1-000060': [
     { type: 'ingreso', date: '16/04/2026 08:45', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '17/04/2026 09:15', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' }
   ],
-  'PO-2026-0458': [
+  'NIR1-000058': [
     { type: 'ingreso', date: '14/04/2026 10:20', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '15/04/2026 08:30', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' }
   ],
-  'PO-2026-0455': [
+  'NIR1-000055': [
     { type: 'ingreso', date: '11/04/2026 15:10', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '12/04/2026 08:20', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '12/04/2026 10:40', user: 'Ana López', desc: 'Revisión completada. Se registraron 2 anomalías.' },
     { type: 'edicion-revision', date: '12/04/2026 11:00', user: 'Ana López', desc: 'Revisión editada por el usuario.' },
     { type: 'edicion-codigos', date: '12/04/2026 11:15', user: 'Ana López', desc: 'Códigos Massline actualizados en 5 productos.' }
   ],
-  'PO-2026-0457': [
+  'NIR1-000057': [
     { type: 'ingreso', date: '13/04/2026 11:05', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '14/04/2026 08:00', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '14/04/2026 09:30', user: 'Carlos Méndez', desc: 'Revisión completada. Sin anomalías detectadas.' },
     { type: 'edicion-revision', date: '14/04/2026 10:00', user: 'Carlos Méndez', desc: 'Revisión editada por el usuario.' },
     { type: 'edicion-codigos', date: '14/04/2026 10:30', user: 'Carlos Méndez', desc: 'Códigos Massline actualizados en 6 productos.' }
   ],
-  'PO-2026-0456': [
+  'NIR1-000056': [
     { type: 'ingreso', date: '10/04/2026 16:20', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '11/04/2026 07:45', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '11/04/2026 09:00', user: 'Carlos Méndez', desc: 'Revisión completada. Sin anomalías detectadas.' },
     { type: 'confirmacion', date: '12/04/2026 10:30', user: 'Carlos Méndez', desc: 'Confirmación de almacenamiento. Productos asignados a posiciones de bodega.' },
     { type: 'almacenada', date: '12/04/2026 14:00', user: 'Carlos Méndez', desc: 'Orden almacenada en bodega.' }
   ],
-  'PO-2026-0453': [
+  'NIR1-000053': [
     { type: 'ingreso', date: '09/04/2026 09:50', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '10/04/2026 08:10', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '10/04/2026 14:15', user: 'Ana López', desc: 'Revisión completada. Sin anomalías detectadas.' },
     { type: 'edicion-revision', date: '10/04/2026 16:00', user: 'Ana López', desc: 'Revisión editada por el usuario.' }
   ],
-  'PO-2026-0452': [
+  'NIR1-000052': [
     { type: 'ingreso', date: '08/04/2026 14:30', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '09/04/2026 08:45', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '09/04/2026 11:00', user: 'Carlos Méndez', desc: 'Revisión completada. Sin anomalías detectadas.' },
@@ -235,7 +235,7 @@ const orderHistory = {
     { type: 'confirmacion', date: '10/04/2026 14:30', user: 'Carlos Méndez', desc: 'Confirmación de almacenamiento. Productos asignados a posiciones de bodega.' },
     { type: 'almacenada', date: '10/04/2026 15:00', user: 'Carlos Méndez', desc: 'Orden almacenada en bodega.' }
   ],
-  'PO-2026-0449': [
+  'NIR1-000049': [
     { type: 'ingreso', date: '05/04/2026 16:00', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '06/04/2026 08:30', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '06/04/2026 16:45', user: 'Ana López', desc: 'Revisión completada. Se registraron 3 anomalías.' },
@@ -244,7 +244,7 @@ const orderHistory = {
     { type: 'confirmacion', date: '07/04/2026 10:50', user: 'Ana López', desc: 'Confirmación de almacenamiento. Productos asignados a posiciones de bodega.' },
     { type: 'almacenada', date: '07/04/2026 11:20', user: 'Ana López', desc: 'Orden almacenada en bodega.' }
   ],
-  'PO-2026-0448': [
+  'NIR1-000048': [
     { type: 'ingreso', date: '03/04/2026 10:15', user: 'Usuario Sistema', desc: 'Orden de compra ingresada al sistema.' },
     { type: 'llegada', date: '04/04/2026 08:00', user: 'Usuario Sistema', desc: 'Orden recibida en bodega.' },
     { type: 'revision', date: '04/04/2026 09:30', user: 'Carlos Méndez', desc: 'Revisión completada. Sin anomalías detectadas.' },
@@ -255,100 +255,114 @@ const orderHistory = {
   ]
 };
 
-/* Mapeo código artículo → código Massline */
+/* Mapeo código artículo → código Massline (basado en ejemplos.json) */
 const artToMassline = {
-  'ART-3010': { code: 'ML-3010', desc: 'Tela algodón orgánico' },
-  'ART-3011': { code: 'ML-3011', desc: 'Tela poliéster reciclado' },
-  'ART-3012': { code: 'ML-3012', desc: 'Hilo industrial blanco' },
-  'ART-3013': { code: 'ML-3013', desc: 'Cierre metálico surtido' },
-  'ART-3014': { code: 'ML-3014', desc: 'Botones madera natural' },
-  'ART-3015': { code: 'ML-3015', desc: 'Elástico plano 3cm' },
-  'ART-3016': { code: 'ML-3016', desc: 'Etiqueta tejida marca' },
-  'ART-3017': { code: 'ML-3017', desc: 'Papel tissue embalaje' }
+  'WUX-001': { code: 'R150-AR0509', desc: 'Cable de velocímetro' },
+  'WUX-002': { code: 'R150-AR0507', desc: 'Cable de acelerador' },
+  'WUX-003': { code: 'R150-AR0508', desc: 'Cable de embrague' },
+  'WUX-004': { code: 'R180-XP1122', desc: 'Decorativo frontal superior' },
+  'WUX-005': { code: 'R150-100837', desc: 'Pastillas de freno' },
+  'WUX-006': { code: 'R180-XP0302', desc: 'Juego de retenedores' },
+  'WUX-007': { code: 'R180-XP0903', desc: 'Llave de paso de combustible' },
+  'WUX-008': { code: 'R180-XP0806', desc: 'Piñón de velocímetro' }
 };
 
-/* Autocomplete Massline catalog */
+/* Autocomplete Massline catalog — todos los códigos de ejemplos.json */
 const masslineCatalog = [
-  { code: 'ML-5001', desc: 'Camiseta orgánica básica' },
-  { code: 'ML-5002', desc: 'Pantalón denim slim' },
-  { code: 'ML-5003', desc: 'Chaqueta cortaviento' },
-  { code: 'ML-5004', desc: 'Zapatillas running' },
-  { code: 'ML-5005', desc: 'Bufanda lana merino' },
-  { code: 'ML-5006', desc: 'Polo manga corta' },
-  { code: 'ML-5007', desc: 'Bermuda cargo' },
-  { code: 'ML-5008', desc: 'Gorro lana tejido' },
+  { code: 'R150-AR0509', desc: 'Cable de velocímetro' },
+  { code: 'R150-AR0507', desc: 'Cable de acelerador' },
+  { code: 'R150-AR0508', desc: 'Cable de embrague' },
+  { code: 'R180-XP1122', desc: 'Decorativo frontal superior' },
+  { code: 'R150-100837', desc: 'Pastillas de freno' },
+  { code: 'R180-XP0302', desc: 'Juego de retenedores' },
+  { code: 'R180-XP0903', desc: 'Llave de paso de combustible' },
+  { code: 'R180-XP0806', desc: 'Piñón de velocímetro' },
+  { code: 'R180-XP1403', desc: 'Sensor de velocímetro' },
+  { code: 'R180-XP1408', desc: 'Bobina de bujía' },
+  { code: 'R180-XP1407', desc: 'CDI' },
+  { code: 'R150-FR0520', desc: 'Base de faro' },
+  { code: 'R150-FR0256NEG', desc: 'Manubrio izq./der. set negro' },
+  { code: 'R150-FR0309', desc: 'Pito' },
+  { code: 'R150-FR0238', desc: 'Kit de pistas del tren delantero' },
+  { code: 'R150-FR0222', desc: 'Manija de freno s/base' },
+  { code: 'R150-FR0234', desc: 'Kit de transmisión delantera' },
+  { code: 'R150-AR0518', desc: 'Barra telescópica izq./der. set' },
+  { code: 'R150-AR0605', desc: 'Amortiguador' },
+  { code: 'R150-AR0308', desc: 'Arnés eléctrico' },
+  { code: 'R150-AR0305', desc: 'Kit switch' },
+  { code: 'R300-XT1703', desc: 'Kit de switch' },
 ];
 
 // Versión anterior de anomalías (antes de edición de revisión)
 const orderAnomaliesPrev = {
-  'PO-2026-0455': [
+  'NIR1-000055': [
     {
       item: 3,
-      producto: 'Hilo industrial blanco 5000m',
-      codigo: 'ART-3012',
-      esperado: 200,
-      recibido: 180,
+      producto: 'CABLE DE EMBRAGUE',
+      codigo: 'WUX-003',
+      esperado: 60,
+      recibido: 52,
       danados: 0,
       severity: 'moderada',
-      desc: 'Se recibieron 180 unidades en lugar de las 200 solicitadas. Faltan 20 unidades según guía de despacho.'
+      desc: 'Se recibieron 52 unidades en lugar de las 60 solicitadas. Faltan 8 unidades según guía de despacho.'
     }
   ],
-  'PO-2026-0449': [
+  'NIR1-000049': [
     {
       item: 2,
-      producto: 'Tela poliéster reciclado (rollo)',
-      codigo: 'ART-3011',
-      esperado: 30,
-      recibido: 28,
+      producto: 'CABLE DE ACELERADOR',
+      codigo: 'WUX-002',
+      esperado: 70,
+      recibido: 63,
       danados: 0,
       severity: 'moderada',
-      desc: 'Se recibieron 28 rollos en lugar de 30. Faltan 2 unidades según guía de despacho.'
+      desc: 'Se recibieron 63 unidades en lugar de 70. Faltan 7 unidades según guía de despacho.'
     },
     {
-      item: 4,
-      producto: 'Cierre metálico 20cm surtido',
-      codigo: 'ART-3013',
-      esperado: 500,
-      recibido: 490,
+      item: 5,
+      producto: 'PASTILLAS DE FRENO',
+      codigo: 'WUX-005',
+      esperado: 100,
+      recibido: 96,
       danados: 0,
       severity: 'leve',
-      desc: 'Se recibieron 490 paquetes en lugar de 500. Faltan 10 paquetes según guía de despacho.'
+      desc: 'Se recibieron 96 juegos en lugar de 100. Faltan 4 unidades según guía de despacho.'
     }
   ]
 };
 
 // Versión anterior de cajas (antes de edición de revisión)
 const orderBoxesPrev = {
-  'PO-2026-0455': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-001',qty:25,size:'grande'},{code:'CAJA-002',qty:25,size:'grande'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-003',qty:15,size:'mediano'},{code:'CAJA-004',qty:15,size:'mediano'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-005',qty:120,size:'grande'},{code:'CAJA-006',qty:100,size:'grande'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-007',qty:250,size:'grande'},{code:'CAJA-008',qty:250,size:'grande'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-009',qty:45,size:'mediano'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-047',qty:100,size:'mediano'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-048',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-049',qty:25,size:'pequeño'}] },
+  'NIR1-000055': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-001',qty:75,size:'mediano'},{code:'CAJA-002',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-003',qty:35,size:'pequeño'},{code:'CAJA-004',qty:35,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-005',qty:35,size:'pequeño'},{code:'CAJA-006',qty:30,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-007',qty:15,size:'mediano'},{code:'CAJA-008',qty:15,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-009',qty:55,size:'mediano'},{code:'CAJA-047',qty:55,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-048',qty:100,size:'grande'},{code:'CAJA-049',qty:100,size:'grande'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-050',qty:50,size:'pequeño'},{code:'CAJA-051',qty:50,size:'pequeño'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-052',qty:55,size:'pequeño'},{code:'CAJA-053',qty:55,size:'pequeño'}] },
   ],
-  'PO-2026-0449': [
-    { producto: 'Tela algodón 100% orgánico (rollo)', codigo: 'ART-3010', cajas: [{code:'CAJA-029',qty:25,size:'grande'},{code:'CAJA-030',qty:25,size:'grande'}] },
-    { producto: 'Tela poliéster reciclado (rollo)', codigo: 'ART-3011', cajas: [{code:'CAJA-031',qty:18,size:'mediano'},{code:'CAJA-032',qty:12,size:'pequeño'},{code:'CAJA-070',qty:5,size:'pequeño'}] },
-    { producto: 'Hilo industrial blanco 5000m', codigo: 'ART-3012', cajas: [{code:'CAJA-033',qty:100,size:'grande'},{code:'CAJA-034',qty:100,size:'grande'}] },
-    { producto: 'Etiqueta tejida marca personalizada', codigo: 'ART-3016', cajas: [{code:'CAJA-035',qty:10,size:'pequeño'}] },
-    { producto: 'Papel tissue embalaje 50x70cm', codigo: 'ART-3017', cajas: [{code:'CAJA-036',qty:20,size:'pequeño'}] },
-    { producto: 'Cierre metálico 20cm surtido', codigo: 'ART-3013', cajas: [{code:'CAJA-064',qty:250,size:'grande'},{code:'CAJA-065',qty:250,size:'grande'}] },
-    { producto: 'Botones madera natural 15mm', codigo: 'ART-3014', cajas: [{code:'CAJA-066',qty:75,size:'mediano'}] },
-    { producto: 'Elástico plano 3cm (rollo 50m)', codigo: 'ART-3015', cajas: [{code:'CAJA-067',qty:35,size:'mediano'}] },
+  'NIR1-000049': [
+    { producto: 'CABLE DE VELOCIMETRO', codigo: 'WUX-001', cajas: [{code:'CAJA-034',qty:75,size:'mediano'},{code:'CAJA-035',qty:75,size:'mediano'}] },
+    { producto: 'CABLE DE ACELERADOR', codigo: 'WUX-002', cajas: [{code:'CAJA-036',qty:38,size:'pequeño'},{code:'CAJA-037',qty:32,size:'pequeño'},{code:'CAJA-110',qty:5,size:'pequeño'}] },
+    { producto: 'CABLE DE EMBRAGUE', codigo: 'WUX-003', cajas: [{code:'CAJA-038',qty:30,size:'pequeño'},{code:'CAJA-039',qty:30,size:'pequeño'}] },
+    { producto: 'LLAVE DE PASO DE COMBUSTIBLE', codigo: 'WUX-007', cajas: [{code:'CAJA-040',qty:50,size:'pequeño'},{code:'CAJA-077',qty:50,size:'pequeño'}] },
+    { producto: 'PIÑON DE VELOCIMETRO', codigo: 'WUX-008', cajas: [{code:'CAJA-041',qty:55,size:'pequeño'},{code:'CAJA-042',qty:55,size:'pequeño'}] },
+    { producto: 'DECORATIVO FRONTAL SUPERIOR', codigo: 'WUX-004', cajas: [{code:'CAJA-078',qty:15,size:'mediano'},{code:'CAJA-079',qty:15,size:'mediano'}] },
+    { producto: 'PASTILLAS DE FRENO', codigo: 'WUX-005', cajas: [{code:'CAJA-080',qty:55,size:'mediano'},{code:'CAJA-081',qty:55,size:'mediano'}] },
+    { producto: 'JUEGO DE RETENEDORES', codigo: 'WUX-006', cajas: [{code:'CAJA-082',qty:100,size:'grande'},{code:'CAJA-083',qty:100,size:'grande'}] },
   ]
 };
 
-// Version anterior de códigos ML (antes de edición)
+// Versión anterior de códigos ML (antes de edición) — 8 items con algunos "incorrectos" para demo
 const masslineCatalogPrev = [
-  { code: 'ML-5001', desc: 'Camiseta orgánica básica' },
-  { code: 'ML-5002', desc: 'Pantalón denim slim' },
-  { code: 'ML-5010', desc: 'Chaleco acolchado' },
-  { code: 'ML-5004', desc: 'Zapatillas running' },
-  { code: 'ML-5011', desc: 'Pañuelo seda estampado' },
-  { code: 'ML-5006', desc: 'Polo manga corta' },
-  { code: 'ML-5009', desc: 'Short deportivo' },
-  { code: 'ML-5008', desc: 'Gorro lana tejido' },
+  { code: 'R150-AR0509', desc: 'Cable de velocímetro' },
+  { code: 'R150-AR0507', desc: 'Cable de acelerador' },
+  { code: 'R150-AR9010', desc: 'Cable flexible tipo B' },
+  { code: 'R180-XP1122', desc: 'Decorativo frontal superior' },
+  { code: 'R180-XP9011', desc: 'Panel decorativo lateral' },
+  { code: 'R180-XP0302', desc: 'Juego de retenedores' },
+  { code: 'R180-XP9009', desc: 'Kit freno parcial' },
+  { code: 'R180-XP0806', desc: 'Piñón de velocímetro' },
 ];

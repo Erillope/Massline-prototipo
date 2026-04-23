@@ -5,7 +5,7 @@ function setTab(tab) {
 }
 
 /* === Navegación a detalle === */
-function goToDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, reviewDate, confirmer, confirmDate, tipo) {
+function goToDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, reviewDate, confirmer, confirmDate, tipo, valoracionDate, valoracionCode) {
   var url = 'detalle_orden.html?code=' + encodeURIComponent(code)
     + '&proveedor=' + encodeURIComponent(proveedor)
     + '&fecha=' + encodeURIComponent(fecha)
@@ -16,6 +16,8 @@ function goToDetail(code, proveedor, fecha, statusClass, statusLabel, reviewer, 
   if (confirmer) url += '&confirmer=' + encodeURIComponent(confirmer);
   if (confirmDate) url += '&confirmDate=' + encodeURIComponent(confirmDate);
   if (tipo) url += '&tipo=' + encodeURIComponent(tipo);
+  if (valoracionDate) url += '&valoracionDate=' + encodeURIComponent(valoracionDate);
+  if (valoracionCode) url += '&valoracionCode=' + encodeURIComponent(valoracionCode);
   window.location.href = url;
 }
 
@@ -100,11 +102,8 @@ function openStorageModal(code, proveedor, items, tipo) {
       html += '<div class="storage-box-list">';
       prod.cajas.forEach(function(caja) {
         var pos = getRecommendedPosition(caja.code);
-        var sizeLabel = caja.size === 'grande' ? 'Grande' : caja.size === 'mediano' ? 'Mediana' : 'Pequeña';
-        var sizeClass = 'box-size-' + caja.size;
         html += '<div class="storage-box-row">';
         html += '<span class="storage-box-code">' + caja.code + '</span>';
-        html += '<span class="storage-box-size ' + sizeClass + '">' + sizeLabel + '</span>';
         html += '<span class="storage-box-qty">' + caja.qty + ' uds</span>';
         html += '<span class="storage-box-position"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> ' + pos + '</span>';
         html += '</div>';
@@ -126,7 +125,6 @@ function openStorageModal(code, proveedor, items, tipo) {
     anomalies.forEach(function(a) {
       var faltante = a.esperado - a.recibido;
       anomHtml += '<div class="storage-anomaly-item">';
-      anomHtml += '<span class="storage-anomaly-severity ' + a.severity + '">' + a.severity.charAt(0).toUpperCase() + a.severity.slice(1) + '</span>';
       anomHtml += '<div class="storage-anomaly-product">';
       anomHtml += '<div class="storage-anomaly-product-name">' + a.codigo + ' — ' + a.producto + '</div>';
       anomHtml += '<div class="storage-anomaly-desc">' + a.desc + '</div>';

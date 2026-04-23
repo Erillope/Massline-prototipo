@@ -4,6 +4,28 @@ function formatCLP(n) {
   return '$' + n.toLocaleString('es-CL');
 }
 
+function parseDateDDMMYYYY(str) {
+  const parts = str.trim().split(' ');
+  const d = parts[0].split('/');
+  const t = parts[1] ? parts[1].split(':') : ['0','0'];
+  return new Date(parseInt(d[2]), parseInt(d[1])-1, parseInt(d[0]), parseInt(t[0]), parseInt(t[1]));
+}
+
+function calcValoracionTimeLabel(fechaStr, valoracionDateStr) {
+  const from = parseDateDDMMYYYY(fechaStr);
+  const to = parseDateDDMMYYYY(valoracionDateStr);
+  const diffMs = to - from;
+  const diffD = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffH = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const diffM = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const parts = [];
+  if (diffD > 0) parts.push(diffD + (diffD === 1 ? ' día' : ' días'));
+  if (diffH > 0) parts.push(diffH + ' h');
+  if (diffM > 0) parts.push(diffM + ' min');
+  if (!parts.length) return 'Valorada al instante';
+  return 'Valorada dentro de ' + parts.join(', ');
+}
+
 let detailParams = {};
 let currentDetailStatusClass = '';
 
@@ -23,7 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
     reviewDate: params.get('reviewDate') || catalog.reviewDate || '',
     confirmer: params.get('confirmer') || catalog.confirmer || '',
     confirmDate: params.get('confirmDate') || catalog.confirmDate || '',
-    tipo: params.get('tipo') || catalog.tipo || ''
+    tipo: params.get('tipo') || catalog.tipo || '',
+    valoracionDate: params.get('valoracionDate') || catalog.valoracionDate || '',
+    valoracionCode: params.get('valoracionCode') || catalog.valoracionCode || ''
   };
   loadDetail(detailParams);
 
@@ -52,6 +76,13 @@ function loadDetail(p) {
   } else {
     document.getElementById('detailTipoField').style.display = 'none';
   }
+  const isValoradaForCode = (p.status === 'valorada' || p.status === 'valorada-anomalia');
+  if (isValoradaForCode && p.valoracionCode) {
+    document.getElementById('detailValoracionCodeField').style.display = '';
+    document.getElementById('detailInfoValoracionCode').textContent = p.valoracionCode;
+  } else {
+    document.getElementById('detailValoracionCodeField').style.display = 'none';
+  }
   const infoBadge = document.getElementById('detailInfoStatus');
   infoBadge.className = 'status-badge ' + p.status;
   document.getElementById('detailInfoStatusText').innerHTML = p.label + (hasAnomalias ? ' ' + warningIconSVG : '');
@@ -72,7 +103,20 @@ function loadDetail(p) {
   document.getElementById('detailReviewBtn').style.display = (p.status === 'en-bodega') ? 'inline-flex' : 'none';
   document.getElementById('detailEditReviewBtn').style.display = (p.status === 'revisada' || p.status === 'revisada-anomalia') ? 'inline-flex' : 'none';
   document.getElementById('detailStoreBtn').style.display = (p.status === 'revisada' || p.status === 'revisada-anomalia') ? 'inline-flex' : 'none';
-  document.getElementById('detailValorateBtn').style.display = (p.status === 'almacenada' || p.status === 'almacenada-anomalia') ? 'inline-flex' : 'none';
+
+  // Valoración time indicator
+  const isValoradaStatus = (p.status === 'valorada' || p.status === 'valorada-anomalia');
+  const timeEl = document.getElementById('detailValoracionTime');
+  if (isValoradaStatus && p.valoracionDate && p.fecha && p.fecha !== '—') {
+    document.getElementById('detailValoracionTimeText').textContent = calcValoracionTimeLabel(p.fecha, p.valoracionDate);
+    timeEl.style.display = 'inline-flex';
+    timeEl.style.marginLeft = 'auto';
+    headerBadge.style.marginLeft = '10px';
+  } else {
+    timeEl.style.display = 'none';
+    headerBadge.style.marginLeft = 'auto';
+  }
+
 
   currentDetailStatusClass = p.status;
   renderDetailProductTable(p.code);
@@ -97,6 +141,9 @@ function renderDetailProductTable(code) {
   let anomalies = orderAnomalies[code];
   let hasAnomalias = (statusClass === 'revisada-anomalia' || statusClass === 'almacenada-anomalia' || statusClass === 'por-almacenar-anomalia' || statusClass === 'valorada-anomalia');
   const isLocked = (statusClass === 'almacenada' || statusClass === 'almacenada-anomalia' || statusClass === 'por-almacenar' || statusClass === 'por-almacenar-anomalia' || statusClass === 'valorada' || statusClass === 'valorada-anomalia');
+  const isValorada = (statusClass === 'valorada' || statusClass === 'valorada-anomalia');
+  const isLocal = !!(detailParams.tipo && detailParams.tipo.toLowerCase() === 'local');
+  const isRevisadaAnomalia = (statusClass === 'revisada-anomalia');
 
   // Snapshot overrides for historical view
   let snapshotMlHighlight = false;
@@ -122,7 +169,7 @@ function renderDetailProductTable(code) {
         var prev = prevAnoms.find(function(p) { return p.codigo === a.codigo; });
         if (!prev) {
           mergedAnoms.push(Object.assign({}, a, { _diffType: 'new' }));
-        } else if (prev.severity !== a.severity || prev.recibido !== a.recibido || prev.danados !== a.danados || prev.desc !== a.desc) {
+        } else if (prev.recibido !== a.recibido || prev.danados !== a.danados || prev.desc !== a.desc) {
           mergedAnoms.push(Object.assign({}, a, { _diffType: 'edited', _prev: prev }));
         } else {
           mergedAnoms.push(Object.assign({}, a, { _diffType: 'unchanged' }));
@@ -151,11 +198,15 @@ function renderDetailProductTable(code) {
   // Show/hide box and anomaly columns
   document.getElementById('detailBoxesColHeader').style.display = hasBoxes ? '' : 'none';
   document.getElementById('detailAnomalyColHeader').style.display = hasAnomalias ? '' : 'none';
+  document.getElementById('detailPriceColHeader').style.display = isValorada ? '' : 'none';
+  document.getElementById('detailTotalColHeader').style.display = isValorada ? '' : 'none';
+  document.getElementById('detailDescFacturaColHeader').style.display = isLocal ? '' : 'none';
+  document.getElementById('detailDeleteColHeader').style.display = (isRevisadaAnomalia && mlEditMode && !snapshotActive) ? '' : 'none';
 
   // Show/hide edit button
   const editBtn = document.getElementById('detailEditMlBtn');
   if (editBtn) {
-    editBtn.style.display = (isLocked || snapshotActive) ? 'none' : 'inline-flex';
+    editBtn.style.display = (isLocked || snapshotActive || !isLocal) ? 'none' : 'inline-flex';
   }
 
   let html = '';
@@ -172,8 +223,6 @@ function renderDetailProductTable(code) {
     const wasChanged = snapshotMlHighlight && (prevCode !== currCode);
     html += '<tr>';
     html += '<td>' + prod.num + '</td>';
-    html += '<td><code>' + prod.codigo + '</code></td>';
-    html += '<td>' + prod.desc + '</td>';
     if (isLocked || !mlEditMode) {
       // Read-only display
       const mlHlCls = wasChanged ? ' snapshot-highlight' : '';
@@ -189,19 +238,25 @@ function renderDetailProductTable(code) {
         mlCellContent = mlCode ? '<code class="ml-code-badge">' + mlCode + '</code>' : '<span class="ml-empty">—</span>';
         mlDescContent = mlDesc ? '<span class="ml-desc-readonly">' + mlDesc + '</span>' : '<span class="ml-empty">—</span>';
       }
-      html += '<td class="ml-ac-cell' + mlHlCls + '">' + mlCellContent + '</td>';
-      html += '<td class="ml-desc-cell ml-ac-cell' + mlHlCls + '">' + mlDescContent + '</td>';
+      html += '<td class="ml-readonly-cell' + mlHlCls + '">' + mlCellContent + '</td>';
+      html += '<td class="ml-desc-cell ml-readonly-cell' + mlHlCls + '">' + mlDescContent + '</td>';
     } else {
       // Editable inputs
       html += '<td class="ml-ac-cell"><div class="ml-autocomplete"><input type="text" class="ml-ac-input' + filledClass + '" data-field="code" placeholder="Buscar código..." value="' + mlCode + '" onfocus="showMlDropdown(this)" oninput="filterMassline(this)"><div class="ml-ac-dropdown"></div></div></td>';
       html += '<td class="ml-desc-cell ml-ac-cell"><div class="ml-autocomplete"><input type="text" class="ml-ac-input' + filledClass + '" data-field="desc" placeholder="Buscar descripción..." value="' + mlDesc + '" onfocus="showMlDropdown(this)" oninput="filterMassline(this)"><div class="ml-ac-dropdown"></div></div></td>';
     }
-    html += '<td>' + prod.unidad + '</td>';
-    html += '<td>' + prod.cantidad + '</td>';
-    const precioUnit = prod.precioUnitario || 0;
-    const precioTotal = precioUnit * prod.cantidad;
-    html += '<td style="text-align:right; color:#6b7280;">' + formatCLP(precioUnit) + '</td>';
-    html += '<td style="text-align:right; font-weight:500;">' + formatCLP(precioTotal) + '</td>';
+    if (isLocal) html += '<td style="color:#6b7280; font-size:12px;">' + (prod.desc || '—') + '</td>';
+    if (isRevisadaAnomalia && mlEditMode && !snapshotActive) {
+      html += '<td><input type="number" class="qty-edit-input" min="1" value="' + prod.cantidad + '" oninput="updateDetailQuantity(' + idx + ', this.value)"></td>';
+    } else {
+      html += '<td>' + prod.cantidad + '</td>';
+    }
+    if (isValorada) {
+      const precioUnit = prod.precioUnitario || 0;
+      const precioTotal = precioUnit * prod.cantidad;
+      html += '<td style="text-align:right; color:#6b7280;">' + formatCLP(precioUnit) + '</td>';
+      html += '<td style="text-align:right; font-weight:500;">' + formatCLP(precioTotal) + '</td>';
+    }
     if (hasBoxes) {
       const prodBoxes = (orderBoxes[code] || []).find(b => b.codigo === prod.codigo);
       const prevProdBoxes = snapshotBoxDiff ? ((orderBoxesPrev[code] || []).find(b => b.codigo === prod.codigo) || null) : null;
@@ -209,7 +264,7 @@ function renderDetailProductTable(code) {
       if (prevProdBoxes && prodBoxes) {
         boxHasChanges = prodBoxes.cajas.some(function(c) {
           var p = prevProdBoxes.cajas.find(function(pc) { return pc.code === c.code; });
-          return !p || p.qty !== c.qty || p.size !== c.size;
+          return !p || p.qty !== c.qty;
         }) || prevProdBoxes.cajas.some(function(pc) {
           return !prodBoxes.cajas.some(function(c) { return c.code === pc.code; });
         });
@@ -225,7 +280,7 @@ function renderDetailProductTable(code) {
     if (hasAnomalias) {
       const matchedAnomaly = anomalies && anomalies.find(a => a.codigo === prod.codigo);
       const anomDiffType = matchedAnomaly ? (matchedAnomaly._diffType || '') : '';
-      html += '<td>';
+      html += '<td style="text-align:center;">';
       if (matchedAnomaly) {
         var anomBtnClass = 'btn-view-anomaly';
         if (anomDiffType === 'new') anomBtnClass += ' snapshot-new';
@@ -238,6 +293,9 @@ function renderDetailProductTable(code) {
       }
       html += '</td>';
     }
+    if (isRevisadaAnomalia && mlEditMode && !snapshotActive) {
+      html += '<td style="text-align:center;"><button class="btn-delete-row" onclick="deleteDetailProduct(' + idx + ')" title="Eliminar fila"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></td>';
+    }
     html += '</tr>';
 
     // Box row
@@ -248,13 +306,13 @@ function renderDetailProductTable(code) {
       if (prevProdBoxes2 && prodBoxes2) {
         boxHasChanges2 = prodBoxes2.cajas.some(function(c) {
           var p = prevProdBoxes2.cajas.find(function(pc) { return pc.code === c.code; });
-          return !p || p.qty !== c.qty || p.size !== c.size;
+          return !p || p.qty !== c.qty;
         }) || prevProdBoxes2.cajas.some(function(pc) {
           return !prodBoxes2.cajas.some(function(c) { return c.code === pc.code; });
         });
       }
       if (prodBoxes2) {
-        const colSpan = 9 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
+        const colSpan = (isValorada ? 6 : 4) + (isLocal ? 1 : 0) + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0) + (isRevisadaAnomalia && mlEditMode && !snapshotActive ? 1 : 0);
         html += '<tr class="detail-box-row' + (boxHasChanges2 ? ' snapshot-box-row' : '') + '" id="detailBoxRow-' + prod.codigo + '" style="display:none;"><td colspan="' + colSpan + '" style="padding:0 16px 12px; background:' + (boxHasChanges2 ? '#f0fdf4' : '#fff') + ';">' + buildDetailBoxPanel(prodBoxes2, statusClass, prevProdBoxes2) + '</td></tr>';
       }
     }
@@ -263,7 +321,7 @@ function renderDetailProductTable(code) {
     if (hasAnomalias && anomalies) {
       const anomaly = anomalies.find(a => a.codigo === prod.codigo);
       if (anomaly) {
-        const colSpan = 9 + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0);
+        const colSpan = (isValorada ? 6 : 4) + (isLocal ? 1 : 0) + (hasBoxes ? 1 : 0) + (hasAnomalias ? 1 : 0) + (isRevisadaAnomalia && mlEditMode && !snapshotActive ? 1 : 0);
         const aDiffType = anomaly._diffType || '';
         const hasADiff = (aDiffType === 'new' || aDiffType === 'edited' || aDiffType === 'deleted');
         const aRowClass = aDiffType === 'new' ? ' snapshot-new-row' : aDiffType === 'edited' ? ' snapshot-edited-row' : aDiffType === 'deleted' ? ' snapshot-deleted-row' : '';
@@ -273,20 +331,36 @@ function renderDetailProductTable(code) {
     }
   });
 
-  // Suma total
-  let sumaTotal = 0;
-  detailProducts.forEach((prod) => {
-    const precioUnit = prod.precioUnitario || 0;
-    sumaTotal += precioUnit * prod.cantidad;
-  });
-  html += '<tr style="background:#f8fafc; font-weight:600; color:#1a1a2e;">';
-  html += '<td colspan="8" style="text-align:right; border-top:2px solid #e5e7eb;">TOTAL ORDEN</td>';
-  html += '<td style="text-align:right; border-top:2px solid #e5e7eb;">' + formatCLP(sumaTotal) + '</td>';
-  if (hasBoxes) html += '<td></td>';
-  if (hasAnomalias) html += '<td></td>';
-  html += '</tr>';
+  if (isValorada) {
+    let sumaTotal = 0;
+    detailProducts.forEach((prod) => {
+      const precioUnit = prod.precioUnitario || 0;
+      sumaTotal += precioUnit * prod.cantidad;
+    });
+    html += '<tr style="background:#f8fafc; font-weight:600; color:#1a1a2e;">';
+    html += '<td colspan="' + (5 + (isLocal ? 1 : 0)) + '" style="text-align:right; border-top:2px solid #e5e7eb;">TOTAL ORDEN</td>';
+    html += '<td style="text-align:right; border-top:2px solid #e5e7eb;">' + formatCLP(sumaTotal) + '</td>';
+    if (hasBoxes) html += '<td></td>';
+    if (hasAnomalias) html += '<td></td>';
+    html += '</tr>';
+  }
 
   tbody.innerHTML = html;
+  const itemCountEl = document.getElementById('detailItemCount');
+  if (itemCountEl) itemCountEl.textContent = detailProducts.length;
+}
+
+function deleteDetailProduct(idx) {
+  detailProducts.splice(idx, 1);
+  detailProducts.forEach(function(p, i) { p.num = i + 1; });
+  renderDetailProductTable(detailParams.code);
+}
+
+function updateDetailQuantity(idx, value) {
+  const val = parseInt(value, 10);
+  if (!isNaN(val) && val >= 1) {
+    detailProducts[idx].cantidad = val;
+  }
 }
 
 function buildDetailBoxPanel(prodBoxes, statusClass, prevProdBoxes) {
@@ -299,24 +373,14 @@ function buildDetailBoxPanel(prodBoxes, statusClass, prevProdBoxes) {
   html += '<div class="detail-box-list">';
   prodBoxes.cajas.forEach(caja => {
     const pos = getRecommendedPosition(caja.code);
-    const sizeLabel = caja.size === 'grande' ? 'Grande' : caja.size === 'mediano' ? 'Mediana' : 'Pequeña';
-    const sizeClass = 'box-size-' + caja.size;
     // Check if this box changed vs previous or is new
     var prevCaja = prevProdBoxes ? prevProdBoxes.cajas.find(function(pc) { return pc.code === caja.code; }) : null;
     var isNewBox = prevProdBoxes && !prevCaja;
     var qtyChanged = prevCaja && prevCaja.qty !== caja.qty;
-    var sizeChanged = prevCaja && prevCaja.size !== caja.size;
-    var hasChange = qtyChanged || sizeChanged;
+    var hasChange = qtyChanged;
     var boxClass = isNewBox ? ' box-new' : hasChange ? ' box-changed' : '';
     html += '<div class="detail-box-item' + boxClass + '">';
     html += '<span class="storage-box-code">' + caja.code + '</span>';
-    if (sizeChanged) {
-      var prevSizeLabel = prevCaja.size === 'grande' ? 'Grande' : prevCaja.size === 'mediano' ? 'Mediana' : 'Pequeña';
-      html += '<span class="storage-box-size ' + sizeClass + ' box-qty-new">' + sizeLabel + '</span>';
-      html += '<span class="storage-box-qty-prev">antes: ' + prevSizeLabel + '</span>';
-    } else {
-      html += '<span class="storage-box-size ' + sizeClass + '">' + sizeLabel + '</span>';
-    }
     if (qtyChanged) {
       html += '<span class="storage-box-qty box-qty-new">' + caja.qty + ' uds</span>';
       html += '<span class="storage-box-qty-prev">antes: ' + prevCaja.qty + ' uds</span>';
@@ -334,11 +398,8 @@ function buildDetailBoxPanel(prodBoxes, statusClass, prevProdBoxes) {
     prevProdBoxes.cajas.forEach(function(prevCaja) {
       var stillExists = prodBoxes.cajas.find(function(c) { return c.code === prevCaja.code; });
       if (!stillExists) {
-        var sLabel = prevCaja.size === 'grande' ? 'Grande' : prevCaja.size === 'mediano' ? 'Mediana' : 'Pequeña';
-        var sClass = 'box-size-' + prevCaja.size;
         html += '<div class="detail-box-item box-deleted">';
         html += '<span class="storage-box-code">' + prevCaja.code + '</span>';
-        html += '<span class="storage-box-size ' + sClass + '">' + sLabel + '</span>';
         html += '<span class="storage-box-qty">' + prevCaja.qty + ' uds</span>';
         html += '<span class="snapshot-deleted-badge" style="margin-left:auto;">Eliminada</span>';
         html += '</div>';
@@ -357,7 +418,7 @@ function buildAnomalyViewPanel(anomaly) {
   const faltantes = Math.max(0, anomaly.esperado - anomaly.recibido);
   const hasFaltantes = faltantes > 0;
   const hasDanados = anomaly.danados > 0;
-  const severityLabel = anomaly.severity.charAt(0).toUpperCase() + anomaly.severity.slice(1);
+  const severityLabel = '';
 
   let tagsHTML = '';
   if (hasFaltantes || hasDanados) {
@@ -385,7 +446,6 @@ function buildAnomalyViewPanel(anomaly) {
   html += '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
   html += 'Anomalía — ' + anomaly.codigo + ' ' + anomaly.producto;
   html += '</div>';
-  html += '<span class="anomaly-view-severity ' + anomaly.severity + '">' + severityLabel + '</span>';
   html += '</div>';
   html += tagsHTML;
 
@@ -393,10 +453,6 @@ function buildAnomalyViewPanel(anomaly) {
   if (isEdited && prevAnomaly) {
     html += '<div class="anomaly-edit-comparison">';
     html += '<div class="anomaly-edit-comparison-title"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg> Cambios realizados:</div>';
-    if (prevAnomaly.severity !== anomaly.severity) {
-      var prevSevLabel = prevAnomaly.severity.charAt(0).toUpperCase() + prevAnomaly.severity.slice(1);
-      html += '<div class="anomaly-edit-change"><span class="anomaly-edit-field">Severidad:</span> <span class="anomaly-edit-prev">' + prevSevLabel + '</span> <span class="anomaly-edit-arrow">→</span> <span class="anomaly-edit-new">' + severityLabel + '</span></div>';
-    }
     if (prevAnomaly.recibido !== anomaly.recibido) {
       html += '<div class="anomaly-edit-change"><span class="anomaly-edit-field">Recibido:</span> <span class="anomaly-edit-prev">' + prevAnomaly.recibido + '</span> <span class="anomaly-edit-arrow">→</span> <span class="anomaly-edit-new">' + anomaly.recibido + '</span></div>';
     }
@@ -537,7 +593,6 @@ function openStorageModal(code, proveedor, items) {
     anomalies.forEach(a => {
       const faltante = a.esperado - a.recibido;
       anomHtml += '<div class="storage-anomaly-item">';
-      anomHtml += '<span class="storage-anomaly-severity ' + a.severity + '">' + a.severity.charAt(0).toUpperCase() + a.severity.slice(1) + '</span>';
       anomHtml += '<div class="storage-anomaly-product">';
       anomHtml += '<div class="storage-anomaly-product-name">' + a.codigo + ' — ' + a.producto + '</div>';
       anomHtml += '<div class="storage-anomaly-desc">' + a.desc + '</div>';
@@ -617,6 +672,7 @@ function openValoracionModal() {
   document.getElementById('valoracionModal').classList.add('active');
 }
 
+
 function closeValoracionModal() {
   document.getElementById('valoracionModal').classList.remove('active');
 }
@@ -666,7 +722,12 @@ function confirmValoracion() {
   document.getElementById('detailValorateBtn').style.display = 'none';
   detailParams.status = newStatus;
   detailParams.label = 'Valorada';
+  detailParams.valoracionCode = codigoVal;
   currentDetailStatusClass = newStatus;
+
+  // Show valoración code in info card
+  document.getElementById('detailValoracionCodeField').style.display = '';
+  document.getElementById('detailInfoValoracionCode').textContent = codigoVal;
 
   addHistoryEntry('valoracion', 'Orden valorada con código ' + codigoVal + '.');
 
@@ -679,36 +740,64 @@ function confirmValoracion() {
 }
 
 /* === Toggle ML edit mode === */
+let mlEditSnapshot = null; // snapshot before entering edit mode
+
 function toggleMlEdit() {
   if (mlEditMode) {
-    // Capture current input values before leaving edit mode
-    const rows = document.querySelectorAll('#detailProductTableBody tr:not(.detail-box-row):not(.detail-anomaly-row)');
-    let changedCount = 0;
-    rows.forEach((row, idx) => {
-      const inputs = row.querySelectorAll('.ml-ac-input');
-      if (inputs.length === 2) {
-        const code = inputs[0].value.trim();
-        const desc = inputs[1].value.trim();
-        if (code || desc) {
-          masslineCatalog[idx] = { code: code, desc: desc };
-          changedCount++;
-        } else {
-          masslineCatalog[idx] = null;
-        }
-      }
-    });
-    // Record in history
-    addHistoryEntry('edicion-codigos', 'Códigos Massline actualizados en ' + changedCount + ' producto' + (changedCount !== 1 ? 's' : '') + '.');
+    // Show confirmation modal instead of saving immediately
+    document.getElementById('confirmEditModal').classList.add('active');
+    return;
   }
-  mlEditMode = !mlEditMode;
+  // Save snapshot before entering edit mode
+  mlEditSnapshot = {
+    products: detailProducts.map(p => Object.assign({}, p)),
+    catalog: masslineCatalog.map(c => c ? Object.assign({}, c) : null)
+  };
+  mlEditMode = true;
   const btn = document.getElementById('detailEditMlBtn');
-  if (mlEditMode) {
-    btn.classList.add('active');
-    btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Listo';
-  } else {
-    btn.classList.remove('active');
-    btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Editar códigos';
+  btn.classList.add('active');
+  btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Listo';
+  renderDetailProductTable(detailParams.code);
+}
+
+function confirmMlEdit() {
+  document.getElementById('confirmEditModal').classList.remove('active');
+  // Capture current input values
+  const rows = document.querySelectorAll('#detailProductTableBody tr:not(.detail-box-row):not(.detail-anomaly-row)');
+  let changedCount = 0;
+  rows.forEach((row, idx) => {
+    const inputs = row.querySelectorAll('.ml-ac-input');
+    if (inputs.length === 2) {
+      const code = inputs[0].value.trim();
+      const desc = inputs[1].value.trim();
+      if (code || desc) {
+        masslineCatalog[idx] = { code: code, desc: desc };
+        changedCount++;
+      } else {
+        masslineCatalog[idx] = null;
+      }
+    }
+  });
+  addHistoryEntry('edicion-codigos', 'Códigos Massline actualizados en ' + changedCount + ' producto' + (changedCount !== 1 ? 's' : '') + '.');
+  mlEditMode = false;
+  const btn = document.getElementById('detailEditMlBtn');
+  btn.classList.remove('active');
+  btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Editar orden';
+  renderDetailProductTable(detailParams.code);
+}
+
+function cancelMlEdit() {
+  document.getElementById('confirmEditModal').classList.remove('active');
+  // Restore snapshot
+  if (mlEditSnapshot) {
+    detailProducts.splice(0, detailProducts.length, ...mlEditSnapshot.products);
+    masslineCatalog.splice(0, masslineCatalog.length, ...mlEditSnapshot.catalog);
+    mlEditSnapshot = null;
   }
+  mlEditMode = false;
+  const btn = document.getElementById('detailEditMlBtn');
+  btn.classList.remove('active');
+  btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Editar orden';
   renderDetailProductTable(detailParams.code);
 }
 
@@ -743,7 +832,7 @@ function renderHistory(code) {
     llegada:             { label: 'Llegada',                      icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>' },
     revision:            { label: 'Revisión',                     icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>' },
     'edicion-revision':  { label: 'Edición revisión',             icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' },
-    'edicion-codigos':   { label: 'Edición códigos Massline',     icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' },
+    'edicion-codigos':   { label: 'Edición orden',     icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' },
     confirmacion:        { label: 'Confirmación almacenamiento',  icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' },
     almacenada:          { label: 'Almacenada',                   icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>' },
     valoracion:          { label: 'Valorada',                    icon: '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' }
@@ -836,7 +925,7 @@ function viewHistoricalState(entryIndex) {
   // Determine historical state
   var typeLabels = {
     ingreso: 'Ingreso', llegada: 'Llegada', revision: 'Revisión',
-    'edicion-revision': 'Edición revisión', 'edicion-codigos': 'Edición códigos Massline',
+    'edicion-revision': 'Edición revisión', 'edicion-codigos': 'Edición orden',
     confirmacion: 'Confirmación almacenamiento', almacenada: 'Almacenada',
     valoracion: 'Valorada'
   };
@@ -857,13 +946,10 @@ function viewHistoricalState(entryIndex) {
   document.getElementById('detailInfoStatusText').innerHTML = state.label + (hasAnomalias ? ' ' + warningIconSVG : '');
 
   // Hide all action buttons during snapshot
-  document.getElementById('detailArrivalBtn').style.display = 'none';
-  document.getElementById('detailReviewBtn').style.display = 'none';
-  document.getElementById('detailEditReviewBtn').style.display = 'none';
-  document.getElementById('detailStoreBtn').style.display = 'none';
-  document.getElementById('detailValorateBtn').style.display = 'none';
-  var editMlBtn = document.getElementById('detailEditMlBtn');
-  if (editMlBtn) editMlBtn.style.display = 'none';
+  ['detailArrivalBtn','detailReviewBtn','detailEditReviewBtn','detailStoreBtn','detailValorateBtn','detailEditMlBtn'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 
   // Anomaly report doc
   if (hasAnomalias && entryIndex >= entries.findIndex(function(e) { return e.type === 'revision'; })) {
@@ -885,7 +971,7 @@ function viewHistoricalState(entryIndex) {
     currAnoms.forEach(function(a) {
       var prev = prevAnoms.find(function(p) { return p.codigo === a.codigo; });
       if (!prev) newCount++;
-      else if (prev.severity !== a.severity || prev.recibido !== a.recibido || prev.danados !== a.danados || prev.desc !== a.desc) editedCount++;
+      else if (prev.recibido !== a.recibido || prev.danados !== a.danados || prev.desc !== a.desc) editedCount++;
     });
     prevAnoms.forEach(function(p) {
       if (!currAnoms.find(function(a) { return a.codigo === p.codigo; })) deletedCount++;

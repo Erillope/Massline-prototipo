@@ -47,14 +47,14 @@ function initReview() {
   if (mode === 'edit') {
     loadExistingReview();
   } else if (reviewSimMode === 1) {
-    inputs[2].value = 180;
+    inputs[2].value = 52;
     updateRowReview(2);
-    reviewAnomalies[2] = { damaged: '20', desc: 'Se recibieron 180 unidades en lugar de 200. Faltan 20 unidades.', severity: 'moderada' };
+    reviewAnomalies[2] = { damaged: '0', desc: 'Se recibieron 52 unidades en lugar de 60. Faltan 8 unidades según guía de despacho.', severity: 'moderada' };
     document.querySelectorAll('#reviewTableBody .btn-anomaly')[2].classList.add('active');
 
-    inputs[5].value = 40;
+    inputs[5].value = 200;
     updateRowReview(5);
-    reviewAnomalies[5] = { damaged: '8', desc: 'Rollos con daño visible en embalaje. 8 rollos presentan humedad.', severity: 'grave' };
+    reviewAnomalies[5] = { damaged: '8', desc: 'Retenedores con daño visible en empaque. 8 unidades presentan humedad y no cumplen estándar.', severity: 'grave' };
     document.querySelectorAll('#reviewTableBody .btn-anomaly')[5].classList.add('active');
     const dmgInputs = document.querySelectorAll('#reviewTableBody .dmg-input');
     dmgInputs[5].value = 8;
@@ -117,7 +117,7 @@ function loadExistingReview() {
     reviewBoxes[idx] = entry.cajas.map(function(c) {
       var num = parseInt(c.code.replace('CAJA-', ''));
       if (num > maxBoxNum) maxBoxNum = num;
-      return { code: c.code, qty: c.qty, size: c.size || 'mediano' };
+      return { code: c.code, qty: c.qty };
     });
     updateBoxButton(idx);
   });
@@ -201,7 +201,7 @@ function toggleAnomalyPanel(idx) {
   }
 
   const existing = reviewAnomalies[idx] || {};
-  const isEditing = !!existing.severity;
+  const isEditing = !!existing.desc;
 
   const qtyInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .qty-input');
   const dmgInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .dmg-input');
@@ -225,14 +225,6 @@ function toggleAnomalyPanel(idx) {
       <span class="summary-item">⚠️ Dañados: <strong>${damaged}</strong></span>
     </div>
     <div class="anomaly-form-row">
-      <div class="anomaly-form-group">
-        <label>Severidad</label>
-        <div class="severity-chips" id="severityChips${idx}">
-          <button class="severity-chip leve ${existing.severity === 'leve' ? 'selected' : ''}" onclick="selectSeverity(${idx},'leve')">Leve</button>
-          <button class="severity-chip moderada ${existing.severity === 'moderada' ? 'selected' : ''}" onclick="selectSeverity(${idx},'moderada')">Moderada</button>
-          <button class="severity-chip grave ${existing.severity === 'grave' ? 'selected' : ''}" onclick="selectSeverity(${idx},'grave')">Grave</button>
-        </div>
-      </div>
     </div>
     <div class="anomaly-form-group" style="margin-bottom:12px;">
       <label>Descripción</label>
@@ -280,13 +272,6 @@ function updateAnomalySummary(idx) {
   }
 }
 
-function selectSeverity(idx, level) {
-  const chips = document.querySelectorAll('#severityChips' + idx + ' .severity-chip');
-  chips.forEach(c => c.classList.remove('selected'));
-  const chip = document.querySelector('#severityChips' + idx + ' .severity-chip.' + level);
-  if (chip) chip.classList.add('selected');
-}
-
 function addPhotos(idx) {
   const input = document.getElementById('anomalyPhoto' + idx);
   if (!input.files || input.files.length === 0) return;
@@ -320,11 +305,8 @@ function registerAnomaly(idx) {
   const dmgInput = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"] .dmg-input');
   const damaged = dmgInput ? dmgInput.value : '0';
   const desc = document.getElementById('anomalyDesc' + idx).value;
-  const chips = document.querySelectorAll('#severityChips' + idx + ' .severity-chip.selected');
-  const severity = chips.length > 0 ? chips[0].textContent.toLowerCase() : '';
-  if (!severity) { alert('Seleccione la severidad'); return; }
 
-  reviewAnomalies[idx] = { damaged: damaged, desc: desc, severity: severity, photos: anomalyPhotos[idx] || [] };
+  reviewAnomalies[idx] = { damaged: damaged, desc: desc, photos: anomalyPhotos[idx] || [] };
   document.querySelectorAll('#reviewTableBody .btn-anomaly')[idx].classList.add('active');
   const row = document.querySelector('#reviewTableBody tr[data-idx="' + idx + '"]');
   row.querySelector('td:nth-child(8)').innerHTML = '<span class="review-status anomaly">⚠ Anomalía</span>';
@@ -405,11 +387,6 @@ function renderBoxPanel(idx) {
   html += '<div class="box-list">';
   boxes.forEach((box, i) => {
     html += '<div class="box-item"><span class="box-item-code">' + box.code + '</span>';
-    html += '<select class="box-size-select" onchange="updateBoxSize(' + idx + ', ' + i + ', this.value)">';
-    html += '<option value="pequeño"' + (box.size === 'pequeño' ? ' selected' : '') + '>Pequeña</option>';
-    html += '<option value="mediano"' + (box.size === 'mediano' ? ' selected' : '') + '>Mediana</option>';
-    html += '<option value="grande"' + (box.size === 'grande' ? ' selected' : '') + '>Grande</option>';
-    html += '</select>';
     html += '<input type="number" class="box-item-input" value="' + (box.qty || '') + '" min="0" oninput="updateBoxQty(' + idx + ', ' + i + ', this.value)" placeholder="0">';
     html += '<span class="box-item-label">unidades</span>';
     html += '<button class="box-item-remove" onclick="removeBox(' + idx + ', ' + i + ')" title="Eliminar caja">✕</button></div>';
@@ -421,7 +398,7 @@ function renderBoxPanel(idx) {
 
 function addBox(idx) {
   if (!reviewBoxes[idx]) reviewBoxes[idx] = [];
-  reviewBoxes[idx].push({ code: 'CAJA-' + String(boxCounter).padStart(3, '0'), qty: 0, size: 'mediano' });
+  reviewBoxes[idx].push({ code: 'CAJA-' + String(boxCounter).padStart(3, '0'), qty: 0 });
   boxCounter++;
   renderBoxPanel(idx);
   updateBoxButton(idx);
@@ -431,10 +408,6 @@ function removeBox(idx, boxIndex) {
   reviewBoxes[idx].splice(boxIndex, 1);
   renderBoxPanel(idx);
   updateBoxButton(idx);
-}
-
-function updateBoxSize(idx, boxIndex, value) {
-  reviewBoxes[idx][boxIndex].size = value;
 }
 
 function updateBoxQty(idx, boxIndex, value) {

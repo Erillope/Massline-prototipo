@@ -1,0 +1,204 @@
+[
+    {
+        "proveedor": "MOTORALMOR CIA. LTDA.",
+        "tipo": "Local",
+        "productos": [
+            {
+                "descripcion": "BENDIX DE RODILLO (3) PIÑON 41 DIENTES - XY12530A(2020) - MOXAL - CHINA",
+                "cantidad": 30
+            },
+            {
+                "descripcion": "KIT DE BALANCINES I/D (PALILLOS) - GY200 - MOXAL - CHINA",
+                "cantidad": 80
+            },
+            {
+                "descripcion": "EMPAQUES KIT 110CC CB 23 PIEZAS - LX1104III(2009) - MOXAL - CHINA",
+                "cantidad": 50
+            },
+            {
+                "descripcion": "CAJA DE TRANSMISION LEP168.5 LES173 (PPM5MM AD3.9MM) - XY200GY6I(2019) - MOXAL - CHINA",
+                "cantidad": 100
+            },
+            {
+                "descripcion": "CILINDRO KIT CG D:69 250CC H:113.30MM P:15 NEGRO (PISTON:PLANO ) - XY250GY6I(2019) - MOXAL - CHINA",
+                "cantidad": 145
+            },
+            {
+                "descripcion": "CAJA DE TRANSMISION LEP168.5 LES173 (PPM5MM AD3.9MM) - 6I250(2022) - MOXAL - CHINA",
+                "cantidad": 100
+            },
+            {
+                "descripcion": "EMPAQUE KIT 250CC CG PALILLOS 15PCS - XY250GY6I(2019) - MOXAL - CHINA",
+                "cantidad": 60
+            },
+            {
+                "descripcion": "EMPAQUE KIT 200CC CGB PALILLOS CONTRAPESA 15PCS - THOR 200 - MOXAL - CHINA",
+                "cantidad": 60
+            },
+            {
+                "descripcion": "EMBRAGUE COMPLETO 4H (3D) - XY12530A(2019) - MOXAL - CHINA",
+                "cantidad": 30
+            },
+            {
+                "descripcion": "CAJA DE TRANSMISION LEP121 LES113,4 PINT3,8MM - XY12530A(2019) - MOXAL - CHINA",
+                "cantidad": 20
+            },
+            {
+                "descripcion": "AMORTIGUADOR CENTRAL DORADO RESORTE NEGRO LT:385 LE:354 - THOR 200 - MOXAL - CHINA",
+                "cantidad": 50
+            },
+            {
+                "descripcion": "FILTRO DE GASOLINA DE PLASTICO MFF02 - UNIVERSAL - MOXAL - CHINA",
+                "cantidad": 200
+            }
+        ]
+    },
+    {
+        "proveedor": "ECOLOGIA Y ENERGIA ECOENERGY CIA. LTDA",
+        "tipo": "Local",
+        "productos": [
+            {
+                "descripcion": "R1 MOTOS ECO SHINERAY 40ML",
+                "cantidad": 1500
+            }
+        ]
+    },
+    {
+        "proveedor": "WUXI  HUAHENG INTERNATIONAL TRADE CORP.",
+        "tipo": "Externa",
+        "productos": [
+            {
+                "descripcion": "Kit de switch",
+                "cantidad": 20,
+                "codigo_massline": "R300-XT1703"
+            }
+        ]
+    },
+    {
+        "proveedor": "WUXI  HUAHENG INTERNATIONAL TRADE CORP.",
+        "tipo": "Externa",
+        "productos": [
+            {
+                "descripcion": "CABLE DE VELOCIMETRO",
+                "cantidad": 150,
+                "codigo_massline": "R150-AR0509"
+            },
+            {
+                "descripcion": "CABLE DE ACELERADOR",
+                "cantidad": 70,
+                "codigo_massline": "R150-AR0507"
+            },
+            {
+                "descripcion": "CABLE DE EMBRAGUE",
+                "cantidad": 60,
+                "codigo_massline": "R150-AR0508"
+            },
+            {
+                "descripcion": "DECORATIVO FRONTAL SUPERIOR",
+                "cantidad": 30,
+                "codigo_massline": "R180-XP1122"
+            },
+            {
+                "descripcion": "PASTILLAS DE FRENO",
+                "cantidad": 100,
+                "codigo_massline": "R150-100837"
+            },
+            {
+                "descripcion": "JUEGO DE RETENEDORES",
+                "cantidad": 200,
+                "codigo_massline": "R180-XP0302"
+            },
+            {
+                "descripcion": "LLAVE DE PASO DE COMBUSTIBLE",
+                "cantidad": 100,
+                "codigo_massline": "R180-XP0903"
+            },
+            {
+                "descripcion": "PIÑON DE VELOCIMETRO",
+                "cantidad": 110,
+                "codigo_massline": "R180-XP0806"
+            },
+            {
+                "descripcion": "SENSOR DE VELOCIMETRO",
+                "cantidad": 110,
+                "codigo_massline": "R180-XP1403"
+            },
+            {
+                "descripcion": "BOBINA DE BUJIA",
+                "cantidad": 25,
+                "codigo_massline": "R180-XP1408"
+            },
+            {
+                "descripcion": "CDI",
+                "cantidad": 50,
+                "codigo_massline": "R180-XP1407"
+            }
+        ]
+    },
+    {
+        "proveedor": "WUXI  HUAHENG INTERNATIONAL TRADE CORP.",
+        "tipo": "Externa",
+        "productos": [
+            {
+                "descripcion": "BASE DE FARO",
+                "cantidad": 100,
+                "codigo_massline": "R150-FR0520"
+            },
+            {
+                "descripcion": "MANUBRIO IZQ./DER.SET NEGRO",
+                "cantidad": 160,
+                "codigo_massline": "R150-FR0256NEG"
+            },
+            {
+                "descripcion": "PITO",
+                "cantidad": 100,
+                "codigo_massline": "R150-FR0309"
+            },
+            {
+                "descripcion": "KIT DE PISTAS DEL TREN DELANTERO",
+                "cantidad": 300,
+                "codigo_massline": "R150-FR0238"
+            },
+            {
+                "descripcion": "MANIJA DE FRENO S/BASE",
+                "cantidad": 50,
+                "codigo_massline": "R150-FR0222"
+            },
+            {
+                "descripcion": "KIT DE TRANSMISION DELANTERA",
+                "cantidad": 144,
+                "codigo_massline": "R150-FR0234"
+            },
+            {
+                "descripcion": "KIT DE TRANSMISION DELANTERA",
+                "cantidad": 6,
+                "codigo_massline": "R150-FR0234"
+            },
+            {
+                "descripcion": "BARRA TELESCOPICA IZQ/DER SET",
+                "cantidad": 28,
+                "codigo_massline": "R150-AR0518"
+            },
+            {
+                "descripcion": "BARRA TELESCOPICA IZQ/DER SET",
+                "cantidad": 2,
+                "codigo_massline": "R150-AR0518"
+            },
+            {
+                "descripcion": "AMORTIGUADOR",
+                "cantidad": 50,
+                "codigo_massline": "R150-AR0605"
+            },
+            {
+                "descripcion": "ARNES ELECTRICO",
+                "cantidad": 50,
+                "codigo_massline": "R150-AR0308"
+            },
+            {
+                "descripcion": "KIT SWITCH",
+                "cantidad": 100,
+                "codigo_massline": "R150-AR0305"
+            }
+        ]
+    }
+]

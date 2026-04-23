@@ -151,7 +151,7 @@
                 <p>El archivo subido no pudo ser procesado. Verifique que cumpla con los requisitos:</p>
                 <ul>
                   <li>Formato permitido: Excel (.xls, .xlsx)</li>
-                  <li>Debe contener las columnas: Código, Descripción, Unidad, Cantidad</li>
+                  <li>Debe contener las columnas: Descripción, Cantidad</li>
                   <li>El archivo no debe estar vacío ni dañado</li>
                 </ul>
               </div>
@@ -166,11 +166,10 @@
                 <h4>Datos incompletos</h4>
                 <p>El archivo Excel no contiene toda la información requerida para la orden de compra. Se encontraron los siguientes errores:</p>
                 <ul>
-                  <li>Columna "Unidad" — no encontrada en el archivo (afecta todas las filas)</li>
                   <li>Columna "Precio unitario" — no encontrada en el archivo</li>
-                  <li>Fila 1 — sin código de producto asignado</li>
-                  <li>Fila 3 — sin código de producto asignado</li>
-                  <li>Fila 5 — sin código de producto asignado</li>
+                  <li>Fila 1 — código Massline no encontrado</li>
+                  <li>Fila 3 — código Massline no encontrado</li>
+                  <li>Fila 5 — código Massline no encontrado</li>
                 </ul>
               </div>
             </div>
@@ -179,11 +178,11 @@
             <div class="po-extracted-info" id="poInfoIncomplete" style="display:none;">
               <div class="po-extracted-item">
                 <span class="po-extracted-label">Código de ingreso</span>
-                <span class="po-extracted-value"><code>PO-2026-0462</code></span>
+                <span class="po-extracted-value"><code>NIR1-000066</code></span>
               </div>
               <div class="po-extracted-item">
                 <span class="po-extracted-label">Proveedor</span>
-                <span class="po-extracted-value">Importadora Andina SpA</span>
+                <span class="po-extracted-value">MOTORALMOR CIA. LTDA.</span>
               </div>
             </div>
 
@@ -195,19 +194,16 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Código producto</th>
-                      <th>Descripción producto</th>
+                      <th>Descripción factura</th>
                       <th>Código Massline</th>
                       <th>Descripción Massline</th>
-                      <th class="missing-col">Unidad ⚠</th>
                       <th>Cantidad</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>1</td>
-                      <td class="missing">— sin código —</td>
-                      <td>Camiseta algodón 100% orgánico</td>
+                      <td>BENDIX DE RODILLO (3) PIÑON 41 DIENTES - XY12530A(2020) - MOXAL - CHINA</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
                           <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
@@ -220,13 +216,11 @@
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td class="missing-col">—</td>
-                      <td>500</td>
+                      <td>30</td>
                     </tr>
                     <tr>
                       <td>2</td>
-                      <td><code>ART-2042</code></td>
-                      <td>Pantalón denim stretch slim</td>
+                      <td>KIT DE BALANCINES I/D (PALILLOS) - GY200 - MOXAL - CHINA</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
                           <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
@@ -239,13 +233,11 @@
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td class="missing-col">—</td>
-                      <td>300</td>
+                      <td>80</td>
                     </tr>
                     <tr>
                       <td>3</td>
-                      <td class="missing">— sin código —</td>
-                      <td>Chaqueta cortaviento impermeable</td>
+                      <td>EMPAQUES KIT 110CC CB 23 PIEZAS - LX1104III(2009) - MOXAL - CHINA</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
                           <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
@@ -258,13 +250,11 @@
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td class="missing-col">—</td>
-                      <td>150</td>
+                      <td>50</td>
                     </tr>
                     <tr>
                       <td>4</td>
-                      <td><code>ART-2044</code></td>
-                      <td>Zapatillas running ultralight</td>
+                      <td>CAJA DE TRANSMISION LEP168.5 LES173 (PPM5MM AD3.9MM) - XY200GY6I(2019) - MOXAL - CHINA</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
                           <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
@@ -277,13 +267,11 @@
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td class="missing-col">—</td>
-                      <td>200</td>
+                      <td>100</td>
                     </tr>
                     <tr>
                       <td>5</td>
-                      <td class="missing">— sin código —</td>
-                      <td>Bufanda lana merino premium</td>
+                      <td>CILINDRO KIT CG D:69 250CC H:113.30MM P:15 NEGRO - XY250GY6I(2019) - MOXAL - CHINA</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
                           <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
@@ -296,8 +284,7 @@
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td class="missing-col">—</td>
-                      <td>400</td>
+                      <td>145</td>
                     </tr>
                   </tbody>
                 </table>
@@ -311,7 +298,55 @@
               </svg>
               <div class="po-error-alert-content">
                 <h4>Orden de compra ya existente</h4>
-                <p>La orden <strong>PO-2026-0451</strong> ya se encuentra registrada en el sistema (ingresada el 10/04/2026). No es posible ingresar una orden duplicada.</p>
+                <p>La orden <strong>NIR1-000051</strong> ya se encuentra registrada en el sistema (ingresada el 10/04/2026). No es posible ingresar una orden duplicada.</p>
+              </div>
+            </div>
+
+            <!-- Info extraída (modo multi-invoice) -->
+            <div class="po-extracted-info" id="poInfoMulti" style="display:none;">
+              <div class="po-extracted-item">
+                <span class="po-extracted-label">Código de ingreso</span>
+                <span class="po-extracted-value"><code id="multiInvoiceNir">NIR1-000063</code></span>
+              </div>
+              <div class="po-extracted-item">
+                <span class="po-extracted-label">Proveedor</span>
+                <span class="po-extracted-value">WUXI HUAHENG INTERNATIONAL TRADE CORP.</span>
+              </div>
+            </div>
+
+            <!-- Sección multi-invoice con carrusel -->
+            <div class="po-table-section" id="poMultiInvoiceSection" style="display:none;">
+              <h3 class="po-table-title">Ítems de la orden — <span style="color:#6c63ff;">3 invoices detectadas</span></h3>
+              <div class="invoice-carousel">
+                <button class="invoice-nav-btn" id="btnPrevInvoice" onclick="navigateInvoice(-1)" disabled>
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <div class="invoice-carousel-center">
+                  <div class="invoice-counter">Invoice <span id="invoiceCurrentNum">1</span> de <span id="invoiceTotalNum">3</span></div>
+                  <div class="invoice-dots" id="invoiceDots"></div>
+                </div>
+                <button class="invoice-nav-btn" id="btnNextInvoice" onclick="navigateInvoice(1)">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="invoice-header-bar" id="invoiceHeaderBar"></div>
+              <div class="table-wrapper">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Descripción factura</th>
+                      <th>Código Massline</th>
+                      <th>Descripción Massline</th>
+                      <th>Cantidad</th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoiceTbody"></tbody>
+                </table>
               </div>
             </div>
 
@@ -319,125 +354,164 @@
             <div class="po-extracted-info" id="poInfoValid" style="display:none;">
               <div class="po-extracted-item">
                 <span class="po-extracted-label">Código de ingreso</span>
-                <span class="po-extracted-value"><code>PO-2026-0462</code></span>
+                <span class="po-extracted-value"><code>NIR1-000062</code></span>
               </div>
               <div class="po-extracted-item">
                 <span class="po-extracted-label">Proveedor</span>
-                <span class="po-extracted-value">Distribuidora ABC Ltda.</span>
+                <span class="po-extracted-value">WUXI HUAHENG INTERNATIONAL TRADE CORP.</span>
               </div>
             </div>
 
             <!-- Tabla estática de ítems PO -->
             <div class="po-table-section" id="poTableSection" style="display:none;">
-              <h3 class="po-table-title">Ítems de la orden (5)</h3>
+              <h3 class="po-table-title">Ítems de la orden (8)</h3>
               <div class="table-wrapper">
                 <table class="data-table">
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Código producto</th>
-                      <th>Descripción producto</th>
+                      <th>Descripción factura</th>
                       <th>Código Massline</th>
                       <th>Descripción Massline</th>
-                      <th>Unidad</th>
                       <th>Cantidad</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>1</td>
-                      <td><code>ART-2041</code></td>
-                      <td>Camiseta algodón 100% orgánico</td>
+                      <td>CABLE DE VELOCIMETRO</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
                       <td class="ml-desc-cell ml-ac-cell">
                         <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td>Unidad</td>
-                      <td>500</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td><code>ART-2042</code></td>
-                      <td>Pantalón denim stretch slim</td>
-                      <td class="ml-ac-cell">
-                        <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
-                          <div class="ml-ac-dropdown"></div>
-                        </div>
-                      </td>
-                      <td class="ml-desc-cell ml-ac-cell">
-                        <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
-                          <div class="ml-ac-dropdown"></div>
-                        </div>
-                      </td>
-                      <td>Unidad</td>
-                      <td>300</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td><code>ART-2043</code></td>
-                      <td>Chaqueta cortaviento impermeable</td>
-                      <td class="ml-ac-cell">
-                        <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input filled" data-field="code" placeholder="Buscar código..." value="ML-5003" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
-                          <div class="ml-ac-dropdown"></div>
-                        </div>
-                      </td>
-                      <td class="ml-desc-cell ml-ac-cell">
-                        <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input filled" data-field="desc" placeholder="Buscar descripción..." value="Chaqueta cortaviento" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
-                          <div class="ml-ac-dropdown"></div>
-                        </div>
-                      </td>
-                      <td>Unidad</td>
                       <td>150</td>
                     </tr>
                     <tr>
-                      <td>4</td>
-                      <td><code>ART-2044</code></td>
-                      <td>Zapatillas running ultralight</td>
+                      <td>2</td>
+                      <td>CABLE DE ACELERADOR</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
                       <td class="ml-desc-cell ml-ac-cell">
                         <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td>Par</td>
-                      <td>200</td>
+                      <td>70</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>CABLE DE EMBRAGUE</td>
+                      <td class="ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input filled ml-externa-lock" data-field="code" placeholder="Buscar código..." value="R150-AR0508" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td class="ml-desc-cell ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input filled ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." value="Cable de embrague" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td>60</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>DECORATIVO FRONTAL SUPERIOR</td>
+                      <td class="ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td class="ml-desc-cell ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td>30</td>
                     </tr>
                     <tr>
                       <td>5</td>
-                      <td><code>ART-2045</code></td>
-                      <td>Bufanda lana merino premium</td>
+                      <td>PASTILLAS DE FRENO</td>
                       <td class="ml-ac-cell">
                         <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input filled" data-field="code" placeholder="Buscar código..." value="ML-5005" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <input type="text" class="ml-ac-input filled ml-externa-lock" data-field="code" placeholder="Buscar código..." value="R150-100837" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
                       <td class="ml-desc-cell ml-ac-cell">
                         <div class="ml-autocomplete">
-                          <input type="text" class="ml-ac-input filled" data-field="desc" placeholder="Buscar descripción..." value="Bufanda lana merino" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <input type="text" class="ml-ac-input filled ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." value="Pastillas de freno" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
                           <div class="ml-ac-dropdown"></div>
                         </div>
                       </td>
-                      <td>Unidad</td>
-                      <td>400</td>
+                      <td>100</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>JUEGO DE RETENEDORES</td>
+                      <td class="ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td class="ml-desc-cell ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td>200</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>LLAVE DE PASO DE COMBUSTIBLE</td>
+                      <td class="ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input filled ml-externa-lock" data-field="code" placeholder="Buscar código..." value="R180-XP0903" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td class="ml-desc-cell ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input filled ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." value="Llave de paso de combustible" onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td>100</td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>PIÑON DE VELOCIMETRO</td>
+                      <td class="ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td class="ml-desc-cell ml-ac-cell">
+                        <div class="ml-autocomplete">
+                          <input type="text" class="ml-ac-input ml-externa-lock" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)">
+                          <div class="ml-ac-dropdown"></div>
+                        </div>
+                      </td>
+                      <td>110</td>
                     </tr>
                   </tbody>
                 </table>
@@ -494,15 +568,15 @@
               </svg>
             </div>
             <h2 class="success-title">Orden registrada exitosamente</h2>
-            <p class="success-text">La orden <strong>PO-2026-0451</strong> ha sido validada y registrada en el sistema.</p>
+            <p class="success-text">La orden <strong>NIR1-000062</strong> ha sido validada y registrada en el sistema.</p>
             <div class="success-details">
               <div class="success-detail-item">
                 <span class="extracted-label">Proveedor</span>
-                <span class="extracted-value">Distribuidora ABC Ltda.</span>
+                <span class="extracted-value">WUXI HUAHENG INTERNATIONAL TRADE CORP.</span>
               </div>
               <div class="success-detail-item">
                 <span class="extracted-label">Productos</span>
-                <span class="extracted-value">3 ítems — $4.580.000</span>
+                <span class="extracted-value">8 ítems &mdash; $6.925.000</span>
               </div>
               <div class="success-detail-item">
                 <span class="extracted-label">Estado</span>

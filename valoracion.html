@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MasStock — Valoración de orden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="val-page">
+
+  <div class="val-header">
+    <div class="val-logo">
+      <img src="assets/logo.png" alt="MasStock">
+      <span class="val-logo-text">MasStock</span>
+    </div>
+    <span class="val-subtitle">Portal de valoración de órdenes</span>
+  </div>
+
+  <div class="val-card">
+
+    <!-- Sección del formulario -->
+    <div class="val-form-section" id="formSection">
+
+      <div class="val-card-header">
+        <div class="val-card-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="val-card-title">Valorar orden de compra</div>
+          <div class="val-card-desc">Ingrese el código de valoración para confirmar</div>
+        </div>
+      </div>
+
+      <!-- Info de la orden -->
+      <div class="val-info">
+        <div class="val-info-item">
+          <div class="val-info-label">Orden</div>
+          <div class="val-info-value" id="infoCode">—</div>
+        </div>
+        <div class="val-info-item">
+          <div class="val-info-label">Proveedor</div>
+          <div class="val-info-value" id="infoProveedor">—</div>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="val-body">
+
+        <div class="val-field">
+          <label for="inputCodigo">Código de valoración</label>
+          <input type="text" id="inputCodigo" placeholder="Ej: VAL-2026-0001"
+                 oninput="checkForm()" autocomplete="off">
+        </div>
+
+
+      </div>
+
+      <div class="val-footer">
+        <button class="btn-confirm-val" id="btnConfirm" onclick="confirmValoracion()" disabled>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Confirmar valoración
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Estado de éxito -->
+    <div class="val-success" id="successSection">
+      <div class="val-success-icon">
+        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="val-success-title">¡Valoración registrada!</div>
+      <div class="val-success-desc">
+        La orden <strong id="successCode">—</strong> ha sido valorada exitosamente.
+        El equipo de bodega ha sido notificado.
+      </div>
+      <div class="val-success-code" id="successValCode"></div>
+    </div>
+
+  </div>
+
+  <script src="js/valoracion.js"></script>
+
+</body>
+</html>
