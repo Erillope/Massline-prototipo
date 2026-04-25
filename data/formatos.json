@@ -1,0 +1,225 @@
+{
+    "orden_compra": {
+        "descripcion": "Orden de compra PO",
+        "campos": [
+            {
+                "key": "codigo_ingreso",
+                "type": "texto",
+                "validation": {
+                    "format": "NIR1-0000XX"
+                }
+            },
+            {
+                "key": "tipo_orden",
+                "type": "opciones",
+                "validation": {
+                    "options": [
+                        "externa",
+                        "local"
+                    ]
+                }
+            },
+            {
+                "key": "proveedor",
+                "type": "texto"
+            },
+            {
+                "key": "items",
+                "type": "lista",
+                "validation": {
+                    "format": "item_orden_compra"
+                }
+            },
+            {
+                "key": "fecha_ingreso",
+                "type": "fecha",
+                "validation": {
+                    "format": "YYYY-MM-DD"
+                }
+            },
+            {
+                "key": "estado",
+                "type": "opciones",
+                "validation": {
+                    "options": [
+                        "Por llegar",
+                        "En bodega",
+                        "Revisada",
+                        "Por almacenar",
+                        "Almacenada",
+                        "Valorada"
+                    ]
+                }
+            },
+            {
+                "key": "codigo_valoracion",
+                "type": "texto",
+                "validation": {
+                    "format": "VAL-XXX"
+                }
+            },
+            {
+                "key": "archivos_adjuntos",
+                "type": "lista",
+                "validation": {
+                    "format": "archivo_adjunto"
+                }
+            }
+        ]
+    },
+    "item_orden_compra": {
+        "descripcion": "Detalle de un item en la orden de compra",
+        "campos": [
+            {
+                "key": "codigo_massline",
+                "type": "texto",
+                "validation": {
+                    "options": "codigos massline registrados en el sistema"
+                }
+            },
+            {
+                "key": "descripcion_massline",
+                "type": "texto",
+                "validation": {
+                    "options": "descripciones massline registradas en el sistema"
+                }
+            },
+            {
+                "key": "codigo_factura",
+                "type": "texto"
+            },
+            {
+                "key": "descripcion_factura",
+                "type": "texto"
+            },
+            {
+                "key": "cantidad",
+                "type": "numero",
+                "validation": {
+                    "min_value": 1
+                }
+            },
+            {
+                "key": "precio_unitario",
+                "type": "numero",
+                "validation": {
+                    "min_value": 0
+                }
+            },
+            {
+                "key": "precio_total",
+                "type": "numero",
+                "validation": {
+                    "min_value": 0
+                }
+            },
+            {
+                "key": "cajas",
+                "type": "lista",
+                "validation": {
+                    "format": "caja"
+                }
+            },
+            {
+                "key": "anomalia",
+                "type": "anomalia"
+            }
+        ]
+    },
+    "archivo_adjunto": {
+        "descripcion": "Archivo adjunto a la orden de compra",
+        "campos": [
+            {
+                "key": "nombre_archivo",
+                "type": "texto"
+            },
+            {
+                "key": "tipo_archivo",
+                "type": "opciones",
+                "validation": {
+                    "options": [
+                        "Excel",
+                        "XML",
+                        "msg",
+                        "eml"
+                    ]
+                }
+            }
+        ]
+    },
+    "caja": {
+        "descripcion": "Detalle de una caja en el item de la orden de compra",
+        "campos": [
+            {
+                "key": "codigo_caja",
+                "type": "texto",
+                "validation": {
+                    "format": "CAJA-XXX"
+                }
+            },
+            {
+                "key": "cantidad_items",
+                "type": "numero",
+                "validation": {
+                    "min_value": 1
+                }
+            },
+            {
+                "key": "posicion",
+                "type": "texto",
+                "validation": {
+                    "format": "FX-NX-CX"
+                }
+            }
+        ]
+    },
+    "anomalia": {
+        "descripcion": "Detalle de una anomalía detectada en el item de la orden de compra",
+        "campos": [
+            {
+                "key": "cantidad_faltantes",
+                "type": "numero"
+            },
+            {
+                "key": "cantidad_sobrantes",
+                "type": "numero"
+            },
+            {
+                "key": "cantidad_danados",
+                "type": "numero"
+            },
+            {
+                "key": "descripcion_anomalia",
+                "type": "texto"
+            },
+            {
+                "key": "fotos",
+                "type": "lista",
+                "validation": {
+                    "format": "foto"
+                }
+            }
+        ]
+    },
+    "data": {
+        "descripcion": "Descripción del dato",
+        "campos": [
+            {
+                "key": "nombre_campo",
+                "type": "tipo_de_dato",
+                "validation": {
+                    "format": "formato_especifico_si_aplica",
+                    "min_length": 5,
+                    "max_length": 100,
+                    "min_value": 0,
+                    "max_value": 1000,
+                    "options": [
+                        "opcion_1",
+                        "opcion_2",
+                        "opcion_3"
+                    ]
+                }
+            }
+        ]
+    }
+}

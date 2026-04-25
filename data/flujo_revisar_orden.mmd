@@ -1,0 +1,39 @@
+---
+title: Caso de Uso 4 — Revisar Orden de Compra
+---
+flowchart TD
+    A([Inicio]) --> B["Selecciona una orden<br/>en estado En bodega"]
+    B --> C[/"Muestra detalle de la orden<br/>— Productos esperados y cantidades<br/>— Proveedor y código NIR"/]
+    C --> D["Registra las cajas a usar<br/>— Cantidad<br/>— Contenido por caja"]
+    D --> E{"¿Confirma<br/>la revisión?"}
+
+    E -- No, continúa revisando --> F["Verifica físicamente los<br/>ítems de la orden"]
+    F --> G{"¿Los ítems corresponden<br/>con la PO?"}
+
+    G -- No --> H["Registra la cantidad de productos<br/>recibidos por ítem"]
+    H --> I[/"Calcula y categoriza diferencias<br/>— Faltantes: recibido &lt; esperado<br/>— Sobrantes por cantidad: recibido &gt; esperado"/]
+    I --> J{"¿Hay productos extra que<br/>no pertenecen a la PO?"}
+    J -- Sí --> K["Registra productos no pertenecientes a la PO<br/>(se categorizan como sobrantes)"]
+    K --> L["Registra cantidad de<br/>productos dañados si los hay"]
+    J -- No --> L
+    G -- Sí, todo en orden --> L
+    L --> E
+
+    E -- Sí, confirma --> M[/"Muestra resumen de la revisión<br/>— Ítems sin anomalías<br/>— Faltantes registrados<br/>— Sobrantes registrados<br/>— Dañados registrados<br/>— Cajas registradas"/]
+    M --> N[/"Muestra lista de destinatarios<br/>del reporte de revisión"/]
+    N --> O["Confirma el envío<br/>del reporte"]
+    O --> P["Registra la revisión en el sistema"]
+    P --> Q["Actualiza el estado de la orden<br/>— Sin anomalías → <b>Revisada</b><br/>— Con anomalías → <b>Revisada con anomalías</b>"]
+    Q --> R["Registra el cambio en el historial<br/>— Fecha y hora de revisión<br/>— Usuario que revisó"]
+    R --> Z([Fin])
+
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class B,D,F,H,K,L,O usuario
+    class C,G,I,J,M,N,P,Q sistema
+    class E,G sistema
+    class R,Q success
+    class A,Z terminal

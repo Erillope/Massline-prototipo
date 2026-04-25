@@ -55,6 +55,8 @@ function handleFiles(event, listId) {
       document.getElementById('poMultiInvoiceSection').style.display = '';
       currentInvoiceIdx = 0;
       renderCurrentInvoice();
+    } else if (simMode === 5) {
+      showManualEntry();
     }
   }
 
@@ -95,9 +97,57 @@ function handleCancel() {
 }
 
 /* === Modo simulación de flujos === */
-let simMode = 0; // 0=válido, 1=archivo no válido, 2=datos incompletos, 3=orden existente, 4=multi-invoice
-const modeLabels = ['Válido', 'Archivo no válido', 'Datos incompletos', 'Orden existente', 'Multi-invoice'];
-const modeClasses = ['', 'mode-1', 'mode-2', 'mode-3', 'mode-4'];
+let simMode = 0; // 0=válido, 1=archivo no válido, 2=datos incompletos, 3=orden existente, 4=multi-invoice, 5=ingreso manual
+const modeLabels = ['Válido', 'Archivo no válido', 'Datos incompletos', 'Orden existente', 'Multi-invoice', 'Ingreso manual'];
+const modeClasses = ['', 'mode-1', 'mode-2', 'mode-3', 'mode-4', 'mode-5'];
+
+/* === Ingreso manual === */
+let manualMode = false;
+
+function showManualEntry() {
+  manualMode = true;
+  var section = document.getElementById('poManualSection');
+  section.style.display = '';
+  var tbody = document.getElementById('manualTableBody');
+  if (tbody.children.length === 0) {
+    addManualRow();
+  }
+  validateForm();
+  section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function addManualRow() {
+  var tbody = document.getElementById('manualTableBody');
+  var rowNum = tbody.children.length + 1;
+  var tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td class="manual-row-num" style="text-align:center; color:#8b8fa3;">' + rowNum + '</td>' +
+    '<td style="min-width:180px;"><input type="text" class="manual-input manual-desc" placeholder="Descripción del producto" oninput="validateForm()"></td>' +
+    '<td class="ml-ac-cell" style="min-width:150px;"><div class="ml-autocomplete"><input type="text" class="ml-ac-input" data-field="code" placeholder="Buscar código..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)"><div class="ml-ac-dropdown"></div></div></td>' +
+    '<td class="ml-desc-cell ml-ac-cell" style="min-width:150px;"><div class="ml-autocomplete"><input type="text" class="ml-ac-input" data-field="desc" placeholder="Buscar descripción..." onfocus="showMlDropdown(this)" oninput="filterMassline(this)"><div class="ml-ac-dropdown"></div></div></td>' +
+    '<td><input type="number" class="manual-input manual-qty" placeholder="0" min="1" oninput="validateForm()"></td>' +
+    '<td style="text-align:center;">' +
+      '<button type="button" class="manual-row-remove" onclick="removeManualRow(this)" title="Eliminar fila">' +
+        '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' +
+        '</svg>' +
+      '</button>' +
+    '</td>';
+  tbody.appendChild(tr);
+  validateForm();
+}
+
+function removeManualRow(btn) {
+  btn.closest('tr').remove();
+  updateManualRowNums();
+  validateForm();
+}
+
+function updateManualRowNums() {
+  document.querySelectorAll('#manualTableBody .manual-row-num').forEach(function(cell, i) {
+    cell.textContent = i + 1;
+  });
+}
 
 function hideAllPoAlerts() {
   document.getElementById('poTableSection').style.display = 'none';
@@ -109,13 +159,17 @@ function hideAllPoAlerts() {
   document.getElementById('poExistsSection').style.display = 'none';
   document.getElementById('poInfoMulti').style.display = 'none';
   document.getElementById('poMultiInvoiceSection').style.display = 'none';
+  document.getElementById('poManualSection').style.display = 'none';
+  document.getElementById('manualTableBody').innerHTML = '';
+  document.getElementById('manualProveedor').value = '';
+  manualMode = false;
   document.querySelectorAll('.ml-ac-input:not(.filled)').forEach(function(input) {
     input.value = '';
   });
 }
 
 function toggleSimMode() {
-  simMode = (simMode + 1) % 5;
+  simMode = (simMode + 1) % 6;
   const btn = document.getElementById('btnToggleMode');
   btn.className = 'toggle-error-mode ' + modeClasses[simMode];
   btn.querySelector('.mode-label').textContent = modeLabels[simMode];
@@ -126,6 +180,20 @@ function toggleSimMode() {
 
 /* === Validación del formulario === */
 function validateForm() {
+  if (manualMode) {
+    var proveedor = (document.getElementById('manualProveedor').value || '').trim();
+    var rows = document.querySelectorAll('#manualTableBody tr');
+    var hasValidRow = false;
+    rows.forEach(function(row) {
+      var desc = row.querySelector('.manual-desc');
+      var qty = row.querySelector('.manual-qty');
+      if (desc && desc.value.trim() && qty && qty.value.trim() && parseInt(qty.value) > 0) {
+        hasValidRow = true;
+      }
+    });
+    document.getElementById('btnProcesar').disabled = !(proveedor && hasValidRow);
+    return;
+  }
   const hasFile = document.getElementById('fileListPO').children.length > 0;
   const isValidMode = simMode === 0 || simMode === 4;
   document.getElementById('btnProcesar').disabled = !(hasFile && isValidMode);
@@ -133,6 +201,14 @@ function validateForm() {
 
 /* === Navegación entre pasos === */
 function goToStep3() {
+  if (manualMode) {
+    var proveedor = document.getElementById('manualProveedor').value.trim() || '—';
+    var rowCount = document.querySelectorAll('#manualTableBody tr').length;
+    document.getElementById('step3NirCode').textContent = 'NIR1-000067';
+    document.getElementById('step3ProveedorVal').textContent = proveedor;
+    document.getElementById('step3ProductosVal').textContent =
+      rowCount + ' ítem' + (rowCount !== 1 ? 's' : '') + ' — ingresados manualmente';
+  }
   document.getElementById('step1').style.display = 'none';
   document.getElementById('step3').style.display = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });

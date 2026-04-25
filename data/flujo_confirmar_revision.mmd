@@ -1,0 +1,37 @@
+---
+title: Caso de Uso 5 — Confirmar Revision
+---
+flowchart TD
+    START([Inicio])
+    START --> SEL["Selecciona una orden en estado<br/><b>Revisada</b> o <b>Revisada con anomalias</b>"]
+
+    SEL --> RES[/"Muestra resumen de la revision<br/>— Items sin anomalias<br/>— Faltantes, sobrantes y danados registrados<br/>— Cajas registradas"/]
+
+    RES --> CHK_LOCAL{"¿La orden es una PO local<br/>con anomalias sin resolver?"}
+
+    CHK_LOCAL -- Si --> BLOCK["🚫 <b>No es posible confirmar:</b><br/>existen anomalias pendientes de<br/>resolucion en una PO local"]:::error
+    BLOCK --> END1([Fin])
+
+    CHK_LOCAL -- No --> POS["Ingresa las posiciones de<br/>almacenamiento para cada caja"]
+    POS --> CHK_CONFIRM{"¿Confirma la revision?"}
+
+    CHK_CONFIRM -- No --> CANCEL["Cancela sin realizar cambios"]
+    CANCEL --> END2([Fin])
+
+    CHK_CONFIRM -- Si --> UPD["Actualiza el estado de la orden<br/>a <b>Por almacenar</b>"]:::success
+    UPD --> HIST["Registra el cambio en el historial<br/>— Fecha y hora de confirmacion<br/>— Usuario que confirmo"]:::success
+    HIST --> SEND["Envia reporte a los destinatarios"]:::success
+    SEND --> END3([Fin])
+
+    classDef error fill:#450a0a,stroke:#dc2626,color:#fca5a5
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+    classDef default fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+
+    class SEL,CHK_CONFIRM,CANCEL,POS usuario
+    class RES,CHK_LOCAL,UPD,HIST,SEND sistema
+    class BLOCK error
+    class UPD,HIST,SEND success
+    class START,END1,END2,END3 terminal

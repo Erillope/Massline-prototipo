@@ -85,6 +85,10 @@
           <div>
             <h1 class="detail-title">Orden <code id="detailCode">—</code></h1>
           </div>
+          <span id="detailAlmacenamientoTime" style="display:none; align-items:center; gap:5px; font-size:12px; font-weight:500; color:#5b21b6; background:#ede9fe; border:1px solid #ddd6fe; border-radius:20px; padding:4px 11px; white-space:nowrap;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            <span id="detailAlmacenamientoTimeText">—</span>
+          </span>
           <span id="detailValoracionTime" style="display:none; align-items:center; gap:5px; font-size:12px; font-weight:500; color:#9c27b0; background:#fdf4ff; border:1px solid #e9d5ff; border-radius:20px; padding:4px 11px; white-space:nowrap;">
             <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span id="detailValoracionTimeText">—</span>
@@ -108,6 +112,7 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
             Almacenar
           </button>
+
         </div>
 
         <!-- Banner estado histórico -->
@@ -122,6 +127,23 @@
           <button class="snapshot-banner-btn" onclick="restoreCurrentState()">
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             Volver al estado actual
+          </button>
+        </div>
+
+        <!-- Banner: Modo edición de emergencia -->
+        <div id="emergencyEditBanner" class="emergency-edit-banner" style="display:none;">
+          <div class="emergency-edit-banner-content">
+            <div class="emergency-edit-banner-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+            </div>
+            <div class="emergency-edit-banner-text">
+              <strong>Modo edición de emergencia</strong>
+              <span>Los cambios requerirán aprobación del supervisor antes de aplicarse.</span>
+            </div>
+          </div>
+          <button class="emergency-edit-banner-cancel" onclick="cancelEmergencyEdit()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            Cancelar
           </button>
         </div>
 
@@ -163,6 +185,12 @@
               </div>
             </div>
           </div>
+          <div class="card-footer-subtle">
+            <button id="detailEmergencyBtn" class="btn-emergency-subtle" onclick="openEmergencyReasonModal()">
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              Edición de emergencia
+            </button>
+          </div>
         </div>
 
         <!-- Productos -->
@@ -174,9 +202,13 @@
               </svg>
             </div>
             <h2>Productos de la orden</h2>
+            <button id="emergencyAddRowBtn" class="btn-add-emergency-row" style="display:none; margin-left:auto;" onclick="addEmergencyRow()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              Agregar ítem
+            </button>
             <button id="detailEditMlBtn" class="btn-edit-ml" style="display:none; margin-left:auto;" onclick="toggleMlEdit()">
               <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-              Editar orden
+              Editar códigos
             </button>
           </div>
           <div class="card-body" style="padding: 0 0 0 0;">
@@ -203,6 +235,17 @@
                 </thead>
                 <tbody id="detailProductTableBody"></tbody>
               </table>
+            </div>
+            <!-- Zona actualizar PO (solo revisada-anomalia local) -->
+            <div id="poUploadZone" style="display:none; padding:0 24px 12px;">
+              <input type="file" id="poUploadInput" style="display:none;" accept=".xls,.xlsx,.csv" onchange="handlePoUpload(this)">
+              <div style="display:flex; justify-content:flex-end; align-items:center; gap:8px;">
+                <div id="poUploadedFile" style="display:none;"></div>
+                <button id="poUploadBtn" onclick="document.getElementById('poUploadInput').click()" style="display:flex; align-items:center; gap:6px; background:none; border:1px solid #e4e4ec; border-radius:7px; padding:5px 11px; font-size:12px; color:#9ca3af; cursor:pointer; font-family:inherit; transition:all 0.15s;" onmouseenter="this.style.color='#6c63ff';this.style.borderColor='#c4b5fd';" onmouseleave="this.style.color='#9ca3af';this.style.borderColor='#e4e4ec';">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                  Actualizar PO
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -239,6 +282,7 @@
                   <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
                 </button>
               </div>
+              <div id="poUpdatedDoc" style="display:none;"></div>
               <div id="detailAnomalyReportDoc" style="display:none; align-items:center; gap:12px; padding:10px 14px; background:#fefce8; border:1px solid #fde68a; border-radius:10px; font-size:13px;">
                 <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#fef3c7;color:#f59e0b;">
                   <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -275,6 +319,16 @@
           </div>
         </div>
 
+      <!-- Barra acción emergencia (sticky bottom) -->
+      <div id="emergencyEditBar" class="emergency-edit-bar" style="display:none;">
+        <span id="emergencyChangeCount" class="emergency-change-count">0 cambios</span>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn-modal-cancel" onclick="cancelEmergencyEdit()">Cancelar</button>
+          <button id="emergencySubmitBtn" class="btn-emergency-confirm" disabled onclick="openEmergencyDiffModal()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Solicitar cambios
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -377,6 +431,73 @@
     </div>
   </div>
 
+  <!-- Modal: Motivo edición de emergencia -->
+  <div class="modal-overlay" id="emergencyReasonModal">
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(217,119,6,0.15));color:#d97706;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+        </div>
+        <div>
+          <h3>Edición de emergencia</h3>
+          <p>Esta acción requiere aprobación del supervisor</p>
+        </div>
+        <button class="modal-close" onclick="closeEmergencyReasonModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="emergency-warning-box">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0; margin-top:1px; color:#f59e0b;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Los cambios <strong>no se aplicarán inmediatamente</strong>. Se enviará una solicitud al supervisor para su revisión y aprobación.</span>
+        </div>
+        <div class="modal-form-group" style="margin-top:16px;">
+          <label class="modal-form-label">Motivo de la edición <span style="color:#ef4444;">*</span></label>
+          <textarea id="emergencyReasonInput" class="modal-form-input" style="resize:vertical; min-height:80px; font-family:inherit;" placeholder="Describa la razón por la que necesita modificar esta orden..." oninput="checkEmergencyReasonBtn()"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeEmergencyReasonModal()">Cancelar</button>
+        <button id="emergencyReasonConfirmBtn" class="btn-modal-confirm" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" disabled onclick="startEmergencyEdit()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          Ingresar modo edición
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Resumen de cambios (diff) -->
+  <div class="modal-overlay" id="emergencyDiffModal">
+    <div class="modal" style="max-width:580px;">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(217,119,6,0.15));color:#d97706;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+        <div>
+          <h3>Cambios solicitados — <span id="emergencyDiffCode">—</span></h3>
+          <p>Revise el resumen antes de enviar la solicitud</p>
+        </div>
+        <button class="modal-close" onclick="closeEmergencyDiffModal()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="emergencyDiffTable"></div>
+        <div class="emergency-reason-display" style="margin-top:14px;">
+          <span class="modal-form-label" style="display:block; margin-bottom:6px;">Motivo</span>
+          <div id="emergencyDiffReason" style="font-size:13px; color:#374151; font-style:italic; line-height:1.5;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeEmergencyDiffModal()">Volver a editar</button>
+        <button class="btn-modal-confirm" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" onclick="sendEmergencyRequest()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          Enviar solicitud
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: Confirmar cambios edición -->
   <div class="modal-overlay" id="confirmEditModal">
     <div class="modal" style="max-width:420px;">
@@ -406,7 +527,47 @@
   </div>
 
 
-  <!-- Photo lightbox -->
+  <!-- Modal: Confirmar actualización PO -->
+  <div class="modal-overlay" id="confirmPoModal">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(99,102,241,0.12));color:#3b82f6;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+        </div>
+        <div>
+          <h3>Confirmar actualización de PO</h3>
+          <p>Se reemplazarán los productos de la orden con los datos del archivo</p>
+        </div>
+        <button class="modal-close" onclick="cancelPoUpload()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-summary">
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Archivo</span>
+            <span class="modal-summary-value" id="confirmPoFileName" style="font-family:monospace; font-size:12px; color:#374151;">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span class="modal-summary-label">Tamaño</span>
+            <span class="modal-summary-value" id="confirmPoFileSize">—</span>
+          </div>
+        </div>
+        <div style="margin-top:14px; padding:12px 14px; background:#fefce8; border:1px solid #fde68a; border-radius:10px; font-size:13px; color:#92400e; display:flex; gap:10px; align-items:flex-start;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0; margin-top:1px; color:#f59e0b;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          <span>Esta acción actualizará cantidades y eliminará líneas según los datos del archivo. Los cambios no se podrán deshacer.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="cancelPoUpload()">Cancelar</button>
+        <button class="btn-modal-confirm" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);" onclick="applyPoUpload()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Aplicar cambios
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="photo-lightbox" id="photoLightbox" onclick="closePhotoLightbox()">
     <button class="photo-lightbox-close" onclick="closePhotoLightbox()">
       <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>

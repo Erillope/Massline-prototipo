@@ -157,6 +157,57 @@
               </div>
             </div>
 
+            <!-- Ingreso manual de datos PO -->
+            <div id="poManualSection" class="po-manual-section" style="display:none;">
+              <div class="manual-mode-banner">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                <div class="manual-mode-banner-text">
+                  <strong>No se pudo leer el formato del archivo</strong>
+                  <span>Ingrese los datos de la orden manualmente para continuar con el registro.</span>
+                </div>
+              </div>
+              <div class="manual-info-fields">
+                <div class="manual-field">
+                  <label>Código de ingreso</label>
+                  <div class="manual-nir-display">
+                    <code>NIR1-000067</code>
+                  </div>
+                </div>
+                <div class="manual-field">
+                  <label>Proveedor <span class="required-star">*</span></label>
+                  <input type="text" id="manualProveedor" class="manual-field-input" placeholder="Nombre del proveedor" oninput="validateForm()">
+                </div>
+              </div>
+              <div class="manual-table-wrap">
+                <div class="manual-table-header">
+                  <h3>Ítems de la orden</h3>
+                  <button type="button" class="btn-add-manual-row" onclick="addManualRow()">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Agregar ítem
+                  </button>
+                </div>
+                <div class="table-wrapper">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Descripción</th>
+                        <th>Código Massline</th>
+                        <th>Descripción Massline</th>
+                        <th>Cantidad</th>
+                        <th style="width:36px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="manualTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
             <!-- Alerta: Datos incompletos -->
             <div class="po-error-alert warning" id="poWarningSection" style="display:none;">
               <svg class="po-error-alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -568,15 +619,15 @@
               </svg>
             </div>
             <h2 class="success-title">Orden registrada exitosamente</h2>
-            <p class="success-text">La orden <strong>NIR1-000062</strong> ha sido validada y registrada en el sistema.</p>
+            <p class="success-text">La orden <strong id="step3NirCode">NIR1-000062</strong> ha sido validada y registrada en el sistema.</p>
             <div class="success-details">
               <div class="success-detail-item">
                 <span class="extracted-label">Proveedor</span>
-                <span class="extracted-value">WUXI HUAHENG INTERNATIONAL TRADE CORP.</span>
+                <span class="extracted-value" id="step3ProveedorVal">WUXI HUAHENG INTERNATIONAL TRADE CORP.</span>
               </div>
               <div class="success-detail-item">
                 <span class="extracted-label">Productos</span>
-                <span class="extracted-value">8 ítems &mdash; $6.925.000</span>
+                <span class="extracted-value" id="step3ProductosVal">8 ítems &mdash; $6.925.000</span>
               </div>
               <div class="success-detail-item">
                 <span class="extracted-label">Estado</span>

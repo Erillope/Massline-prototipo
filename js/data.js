@@ -355,7 +355,34 @@ const orderBoxesPrev = {
   ]
 };
 
-// Versión anterior de códigos ML (antes de edición) — 8 items con algunos "incorrectos" para demo
+// Solicitudes de edición de emergencia pendientes de aprobación
+const emergencyRequests = [
+  {
+    id: 'EE-001',
+    code: 'NIR1-000060',
+    proveedor: 'WUXI HUAHENG INTERNATIONAL TRADE CORP.',
+    requestedBy: 'Carlos Méndez',
+    requestedAt: '23/04/2026 10:32',
+    motivo: 'El proveedor informó por correo que la guía de despacho refleja 140 unidades de Cable de velocímetro, no 150. Se adjunta corrección del documento de embarque. Además se agrega un ítem de arnés eléctrico que venía incluido en el mismo contenedor.',
+    changes: [
+      { campo: 'Cantidad — CABLE DE VELOCIMETRO (WUX-001)', antes: '150', despues: '140' },
+      { campo: 'Nuevo ítem', antes: '—', despues: 'ARNES ELECTRICO (R150-AR0308) × 50', type: 'added' },
+    ],
+    status: 'pendiente'
+  },
+  {
+    id: 'EE-002',
+    code: 'NIR1-000058',
+    proveedor: 'MOTORALMOR CIA. LTDA.',
+    requestedBy: 'Ana López',
+    requestedAt: '22/04/2026 16:15',
+    motivo: 'Error de digitación al registrar la orden. La cantidad del ítem CILINDRO KIT CG D:69 250CC fue ingresada incorrectamente; la factura del proveedor indica 120 unidades.',
+    changes: [
+      { campo: 'Cantidad — CILINDRO KIT CG D:69 250CC H:113.30MM', antes: '145', despues: '120' },
+    ],
+    status: 'pendiente'
+  }
+];
 const masslineCatalogPrev = [
   { code: 'R150-AR0509', desc: 'Cable de velocímetro' },
   { code: 'R150-AR0507', desc: 'Cable de acelerador' },

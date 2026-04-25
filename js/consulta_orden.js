@@ -404,8 +404,40 @@ function toggleSimMode() {
   applySimMode();
 }
 
-/* === Leer toast desde URL params (retorno de otras páginas) === */
+/* === Panel de Solicitudes de Edición de Emergencia === */
+
+function renderEmergencyRequestsPanel() {
+  var panel = document.getElementById('emergencyRequestsPanel');
+  if (!panel) return;
+  var pending = emergencyRequests.filter(function(r) { return r.status === 'pendiente'; });
+  if (pending.length === 0) {
+    panel.style.display = 'none';
+    panel.innerHTML = '';
+    return;
+  }
+  panel.style.display = '';
+
+  var html = '<div class="er-panel">';
+  html += '<div class="er-panel-header" onclick="window.location.href=\'solicitud_edicion.html\'">';
+  html += '<div class="er-panel-header-left">';
+  html += '<span class="er-panel-dot"></span>';
+  html += '<svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>';
+  html += '<strong>' + pending.length + ' solicitud' + (pending.length !== 1 ? 'es' : '') + ' de edición pendiente' + (pending.length !== 1 ? 's' : '') + ' de aprobación</strong>';
+  html += '</div>';
+  html += '<div style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:#92400e;">';
+  html += '<span>Ver solicitudes</span>';
+  html += '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  panel.innerHTML = html;
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
+  renderEmergencyRequestsPanel();
+
   var params = new URLSearchParams(window.location.search);
   var toast = params.get('toast');
   var code = params.get('code');

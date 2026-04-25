@@ -1,0 +1,47 @@
+---
+title: Caso de Uso 1 — Ingresar Orden de Compra
+---
+flowchart TD
+    A([Inicio]) --> B["Selecciona archivo de la orden de compra<br/>Excel → PO externa / XML → PO local"]
+    B --> C{"¿El archivo tiene<br/>formato válido?"}
+    C -- No --> D["<b>⚠ Muestra error:</b><br/>El archivo no es válido o no<br/>tiene el formato esperado"]
+    D --> B
+    C -- Sí --> E{"¿El sistema puede<br/>procesar el formato?"}
+
+    E -- No --> F["<b>[Flujo alt.]</b> Formato no procesable<br/>Muestra opción de ingreso manual"]
+    F --> G["Ingresa datos manualmente<br/>— Proveedor<br/>— Código y descripción de productos<br/>— Cantidades"]
+    G --> P["Adjunta archivo de email<br/>como evidencia de la orden de compra"]
+
+    E -- Sí --> H["Procesa el archivo y extrae<br/>— Proveedor<br/>— Código y descripción de productos<br/>— Cantidades"]
+    H --> I{"¿El archivo contiene<br/>múltiples POs?"}
+    I -- Sí --> J["<b>[Flujo alt.]</b> Varias POs en el archivo<br/>Muestra resumen de cada PO detectada"]
+    J --> K["Selecciona la PO a registrar"]
+    K --> L{"¿Es una PO local?"}
+    I -- No --> L
+
+    L -- Sí --> M["Completa automáticamente los campos reconocidos<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
+    M --> N["Completa los campos no reconocidos<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
+    N --> P
+
+    L -- No --> O["Completa todos los campos automáticamente<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
+    O --> P
+
+    P --> Q["Asigna número de ingreso <b>NIR-XXXX</b>"]
+    Q --> R["Asigna estado <b>Por llegar</b>"]
+    R --> S["Asigna fecha de ingreso"]
+    S --> T[/"Muestra resumen de la orden ingresada<br/>— Número NIR asignado<br/>— Proveedor<br/>— Productos y cantidades"/]
+    T --> Z([Fin])
+
+    classDef error fill:#450a0a,stroke:#dc2626,color:#fca5a5
+    classDef alt fill:#422006,stroke:#d97706,color:#fde68a
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class D error
+    class F,J alt
+    class T success
+    class B,G,K,N,P usuario
+    class C,E,H,I,L,M,O,Q,R,S sistema
+    class A,Z terminal

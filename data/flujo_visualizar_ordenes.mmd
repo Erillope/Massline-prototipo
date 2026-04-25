@@ -1,0 +1,43 @@
+---
+title: Caso de Uso 2 — Visualizar Ordenes de Compra
+---
+flowchart TD
+    A([Inicio]) --> B["Accede a la sección<br/>de órdenes de compra"]
+    B --> C{"¿Existen órdenes<br/>registradas?"}
+
+    C -- No --> D["<b>[Flujo alt.]</b> Sin órdenes disponibles<br/>Muestra mensaje: no hay órdenes registradas"]
+    D --> Z1([Fin])
+
+    C -- Sí --> E[/"Muestra lista de órdenes ordenada por prioridad<br/>1. En bodega sin revisar<br/>2. Revisadas con anomalías<br/>3. Ingresadas recientes<br/>4. Almacenadas"/]
+    E --> F{"¿El usuario aplica<br/>filtros o búsqueda?"}
+
+    F -- Sí --> G["Ingresa criterios de búsqueda<br/>— Código de orden<br/>— Proveedor<br/>— Fecha de ingreso<br/>— Estado"]
+    G --> H["Filtra la lista según<br/>los criterios ingresados"]
+    H --> I{"¿Se encontraron<br/>órdenes?"}
+
+    I -- No --> J["<b>[Flujo alt.]</b> Sin resultados<br/>Muestra mensaje: no se encontraron<br/>órdenes con los criterios indicados"]
+    J --> K{"¿El usuario modifica<br/>la búsqueda?"}
+    K -- Sí --> G
+    K -- No, abandona --> Z2([Fin])
+
+    I -- Sí --> L[/"Muestra lista de<br/>órdenes resultante"/]
+    F -- No, lista por defecto --> L
+
+    L --> M["Selecciona una orden<br/>de compra de la lista"]
+    M --> N[/"Muestra el detalle<br/>de la orden seleccionada"/]
+    N --> O[/"Muestra documentos adjuntos"/]
+    O --> P{"¿La orden tiene<br/>anomalías registradas?"}
+
+    P -- Sí --> Q[/"Muestra detalle<br/>de las anomalías"/]
+    Q --> Z3([Fin])
+    P -- No --> Z3
+
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef alt fill:#422006,stroke:#d97706,color:#fde68a
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class B,G,M usuario
+    class C,E,H,I,L,N,O,P,Q sistema
+    class D,J alt
+    class A,Z1,Z2,Z3 terminal
