@@ -1,0 +1,33 @@
+---
+title: Caso de Uso 11 — Historial de Cambios
+---
+flowchart TD
+    A([Inicio]) --> B["Visualiza el detalle de la PO"]
+    B --> C["Abre la vista de historial<br/>de versiones de la PO"]
+    C --> D[/"Muestra todas las versiones<br/>registradas de la PO"/]
+    D --> E{"¿Selecciona una version<br/>para revisar?"}
+
+    E -- No --> Z([Fin])
+
+    E -- Si --> F["Selecciona una version<br/>antigua o reciente"]
+    F --> G[/"Muestra los campos de la PO<br/>tal como estaban en esa version"/]
+    G --> H{"¿La version tiene<br/>modificaciones registradas?"}
+
+    H -- Si --> I[/"Muestra modificaciones de la version<br/>— Campo modificado<br/>— Valor anterior y nuevo<br/>— Fecha y usuario"/]
+    H -- No --> J[/"Muestra mensaje:<br/>sin modificaciones en esta version"/]
+
+    I --> K{"¿Desea revisar otra version?"}
+    J --> K
+
+    K -- Si --> D
+    K -- No --> Z
+
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class B,C,E,F,K usuario
+    class D,G,H,J sistema
+    class I success
+    class A,Z terminal

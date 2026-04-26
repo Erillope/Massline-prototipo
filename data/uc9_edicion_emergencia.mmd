@@ -1,0 +1,31 @@
+---
+title: Caso de Uso 9 — Edicion Emergencia
+---
+flowchart TD
+	A([Inicio]) --> B["Visualiza el detalle<br/>de una orden de compra"]
+	B --> C["Inicia edicion de emergencia<br/>sobre la orden"]
+	C --> D["Edita campos de la orden<br/>segun la situacion de emergencia"]
+	D --> E{"¿Confirma finalizar<br/>la edicion?"}
+
+	E -- No, continua editando --> D
+
+	E -- Si, continuar --> F[/"Muestra resumen de cambios<br/>realizados en la orden"/]
+	F --> G{"¿Confirma el envio<br/>de la solicitud?"}
+
+	G -- No --> D
+
+	G -- Si --> H["Registra solicitud de edicion<br/>de emergencia"]
+	H --> I["Marca la solicitud como<br/><b>Pendiente de aprobacion</b>"]
+	I --> J["Bloquea otras ediciones regulares<br/>de la orden mientras este pendiente"]
+	J --> K[/"Notifica que existe una solicitud<br/>de edicion de emergencia"/]
+	K --> Z([Fin])
+
+	classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+	classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+	classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+	classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+	class B,C,D,E,G usuario
+	class F,H,I,J sistema
+	class K success
+	class A,Z terminal

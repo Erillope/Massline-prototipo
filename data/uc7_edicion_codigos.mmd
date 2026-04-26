@@ -1,0 +1,40 @@
+---
+title: Caso de Uso 7 — Edición Códigos Massline
+---
+flowchart TD
+    A([Inicio]) --> B["Selecciona una orden en estado<br/><b>Por llegar</b> o <b>En bodega</b>"]
+    B --> C[/"Muestra el detalle de la orden<br/>— Productos con códigos massline asignados"/]
+    C --> D{"¿Algún producto tiene<br/>un código incorrecto?"}
+
+    D -- No --> Z([Fin])
+
+    D -- Sí --> E["Selecciona el producto<br/>a corregir"]
+    E --> F{"¿Cómo realiza<br/>la corrección?"}
+
+    F -- "Por código" --> G["Ingresa el nuevo<br/>código massline"]
+    F -- "Por descripción" --> H["Busca y selecciona el código<br/>por descripción del producto"]
+
+    G --> I[/"Muestra el código<br/>massline actualizado"/]
+    H --> I
+
+    I --> J{"¿Hay más productos<br/>a corregir?"}
+    J -- Sí --> E
+    J -- No --> K{"¿Confirma<br/>los cambios?"}
+
+    K -- No --> L["Cancela sin realizar cambios"]
+    L --> Z
+
+    K -- Sí --> M["Actualiza los códigos massline<br/>en la orden de compra"]
+    M --> N["Registra el cambio en el historial<br/>— Fecha y hora de la edición<br/>— Usuario que realizó la edición<br/>— Códigos modificados"]
+    N --> O[/"Muestra confirmación de éxito"/]
+    O --> Z
+
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class B,D,E,F,G,H,J,K,L usuario
+    class C,I,M sistema
+    class N,O success
+    class A,Z terminal

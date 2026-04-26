@@ -30,7 +30,7 @@
             "prioridad": null,
             "estado": "Pendiente",
             "estado_prototipo": "Pendiente",
-            "estimacion_hrs": null,
+            "estimacion_hrs": 18,
             "dependencias": []
         },
         {
@@ -59,7 +59,7 @@
             "prioridad": null,
             "estado": "Pendiente",
             "estado_prototipo": "Pendiente",
-            "estimacion_hrs": null,
+            "estimacion_hrs": 12,
             "dependencias": [
                 "Ingresar orden de compra"
             ]
@@ -88,7 +88,7 @@
             "prioridad": null,
             "estado": "Pendiente",
             "estado_prototipo": "Pendiente",
-            "estimacion_hrs": null,
+            "estimacion_hrs": 4,
             "dependencias": [
                 "Visualizar orden de compra"
             ]
@@ -123,7 +123,7 @@
             "prioridad": null,
             "estado": "Pendiente",
             "estado_prototipo": "Pendiente",
-            "estimacion_hrs": null,
+            "estimacion_hrs": 18,
             "dependencias": [
                 "Ingresar orden de compra",
                 "Registrar llegado de PO"
@@ -153,7 +153,8 @@
                 "Al confirmar, el sistema debe actualizar el estado de la orden a 'Por almacenar'.",
                 "Al confirmar, el sistema debe enviar el reporte de revisión a los destinatarios correspondientes.",
                 "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora y usuario que confirmó la revisión."
-            ]
+            ],
+            "estimacion_hrs": 7
         },
         {
             "id": 6,
@@ -184,7 +185,167 @@
             "prioridad": null,
             "estado": "Pendiente",
             "estado_prototipo": "Pendiente",
-            "estimacion_hrs": null,
+            "estimacion_hrs": 6,
+            "dependencias": []
+        },
+        {
+            "id": 7,
+            "nombre": "Edición códigos massline",
+            "descripcion": "El usuario puede editar los códigos massline y sus descripciones para los productos de una orden de compra, lo que permite corregir o actualizar la información de los productos según sea necesario.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar en estado 'Por llegar' o 'En bodega'."
+            ],
+            "postcondiciones": [
+                "Los códigos massline y sus descripciones quedan actualizados en el sistema.",
+                "El cambio en los códigos massline queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+            ],
+            "reglas_negocio": [
+                "Solo se pueden editar códigos massline de órdenes con en estado 'Por llegar', o 'En bodega'."
+            ],
+            "criterios_aceptacion": [
+                "Solo se pueden editar códigos massline de órdenes en estado 'Por llegar' o 'En bodega'.",
+                "El sistema debe mostrar los códigos massline actuales de cada producto al visualizar el detalle de la orden.",
+                "El usuario debe poder editar el código massline de un producto ingresándolo directamente.",
+                "El usuario debe poder editar el código massline de un producto buscando por descripción.",
+                "El usuario debe poder corregir múltiples productos en la misma sesión de edición.",
+                "Si el usuario cancela la edición, el sistema no debe realizar ningún cambio en los códigos massline existentes.",
+                "Al confirmar la edición, el sistema debe actualizar los códigos massline en la orden.",
+                "El cambio de códigos massline debe quedar registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 6,
+            "dependencias": []
+        },
+        {
+            "id": 8,
+            "nombre": "Editar revisión",
+            "descripcion": "El usuario puede editar los detalles de una revisión realizada a una orden de compra, lo que permite corregir o actualizar la información registrada durante la revisión según sea necesario.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar en estado 'Revisada'"
+            ],
+            "postcondiciones": [
+                "Los detalles de la revisión quedan actualizados en el sistema.",
+                "El cambio en la revisión queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+            ],
+            "reglas_negocio": [
+                "Solo se pueden editar revisiones de órdenes en estado 'Revisada'."
+            ],
+            "criterios_aceptacion": [
+                "Solo se pueden editar revisiones de órdenes en estado 'Revisada'.",
+                "El sistema debe mostrar los detalles actuales de la revisión al visualizar el detalle de la orden revisada.",
+                "El usuario debe poder editar las cajas registradas, las cantidades recibidas por ítem, y las anomalías registradas.",
+                "Antes de guardar cambios, el sistema debe mostrar un resumen de la revisión editada.",
+                "Si el usuario no confirma el resumen, el sistema debe permitir volver a la edición sin aplicar cambios.",
+                "Si el usuario cancela la edición, el sistema no debe realizar ningún cambio en los detalles de la revisión existentes.",
+                "Al confirmar el resumen de la edición, el sistema debe actualizar los detalles de la revisión en la orden.",
+                "El cambio en la revisión debe quedar registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 10,
+            "dependencias": []
+        },
+        {
+            "id": 9,
+            "nombre": "Edición emergencia",
+            "descripcion": "El usuario puede realizar una edición de emergencia en los detalles de una orden de compra, lo que permite corregir o actualizar información crítica de la orden en situaciones excepcionales.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar registrada en el sistema."
+            ],
+            "postcondiciones": [
+                "Los detalles editados de la orden de compra quedan actualizados en el sistema.",
+                "El cambio realizado en la edición de emergencia queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición, junto con una justificación del motivo de la edición.",
+                "Mientras la solicitud de edición de emergencia esté pendiente de aprobación, no se pueden realizar otras ediciones regulares en la orden de compra."
+            ],
+            "reglas_negocio": [
+                "La edición de emergencia debe ser utilizada solo en casos excepcionales y debe requerir una justificación clara del motivo de la edición.",
+                "La edición de emergencia permitirá al usuario editar cualquier detalle de la orden de compra, sin necesidad de validar otras reglas de negocio o restricciones que normalmente se aplicarían a las ediciones regulares.",
+                "La edición no se realizará de inmediato, sino que quedará registrada como una solicitud de edición de emergencia que debe ser revisada y aprobada por un usuario con permisos especiales antes de aplicarse a la orden de compra.",
+                "Mientras la solicitud de edición de emergencia esté en estado 'Pendiente de aprobación', deben bloquearse las ediciones regulares de la orden."
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe permitir al usuario ingresar una justificación detallada para la edición de emergencia.",
+                "Al solicitar una edición de emergencia, el sistema debe registrar la solicitud con la fecha, hora, usuario y justificación, y marcarla como 'Pendiente de aprobación'.",
+                "Mientras la solicitud permanezca en estado 'Pendiente de aprobación', el sistema debe bloquear cualquier intento de edición regular sobre la misma orden e informar el motivo del bloqueo.",
+                "Un usuario con permisos especiales debe poder revisar las solicitudes de edición de emergencia y aprobar o rechazar cada solicitud.",
+                "Si la solicitud es aprobada, el sistema debe aplicar los cambios editados a la orden de compra y actualizar el historial con la información de la edición de emergencia.",
+                "Si la solicitud es rechazada, el sistema debe mantener los detalles originales de la orden sin cambios y registrar el rechazo en el historial con la fecha, hora, usuario que rechazó y motivo del rechazo."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 10,
+            "dependencias": []
+        },
+        {
+            "id": 10,
+            "nombre": "Revisar solicitud de edición de emergencia",
+            "descripcion": "Un usuario con permisos especiales revisa las solicitudes de edición de emergencia realizadas en las órdenes de compra, lo que permite aprobar o rechazar estas solicitudes según la justificación y la necesidad de la edición.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "Debe existir al menos una solicitud de edición de emergencia en estado 'Pendiente de aprobación'."
+            ],
+            "postcondiciones": [
+                "La solicitud de edición de emergencia queda registrada como aprobada o rechazada en el sistema.",
+                "Si la solicitud es aprobada, los cambios editados se aplican a la orden de compra y quedan registrados en el historial con la información de la edición de emergencia.",
+                "Si la solicitud es rechazada, los detalles originales de la orden se mantienen sin cambios y el rechazo queda registrado en el historial con la información correspondiente."
+            ],
+            "reglas_negocio": [
+                "Cuando se termine la revisión de una solicitud de edición de emergencia, ya se habilitan las ediciones regulares de la orden.",
+                "Si se rechaza la solicitud, debe incluir una justificación del motivo del rechazo que quede registrada en el historial de la orden."
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar una lista de todas las solicitudes de edición de emergencia en estado 'Pendiente de aprobación' para que el usuario con permisos especiales pueda revisarlas.",
+                "El usuario debe poder revisar la justificación y los detalles editados propuestos en cada solicitud.",
+                "El usuario debe poder aprobar o rechazar cada solicitud de edición de emergencia mediante una acción clara en la interfaz.",
+                "El sistema debe requerir que el usuario proporcione una justificación al rechazar una solicitud de edición de emergencia.",
+                "Al aprobar una solicitud, el sistema debe aplicar los cambios editados a la orden de compra, actualizar el historial con la información de la edición de emergencia, y desbloquear las ediciones regulares para esa orden.",
+                "Al rechazar una solicitud, el sistema debe mantener los detalles originales de la orden sin cambios, registrar el rechazo en el historial con la información correspondiente, y desbloquear las ediciones regulares para esa orden."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 8,
+            "dependencias": [
+                "Edición emergencia"
+            ]
+        },
+        {
+            "id": 11,
+            "nombre": "Historial de cambios",
+            "descripcion": "El usuario puede visualizar un historial detallado de los cambios realizados en una orden de compra, lo que permite rastrear todas las modificaciones, revisiones y eventos relacionados con la orden a lo largo del tiempo.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar registrada en el sistema."
+            ],
+            "postcondiciones": [
+                "El usuario puede ver un historial completo de los cambios realizados en la orden de compra, incluyendo detalles de cada cambio, fecha, hora y usuario responsable."
+            ],
+            "reglas_negocio": [
+                "El historial de cambios debe incluir todas las modificaciones realizadas en la orden de compra, incluyendo ediciones regulares, ediciones de emergencia, revisiones, valoraciones y cambios de estado."
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe permitir al usuario visualizar todas las versiones registradas de la orden de compra.",
+                "El usuario debe poder seleccionar una versión específica de la orden para revisarla.",
+                "Al seleccionar una versión, el sistema debe mostrar los campos de la orden tal como estaban en ese momento.",
+                "Si la versión seleccionada contiene modificaciones registradas, el sistema debe mostrar el detalle de esas modificaciones, incluyendo campo modificado, valor anterior, valor nuevo, fecha, hora y usuario responsable.",
+                "El historial debe incluir las modificaciones, revisiones, valoraciones y cambios de estado registrados sobre la orden de compra."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 8,
             "dependencias": []
         }
     ]

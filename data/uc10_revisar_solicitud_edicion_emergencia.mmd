@@ -1,0 +1,33 @@
+---
+title: Caso de Uso 10 — Revisar Solicitud de Edicion de Emergencia
+---
+flowchart TD
+    A([Inicio]) --> B["Recibe notificacion de una<br/>solicitud de edicion de emergencia"]
+    B --> C["Accede al detalle<br/>de la solicitud"]
+    C --> D[/"Muestra detalle de la solicitud<br/>— Justificacion de emergencia<br/>— Campos editados propuestos"/]
+    D --> E[/"Muestra resumen de cambios<br/>a aprobar o rechazar"/]
+    E --> F{"¿Aprueba la solicitud?"}
+
+    F -- Si --> G["Aplica los cambios editados<br/>en la orden de compra"]
+    G --> H["Actualiza la solicitud a estado<br/><b>Aprobada</b>"]
+    H --> I["Registra la aprobacion en el historial<br/>— Fecha y hora<br/>— Usuario revisor"]
+    I --> J["Habilita nuevamente las ediciones<br/>regulares de la orden"]
+    J --> Z([Fin])
+
+    F -- No --> K["Ingresa motivo del rechazo"]
+    K --> L{"¿Confirma<br/>el rechazo?"}
+    L -- No --> K
+    L -- Si --> M["Actualiza la solicitud a estado<br/><b>Rechazada</b> con motivo"]
+    M --> N["Mantiene la orden sin aplicar<br/>los cambios propuestos"]
+    N --> O["Registra el rechazo en el historial<br/>— Fecha y hora<br/>— Usuario revisor<br/>— Motivo del rechazo"]
+    O --> J
+
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class B,C,F,K,L usuario
+    class D,E,G,H,M,N,J sistema
+    class I,O success
+    class A,Z terminal

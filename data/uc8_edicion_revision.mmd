@@ -1,0 +1,30 @@
+---
+title: Caso de Uso 8 — Editar Revision
+---
+flowchart TD
+	A([Inicio]) --> B["Selecciona una orden<br/>en estado <b>Revisada</b>"]
+	B --> C[/"Muestra detalle de la revision actual<br/>— Cajas registradas<br/>— Cantidades recibidas por item<br/>— Anomalias registradas"/]
+	C --> D["Edita la revision de la orden<br/>— Cajas<br/>— Cantidades por item<br/>— Anomalias"]
+	D --> E{"¿Confirma<br/>la edicion?"}
+
+	E -- No, continua editando --> D
+
+	E -- Si, confirma --> F[/"Muestra resumen de la revision editada<br/>— Items sin anomalias<br/>— Faltantes registrados<br/>— Sobrantes registrados<br/>— Danados registrados<br/>— Cajas registradas"/]
+	F --> G{"¿Confirma el resumen<br/>de la revision?"}
+
+	G -- No --> D
+
+	G -- Si --> H["Actualiza los datos de la revision<br/>en la orden de compra"]
+	H --> I["Registra el cambio en el historial<br/>— Fecha y hora de la edicion<br/>— Usuario que realizo la edicion"]
+	I --> J[/"Muestra confirmacion de exito"/]
+	J --> Z([Fin])
+
+	classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+	classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+	classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+	classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+	class B,D,E,G usuario
+	class C,F,H sistema
+	class I,J success
+	class A,Z terminal
