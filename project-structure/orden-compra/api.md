@@ -20,6 +20,8 @@
 | 14 | `POST` | `/api/v1/purchase-orders/emergency-edit-requests/{requestId}/approve` | UC10 — Aprobar solicitud de emergencia |
 | 15 | `POST` | `/api/v1/purchase-orders/emergency-edit-requests/{requestId}/reject` | UC10 — Rechazar solicitud de emergencia |
 | 16 | `GET` | `/api/v1/purchase-orders/{nir}/history` | UC11 — Ver historial de cambios de una orden |
+| 17 | `POST` | `/api/v1/purchase-orders/{nir}/reinvoice/preview` | UC12 — Previsualizar cambios de refacturación |
+| 18 | `POST` | `/api/v1/purchase-orders/{nir}/reinvoice` | UC12 — Aplicar refacturación de orden de compra |
 
 ---
 
@@ -60,7 +62,7 @@ Content-Type: multipart/form-data
   "order": {
     "invoiceCode": "PROV-001",
     "proveedorName": "Motoralmor Cia. Ltda.",
-    "poType": "external",     // "external" | "local"
+    "poType": "external",     // "external" | "local" | "local_directa"
     "items": [
       {
         "proveedorDescription": "BENDIX DE RODILLO (3) PIÑON 41 DIENTES - XY12530A(2020)",
@@ -135,6 +137,21 @@ Content-Type: multipart/form-data
 
 > El frontend habilita el modo de ingreso manual al recibir `UNPROCESSABLE_FILE`.
 
+#### `422 Unprocessable Entity` — Fecha límite de ingreso vencida (solo PO local única)
+
+```json
+{
+  "timestamp": "2026-05-02T10:30:00",
+  "status": 422,
+  "error": "Unprocessable Entity",
+  "errorCode": "DEADLINE_EXCEEDED",
+  "message": "La fecha límite de ingreso de esta PO local ha vencido. No es posible registrar la orden.",
+  "path": "/api/v1/purchase-orders/parse"
+}
+```
+
+> Solo aplica cuando el archivo contiene una única PO local con fecha vencida (`result: "single"`). Si el archivo contiene múltiples POs, el parse devuelve el listado normalmente y la validación de fecha ocurre en `POST /purchase-orders` al intentar registrar la orden seleccionada.
+
 ---
 
 ### 2. `POST /api/v1/purchase-orders`
@@ -160,7 +177,7 @@ Content-Type: multipart/form-data
 {
   "invoiceCode": "PROV-001",
   "proveedorName": "Motoralmor Cia. Ltda.",
-  "poType": "external",     // "external" | "local"
+  "poType": "external",     // "external" | "local" | "local_directa"
   "source": "file",         // "file" | "manual"
   "items": [
     {
@@ -181,7 +198,7 @@ Content-Type: multipart/form-data
 {
   "nir": "NIR1-000062",
   "proveedorName": "Motoralmor Cia. Ltda.",
-  "status": "por_llegar",
+  "status": "por_llegar",    // "por_valorar" si poType = "local_directa"
   "itemCount": 8,
   "fechaIngreso": "2026-05-02T10:30:00",
   "createdBy": "Carlos Méndez"
@@ -210,6 +227,19 @@ Content-Type: multipart/form-data
   "error": "Unprocessable Entity",
   "errorCode": "VALIDATION_ERROR",
   "message": "La orden debe contener al menos un producto. Todos los ítems deben tener masslineCode y masslineDescription.",
+  "path": "/api/v1/purchase-orders"
+}
+```
+
+#### `422 Unprocessable Entity` — Fecha límite de ingreso vencida (solo PO locales)
+
+```json
+{
+  "timestamp": "2026-05-02T10:30:00",
+  "status": 422,
+  "error": "Unprocessable Entity",
+  "errorCode": "DEADLINE_EXCEEDED",
+  "message": "La fecha límite de ingreso de esta PO local ha vencido. No es posible registrar la orden.",
   "path": "/api/v1/purchase-orders"
 }
 ```
@@ -267,7 +297,7 @@ Retorna la lista de órdenes de compra. Sin filtros, aplica el orden de priorida
     {
       "nir": "NIR1-000060",
       "proveedorName": "Motoralmor Cia. Ltda.",
-      "poType": "external",   // "external" | "local"
+      "poType": "external",   // "external" | "local" | "local_directa"
       "status": "en_bodega",
       "hasAnomalies": null,    // null cuando es por_llegar o en_bodega
       "fechaIngreso": "2026-04-16T08:45:00",
@@ -340,7 +370,7 @@ Retorna el detalle completo de una orden de compra: datos generales, ítems, doc
 {
   "nir": "NIR1-000055",
   "proveedorName": "Ecoenergy Cia. Ltda.",
-  "poType": "local",          // "external" | "local"
+  "poType": "local",          // "external" | "local" | "local_directa"
   "status": "revisada",
   "hasAnomalies": true,       // true | false | null (null cuando es por_llegar o en_bodega)
   "fechaIngreso": "2026-04-14T11:20:00",
@@ -755,7 +785,8 @@ No requiere autenticación de sesión — está pensado para ser accedido desde 
   "nir": "NIR1-000052",
   "proveedorName": "Importadora Andina S.A.",
   "status": "almacenada",
-  "valuationCode": null    // null → formulario vacío
+  "valuationCode": null,          // null → formulario vacío
+  "valuationDelayHours": null     // null → aún no se ha valorado
 }
 ```
 
@@ -766,7 +797,8 @@ No requiere autenticación de sesión — está pensado para ser accedido desde 
   "nir": "NIR1-000052",
   "proveedorName": "Importadora Andina S.A.",
   "status": "valorada",
-  "valuationCode": "VAL-001"   // código actual, pre-cargado en el formulario
+  "valuationCode": "VAL-001",     // código actual, pre-cargado en el formulario
+  "valuationDelayHours": 31.5    // horas transcurridas desde el primer correo hasta el registro del código
 }
 ```
 
@@ -818,7 +850,8 @@ Content-Type: application/json
   "nir": "NIR1-000052",
   "status": "valorada",
   "valuationCode": "VAL-001",
-  "valuedAt": "2026-05-02T17:10:00"
+  "valuedAt": "2026-05-02T17:10:00",
+  "valuationDelayHours": 31.5    // horas transcurridas desde el primer correo hasta el registro del código
 }
 ```
 
@@ -1518,5 +1551,179 @@ Los ítems que no fueron tocados en ese evento no aparecen en `items`.
   "errorCode": "ORDER_NOT_FOUND",
   "message": "No se encontró una orden con el código: NIR1-000055",
   "path": "/api/v1/purchase-orders/NIR1-000055/history"
+}
+```
+
+---
+
+## UC12 — Refacturación de orden de compra
+
+---
+
+### 17. `POST /api/v1/purchase-orders/{nir}/reinvoice/preview`
+
+Procesa el XML cargado y devuelve un resumen de los cambios que se aplicarían sobre la orden, **sin persistir nada**. El frontend usa esta respuesta para mostrar el diff al usuario antes de que confirme.
+
+Solo aplica a órdenes que sean PO locales y tengan anomalías (`hasAnomalies: true`).
+
+**Path params**
+
+| Parámetro | Tipo | Descripción |
+|-----------|------|-------------|
+| `nir` | `string` | Código NIR de la orden. Ej: `NIR1-000055` |
+
+**Request**
+
+```
+Content-Type: multipart/form-data
+```
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| `file` | `File` | ✅ | Archivo `.xml` con la nueva factura |
+
+**Respuestas**
+
+#### `200 OK`
+
+```json
+{
+  "nir": "NIR1-000055",
+  "changes": [
+    {
+      "artCode": "ART-3012",
+      "description": "CILINDRO KIT CG D:69 250CC",
+      "field": "quantity",
+      "currentValue": 145,
+      "newValue": 130
+    },
+    {
+      "artCode": "ART-3012",
+      "description": "CILINDRO KIT CG D:69 250CC",
+      "field": "unitPrice",
+      "currentValue": 62.00,
+      "newValue": 58.50
+    }
+  ]
+}
+```
+
+> `changes` contiene una entrada por cada campo modificado en cada ítem. Si un ítem tiene dos campos distintos que cambian, aparece dos veces. Si no hay diferencias, `changes` es un array vacío.
+
+#### `409 Conflict` — La orden no es una PO local o no tiene anomalías
+
+```json
+{
+  "timestamp": "2026-05-02T20:30:00",
+  "status": 409,
+  "error": "Conflict",
+  "errorCode": "REINVOICE_NOT_ALLOWED",
+  "message": "La orden NIR1-000055 no puede ser refacturada: debe ser una PO local con anomalías registradas.",
+  "path": "/api/v1/purchase-orders/NIR1-000055/reinvoice/preview"
+}
+```
+
+#### `422 Unprocessable Entity` — Archivo XML no válido o no procesable
+
+```json
+{
+  "timestamp": "2026-05-02T20:30:00",
+  "status": 422,
+  "error": "Unprocessable Entity",
+  "errorCode": "UNPROCESSABLE_FILE",
+  "message": "El archivo XML no pudo ser procesado. Verifique el formato e intente nuevamente.",
+  "path": "/api/v1/purchase-orders/NIR1-000055/reinvoice/preview"
+}
+```
+
+#### `404 Not Found`
+
+```json
+{
+  "timestamp": "2026-05-02T20:30:00",
+  "status": 404,
+  "error": "Not Found",
+  "errorCode": "ORDER_NOT_FOUND",
+  "message": "No se encontró una orden con el código: NIR1-000055",
+  "path": "/api/v1/purchase-orders/NIR1-000055/reinvoice/preview"
+}
+```
+
+---
+
+### 18. `POST /api/v1/purchase-orders/{nir}/reinvoice`
+
+Aplica la refacturación a la orden. Debe llamarse solo después de que el usuario revise el preview y confirme. El sistema persiste los cambios, registra el evento en el historial y notifica por correo a los usuarios relacionados.
+
+Solo aplica a órdenes que sean PO locales y tengan anomalías (`hasAnomalies: true`).
+
+**Path params**
+
+| Parámetro | Tipo | Descripción |
+|-----------|------|-------------|
+| `nir` | `string` | Código NIR de la orden. Ej: `NIR1-000055` |
+
+**Request**
+
+```
+Content-Type: multipart/form-data
+```
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| `file` | `File` | ✅ | Archivo `.xml` con la nueva factura |
+
+**Respuestas**
+
+#### `200 OK`
+
+```json
+{
+  "nir": "NIR1-000055",
+  "status": "revisada",
+  "hasAnomalies": true,
+  "reinvoicedAt": "2026-05-02T20:30:00",
+  "reinvoicedBy": "Carlos Méndez"
+}
+```
+
+> El estado de la orden no cambia tras la refacturación; solo se actualizan los datos de los ítems.
+
+#### `409 Conflict` — La orden no es una PO local o no tiene anomalías
+
+```json
+{
+  "timestamp": "2026-05-02T20:30:00",
+  "status": 409,
+  "error": "Conflict",
+  "errorCode": "REINVOICE_NOT_ALLOWED",
+  "message": "La orden NIR1-000055 no puede ser refacturada: debe ser una PO local con anomalías registradas.",
+  "path": "/api/v1/purchase-orders/NIR1-000055/reinvoice"
+}
+```
+
+#### `422 Unprocessable Entity` — Archivo XML no válido o no procesable
+
+```json
+{
+  "timestamp": "2026-05-02T20:30:00",
+  "status": 422,
+  "error": "Unprocessable Entity",
+  "errorCode": "UNPROCESSABLE_FILE",
+  "message": "El archivo XML no pudo ser procesado. Verifique el formato e intente nuevamente.",
+  "path": "/api/v1/purchase-orders/NIR1-000055/reinvoice"
+}
+```
+
+#### `404 Not Found`
+
+```json
+{
+  "timestamp": "2026-05-02T20:30:00",
+  "status": 404,
+  "error": "Not Found",
+  "errorCode": "ORDER_NOT_FOUND",
+  "message": "No se encontró una orden con el código: NIR1-000055",
+  "path": "/api/v1/purchase-orders/NIR1-000055/reinvoice"
 }
 ```

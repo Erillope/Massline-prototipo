@@ -2,7 +2,7 @@
 title: Caso de Uso 1 — Ingresar Orden de Compra
 ---
 flowchart TD
-    A([Inicio]) --> B["Selecciona archivo de la orden de compra<br/>Excel → PO externa / XML → PO local"]
+    A([Inicio]) --> B["Selecciona archivo de la orden de compra<br/>Excel → PO externa / XML → PO local o local directa"]
     B --> C{"¿El archivo tiene<br/>formato válido?"}
     C -- No --> D["<b>⚠ Muestra error:</b><br/>El archivo no es válido o no<br/>tiene el formato esperado"]
     D --> B
@@ -16,18 +16,25 @@ flowchart TD
     H --> I{"¿El archivo contiene<br/>múltiples POs?"}
     I -- Sí --> J["<b>[Flujo alt.]</b> Varias POs en el archivo<br/>Muestra resumen de cada PO detectada"]
     J --> K["Selecciona la PO a registrar"]
-    K --> L{"¿Es una PO local?"}
+    K --> L{"¿Qué tipo<br/>de PO es?"}
     I -- No --> L
 
-    L -- Sí --> M["Completa automáticamente los campos reconocidos<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
+    L -- Local --> DEADLINE{"¿La fecha límite de<br/>ingreso ha sido superada?"}
+    L -- Local directa --> DEADLINE
+    DEADLINE -- Sí --> DLERR["<b>⚠ Error:</b><br/>La fecha límite de ingreso<br/>de esta PO local ha vencido.<br/>No se puede registrar la orden."]
+    DLERR --> Z2([Fin])
+    DEADLINE -- No --> M["Completa automáticamente los campos reconocidos<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
     M --> N["Completa los campos no reconocidos<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
     N --> P
 
-    L -- No --> O["Completa todos los campos automáticamente<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
+    L -- Externa --> O["Completa todos los campos automáticamente<br/>— <i>codigo_massline</i> / <i>descripcion_massline</i>"]
     O --> P
 
     P --> Q["Asigna número de ingreso <b>NIR-XXXX</b>"]
-    Q --> R["Asigna estado <b>Por llegar</b>"]
+    Q --> STATUSCHECK{"¿Es una PO<br/>local directa?"}
+    STATUSCHECK -- Sí --> RVALORAR["Asigna estado <b>Por valorar</b>"]
+    STATUSCHECK -- No --> R["Asigna estado <b>Por llegar</b>"]
+    RVALORAR --> S
     R --> S["Asigna fecha de ingreso"]
     S --> T[/"Muestra resumen de la orden ingresada<br/>— Número NIR asignado<br/>— Proveedor<br/>— Productos y cantidades"/]
     T --> Z([Fin])
@@ -39,9 +46,9 @@ flowchart TD
     classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
     classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
 
-    class D error
+    class D,DLERR error
     class F,J alt
     class T success
     class B,G,K,N,P usuario
-    class C,E,H,I,L,M,O,Q,R,S sistema
-    class A,Z terminal
+    class C,E,H,I,L,M,O,Q,R,S,DEADLINE,STATUSCHECK,RVALORAR sistema
+    class A,Z,Z2 terminal

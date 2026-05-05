@@ -2,8 +2,11 @@
 title: Caso de Uso 6 — Valorar Orden de Compra
 ---
 flowchart TD
-    A([Inicio]) --> B["Recibe correo con link<br/>para realizar la valoración"]
-    B --> C["Accede al link de valoración"]
+    A([Inicio]) --> B["Sistema envía correo con link<br/>para realizar la valoración"]
+    B --> WAIT{"¿Han transcurrido 24h sin<br/>registrar el código de valoración?"}
+    WAIT -- Sí --> RESEND["Reenvía el correo con<br/>el link de valoración"]
+    RESEND -. cada 24h hasta valorar .-> WAIT
+    WAIT -- No --> C["Accede al link de valoración"]
     C --> D{"¿La orden ya tiene<br/>una valoración registrada?"}
 
     D -- No --> E[/"Muestra formulario de valoración vacío"/]
@@ -18,7 +21,7 @@ flowchart TD
 
     H -- Sí --> J["Registra el código de<br/>valoración en la orden"]
     J --> K["Actualiza el estado de la orden<br/>a <b>Valorada</b>"]
-    K --> L["Registra el cambio en el historial<br/>— Fecha y hora de la valoración<br/>— Código de valoración ingresado"]
+    L["Registra el cambio en el historial<br/>— Fecha y hora de la valoración<br/>— Código de valoración ingresado<br/>— Tiempo de demora desde el primer correo"]
     L --> M["Envía notificación por correo<br/>a los usuarios relacionados"]
     M --> N[/"Muestra confirmación de éxito<br/>— Código de la orden<br/>— Código de valoración registrado"/]
     N --> O[/"Mantiene el link activo<br/>para futuras correcciones"/]
@@ -32,7 +35,7 @@ flowchart TD
     classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
 
     class B,C,G,H,I usuario
-    class D,E,F,J,O sistema
+    class D,E,F,J,O,WAIT,RESEND sistema
     class F alt
     class K,L,M,N success
     class A,Z1,Z2 terminal

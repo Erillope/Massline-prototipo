@@ -1,0 +1,40 @@
+---
+title: Caso de Uso 12 — Refacturación de Orden de Compra
+---
+flowchart TD
+    A([Inicio]) --> B["Selecciona una orden de compra<br/>para refacturar"]
+    B --> C{"¿La orden es una PO local<br/>y tiene anomalías?"}
+
+    C -- No --> ERR["<b>[Flujo alt.]</b> Bloquea la operación:<br/>la orden debe ser una PO local<br/>con anomalías registradas"]
+    ERR --> Z1([Fin])
+
+    C -- Sí --> D[/"Carga el archivo XML<br/>con la nueva factura"/]
+    D --> E{"¿El archivo XML es<br/>válido y procesable?"}
+
+    E -- No --> XMLERR["<b>[Flujo alt.]</b> Muestra error:<br/>archivo no válido o<br/>formato no reconocido"]
+    XMLERR -. Cargar otro archivo .-> D
+
+    E -- Sí --> F["Procesa el XML y extrae<br/>los datos de la nueva factura"]
+    F --> G[/"Muestra resumen de los cambios<br/>que se aplicarán a los ítems"/]
+    G --> H{"¿Confirma la refacturación?"}
+
+    H -- No --> I["Cancela sin realizar cambios"]
+    I --> Z2([Fin])
+
+    H -- Sí --> J["Aplica los nuevos datos de factura<br/>a los ítems de la orden"]
+    J --> K["Registra el cambio en el historial<br/>— Fecha y hora de la refacturación<br/>— Usuario responsable"]
+    K --> L["Envía notificación por correo<br/>a los usuarios relacionados"]
+    L --> M[/"Muestra confirmación de éxito"/]
+    M --> Z3([Fin])
+
+    classDef usuario fill:#1e1b4b,stroke:#6c63ff,color:#e0e7ff
+    classDef sistema fill:#2e1065,stroke:#7c3aed,color:#ede9fe
+    classDef alt fill:#422006,stroke:#d97706,color:#fde68a
+    classDef success fill:#065f46,stroke:#10b981,color:#d1fae5
+    classDef terminal fill:#0f0f1a,stroke:#4a4a8a,color:#ffffff
+
+    class B,D,H,I usuario
+    class C,E,F,G sistema
+    class ERR,XMLERR alt
+    class J,K,L,M success
+    class A,Z1,Z2,Z3 terminal

@@ -3,7 +3,7 @@
         {
             "id": 1,
             "nombre": "Ingresar orden de compra",
-            "descripcion": "El usuario ingresa los detalles de la orden de compra a través de un archivo Excel (si es una PO externa) o XML (si es una PO Local), que es procesado por el sistema para registrar la PO",
+            "descripcion": "El usuario ingresa los detalles de la orden de compra a través de un archivo Excel (si es una PO externa) o XML (si es una PO local o local directa), que es procesado por el sistema para registrar la PO",
             "actores_principales": [],
             "actores_secundarios": [],
             "precondiciones": [
@@ -11,11 +11,13 @@
             ],
             "postcondiciones": [
                 "Se asigna un número de ingreso a la orden de compra.",
-                "La orden de compra se registra correctamente en la base de datos.",
+                "La orden de compra se registra con el estado inicial correspondiente a su tipo: 'Por llegar' si es externa o local, o 'Por valorar' si es local directa.",
                 "Se muestra al usuario un pequeño resumen de la orden ingresada"
             ],
             "reglas_negocio": [
-                "La orden de compra debe contener al menos un producto."
+                "La orden de compra debe contener al menos un producto.",
+                "Las PO locales tienen una fecha límite de ingreso definida en el archivo XML. Si la fecha actual supera esa fecha, el sistema no permitirá el registro de la orden.",
+                "Las PO de tipo local directa se registran con el estado inicial 'Por valorar' en lugar de 'Por llegar'."
             ],
             "criterios_aceptacion": [
                 "El sistema debe aceptar archivos Excel cuando se trate de PO externas.",
@@ -25,7 +27,9 @@
                 "El sistema debe permitir adjuntar un archivo de email como evidencia de la orden de compra.",
                 "Si el archivo contiene múltiples órdenes de compra, el sistema debe mostrar un resumen de cada una para que el usuario seleccione cuál registrar.",
                 "El sistema debe asignar un número de ingreso único (NIR) a cada orden registrada correctamente.",
-                "El sistema debe mostrar un resumen de la orden de compra ingresada al finalizar el proceso."
+                "El sistema debe mostrar un resumen de la orden de compra ingresada al finalizar el proceso.",
+                "Si la PO es local y su fecha límite de ingreso ha sido superada, el sistema debe bloquear el registro e informar al usuario con un mensaje claro.",
+                "Si la PO es de tipo local directa, el sistema debe asignarle el estado inicial 'Por valorar' en lugar de 'Por llegar'."
             ],
             "prioridad": null,
             "estado": "Pendiente",
@@ -168,9 +172,12 @@
             "postcondiciones": [
                 "La orden de compra queda registrada como valorada en el sistema.",
                 "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la valoración.",
+                "Se registra el tiempo de demora transcurrido entre el envío del primer correo de valoración y el registro del código de valoración.",
                 "Se notifica vía correo electrónico a los usuarios relacionados, sobre la valoración realizada."
             ],
-            "reglas_negocio": [],
+            "reglas_negocio": [
+                "Si el código de valoración no ha sido registrado en las últimas 24 horas, el sistema debe reenviar automáticamente el correo con el link de valoración, repitiéndose cada 24 horas hasta que la valoración sea registrada."
+            ],
             "criterios_aceptacion": [
                 "Solo se pueden valorar órdenes en estado 'Almacenada'.",
                 "El usuario debe poder acceder a la valoración mediante el enlace recibido por correo electrónico.",
@@ -180,7 +187,9 @@
                 "Al confirmar la valoración, el sistema debe actualizar el estado de la orden a 'Valorada'.",
                 "Al confirmar la valoración, el sistema debe enviar una notificación por correo electrónico a los usuarios relacionados con la orden de compra.",
                 "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora, usuario y código de valoración aplicado.",
-                "El enlace de valoración debe permanecer disponible para permitir correcciones posteriores del código de valoración."
+                "Al registrar la valoración, el sistema debe calcular y guardar el tiempo de demora transcurrido entre el envío del primer correo de valoración y el momento en que se registró el código de valoración.",
+                "El enlace de valoración debe permanecer disponible para permitir correcciones posteriores del código de valoración.",
+                "Si transcurren 24 horas sin que se registre el código de valoración, el sistema debe reenviar automáticamente el correo con el link, repitiéndose cada 24 horas hasta que la valoración sea registrada."
             ],
             "prioridad": null,
             "estado": "Pendiente",
@@ -341,6 +350,38 @@
                 "Al seleccionar una versión, el sistema debe mostrar los campos de la orden tal como estaban en ese momento.",
                 "Si la versión seleccionada contiene modificaciones registradas, el sistema debe mostrar el detalle de esas modificaciones, incluyendo campo modificado, valor anterior, valor nuevo, fecha, hora y usuario responsable.",
                 "El historial debe incluir las modificaciones, revisiones, valoraciones y cambios de estado registrados sobre la orden de compra."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 8,
+            "dependencias": []
+        },
+        {
+            "id": 12,
+            "nombre": "Refacturación de orden de compra",
+            "descripcion": "El usuario puede realizar una refacturación de una orden de compra, lo que permite corregir o actualizar la información de la orden en caso de errores o cambios en los detalles de la orden.",
+            "actores_principales": [],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "La orden de compra debe estar registrada en el sistema."
+            ],
+            "postcondiciones": [
+                "La orden de compra queda actualizada con la información corregida o modificada.",
+                "El cambio realizado en la refacturación queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la refacturación.",
+                "Se notifica vía correo electrónico a los usuarios relacionados sobre la refacturación realizada."
+            ],
+            "reglas_negocio": [
+                "Solo se puede realizar una refacturación cuando la orden de compra sea una PO local y tenga anomalías.",
+                "La refacturación se realiza únicamente mediante la carga de un archivo XML con la nueva factura.",
+                "La refacturación debe quedar registrada como una modificación en el historial de la orden, indicando que se trata de una refacturación."
+            ],
+            "criterios_aceptacion": [
+                "Solo se puede realizar una refacturación en órdenes que sean PO locales y tengan anomalías.",
+                "El sistema debe aceptar únicamente archivos XML como medio para realizar la refacturación.",
+                "El sistema debe procesar el archivo XML cargado y actualizar los detalles de los ítems de la orden con la información de la nueva factura.",
+                "La refacturación debe quedar registrada en el historial de la orden, incluyendo la fecha, hora y usuario responsable.",
+                "Al completar la refacturación, el sistema debe enviar una notificación por correo electrónico a los usuarios relacionados con la orden de compra."
             ],
             "prioridad": null,
             "estado": "Pendiente",
