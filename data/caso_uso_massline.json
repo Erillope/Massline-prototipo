@@ -1,609 +1,621 @@
 {
-    "orden_compra": [
-        {
-            "id": 1,
-            "nombre": "Ingresar orden de compra",
-            "descripcion": "El usuario ingresa los detalles de la orden de compra a través de un archivo Excel (si es una PO externa) o XML (si es una PO local o local directa), que es procesado por el sistema para registrar la PO",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El usuario debe tener acceso al ingreso de órdenes de compra."
-            ],
-            "postcondiciones": [
-                "Se asigna un número de ingreso a la orden de compra.",
-                "La orden de compra se registra con el estado inicial correspondiente a su tipo: 'Por llegar' si es externa o local, o 'Por valorar' si es local directa.",
-                "Se muestra al usuario un pequeño resumen de la orden ingresada"
-            ],
-            "reglas_negocio": [
-                "La orden de compra debe contener al menos un producto.",
-                "Las PO locales tienen una fecha límite de ingreso definida en el archivo XML. Si la fecha actual supera esa fecha, el sistema no permitirá el registro de la orden.",
-                "Las PO de tipo local directa se registran con el estado inicial 'Por valorar' en lugar de 'Por llegar'."
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe aceptar archivos Excel cuando se trate de PO externas.",
-                "El sistema debe aceptar archivos XML cuando se trate de PO locales.",
-                "El sistema debe permitir al usuario ingresar manualmente los datos de la orden de compra si el archivo no es válido o si su formato no puede ser procesado automáticamente.",
-                "El sistema debe completar automáticamente los campos codigo_massline y descripcion_massline de los productos que reconozca; en PO externas debe completarlos todos, en PO locales solo los reconocidos.",
-                "El sistema debe permitir adjuntar un archivo de email como evidencia de la orden de compra.",
-                "Si el archivo contiene múltiples órdenes de compra, el sistema debe mostrar un resumen de cada una para que el usuario seleccione cuál registrar.",
-                "El sistema debe asignar un número de ingreso único (NIR) a cada orden registrada correctamente.",
-                "El sistema debe mostrar un resumen de la orden de compra ingresada al finalizar el proceso.",
-                "Si la PO es local y su fecha límite de ingreso ha sido superada, el sistema debe bloquear el registro e informar al usuario con un mensaje claro.",
-                "Si la PO es de tipo local directa, el sistema debe asignarle el estado inicial 'Por valorar' en lugar de 'Por llegar'."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 18,
-            "dependencias": []
-        },
-        {
-            "id": 2,
-            "nombre": "Visualizar ordenes de compra",
-            "descripcion": "El usuario puede visualizar los detalles de una orden de compra registrada en el sistema, incluyendo los productos, cantidades, precios y estado de la orden.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El usuario debe tener acceso a la visualización de órdenes de compra."
-            ],
-            "postcondiciones": [
-                "El usuario puede ver los detalles de la orden de compra seleccionada."
-            ],
-            "reglas_negocio": [
-                "Las ordenes de compras se pueden buscar por código, proveedor, fecha y filtrar por estado.",
-                "El filtro inicial debería ser primero mostrar las ordenes de compras en bodega sin revisar, luego las más recientes ingresadas pero dando prioridad a las que esten revisadas con anomalías, y como menos prioridad las que ya están almacenadas"
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe mostrar el detalle de la orden seleccionada",
-                "El sistema debe permitir buscar órdenes por código, proveedor, fecha de ingreso y filtrar por estado.",
-                "La lista de órdenes debe mostrarse ordenada por prioridad: primero las que están en bodega sin revisar, luego las revisadas con anomalías, después las ingresadas más recientes, y al final las ya almacenadas.",
-                "Si la búsqueda no arroja resultados, el sistema debe informar al usuario que no se encontraron órdenes con los criterios indicados.",
-                "Si no hay ninguna orden registrada en el sistema, el sistema debe mostrar un mensaje indicándolo."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 12,
-            "dependencias": [
-                "Ingresar orden de compra"
-            ]
-        },
-        {
-            "id": 3,
-            "nombre": "Registrar llegado de PO",
-            "descripcion": "El usuario registra el momento en que los productos de una orden de compra llegan a la bodega, lo que permite actualizar el estado de la orden y activar procesos relacionados con el almacenamiento y gestión de inventario.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar en el estado 'Por llegar'"
-            ],
-            "postcondiciones": [
-                "Se actualiza el estado de la orden de compra a 'En bodega'.",
-                "Se registra el cambio de estado en el historial de la orden de compra."
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [
-                "Solo se puede registrar la llegada de órdenes que estén en estado 'Por llegar'.",
-                "Antes de confirmar, el sistema debe mostrar un resumen de la orden",
-                "El registro de llegada debe requerir confirmación explícita del usuario; si el usuario cancela, no debe ocurrir ningún cambio.",
-                "Al confirmar, el sistema debe actualizar el estado de la orden a 'En bodega'.",
-                "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora y usuario que confirmó la llegada."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 4,
-            "dependencias": [
-                "Visualizar orden de compra"
-            ]
-        },
-        {
-            "id": 4,
-            "nombre": "Revisar orden de compra",
-            "descripcion": "El usuario revisa los detalles de una orden de compra para verificar que los productos han llegado como corresponde, registrar cajas, y cualquier anomalía encontrada durante la revisión.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar en bodega."
-            ],
-            "postcondiciones": [
-                "La orden de compra queda registrada como revisada en el sistema, con o sin anomalías.",
-                "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la revisión."
-            ],
-            "reglas_negocio": [
-                "Las anomalías deben ser documentadas con una descripción o evidencia fotográfica para su seguimiento."
-            ],
-            "criterios_aceptacion": [
-                "Solo se pueden revisar órdenes en estado 'En bodega'.",
-                "El sistema debe permitir registrar las cajas que se usarán para almacenar los productos de la orden.",
-                "El sistema debe permitir registrar la cantidad de productos recibidos por ítem y calcular automáticamente las diferencias respecto a lo esperado, categorizándolas como faltantes (recibido menor a esperado) o sobrantes por cantidad (recibido mayor a esperado).",
-                "El sistema debe permitir registrar productos recibidos que no pertenezcan a la PO, categorizándolos como sobrantes por producto no perteneciente.",
-                "El sistema debe permitir registrar la cantidad de productos dañados por ítem.",
-                "Antes de confirmar, el sistema debe mostrar un resumen de la revisión con: ítems sin anomalías, faltantes, sobrantes, dañados y cajas registradas.",
-                "Antes de confirmar, el sistema debe mostrar los destinatarios a los que se enviará el reporte de revisión.",
-                "Al confirmar, el sistema debe actualizar el estado de la orden a 'Revisada' si no hay anomalías, o 'Revisada con anomalías' si las hay.",
-                "Al confirmar, el sistema debe registrar la revisión en el historial de la orden con fecha, hora y usuario responsable."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 18,
-            "dependencias": [
-                "Ingresar orden de compra",
-                "Registrar llegado de PO"
-            ]
-        },
-        {
-            "id": 5,
-            "nombre": "Confirmar revisión",
-            "descripcion": "El usuario confirma que está de acuerdo con la revisión, lo que actualiza el estado de la orden y permite avanzar en el proceso de almacenamiento o gestión de inventario.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe haber sido revisada."
-            ],
-            "postcondiciones": [
-                "El estado de la orden de compra se actualiza a 'Por almacenar' según la revisión.",
-                "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que confirmó la revisión."
-            ],
-            "reglas_negocio": [
-                "Si la orden revisada es local y tiene anomalías, entonces no permitirá la confirmación hasta que resuelva las anomalías"
-            ],
-            "criterios_aceptacion": [
-                "Solo se pueden confirmar órdenes que estén en estado 'Revisada' o 'Revisada con anomalías'.",
-                "Si la orden es una PO local y tiene anomalías sin resolver, el sistema debe bloquear la confirmación e informar al usuario con un mensaje claro.",
-                "El sistema debe permitir al usuario ingresar la posición de almacenamiento para cada caja registrada antes de confirmar, y no debe habilitar la confirmación hasta completar todas las posiciones.",
-                "Si el usuario cancela la confirmación, el sistema no debe realizar ningún cambio en la orden.",
-                "Al confirmar, el sistema debe actualizar el estado de la orden a 'Por almacenar'.",
-                "Al confirmar, el sistema debe enviar el reporte de revisión a los destinatarios correspondientes.",
-                "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora y usuario que confirmó la revisión."
-            ],
-            "estimacion_hrs": 7
-        },
-        {
-            "id": 6,
-            "nombre": "Valorar orden de compra",
-            "descripcion": "El usuario registra la valoración de los productos de una orden de compra, lo que permite actualizar el estado de la orden y activar procesos relacionados con la gestión financiera y contable.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar almacenada."
-            ],
-            "postcondiciones": [
-                "La orden de compra queda registrada como valorada en el sistema.",
-                "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la valoración.",
-                "Se registra el tiempo de demora transcurrido entre el envío del primer correo de valoración y el registro del código de valoración.",
-                "Se notifica vía correo electrónico a los usuarios relacionados, sobre la valoración realizada."
-            ],
-            "reglas_negocio": [
-                "Si el código de valoración no ha sido registrado en las últimas 24 horas, el sistema debe reenviar automáticamente el correo con el link de valoración, repitiéndose cada 24 horas hasta que la valoración sea registrada."
-            ],
-            "criterios_aceptacion": [
-                "Solo se pueden valorar órdenes en estado 'Almacenada'.",
-                "El usuario debe poder acceder a la valoración mediante el enlace recibido por correo electrónico.",
-                "El sistema debe permitir registrar un código de valoración con formato 'VAL-XXX', donde XXX es un número secuencial único.",
-                "Si la orden ya tiene valoración registrada, el sistema debe mostrar el código actual y permitir su corrección.",
-                "Si el usuario cancela la confirmación, el sistema no debe realizar ningún cambio en la valoración existente.",
-                "Al confirmar la valoración, el sistema debe actualizar el estado de la orden a 'Valorada'.",
-                "Al confirmar la valoración, el sistema debe enviar una notificación por correo electrónico a los usuarios relacionados con la orden de compra.",
-                "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora, usuario y código de valoración aplicado.",
-                "Al registrar la valoración, el sistema debe calcular y guardar el tiempo de demora transcurrido entre el envío del primer correo de valoración y el momento en que se registró el código de valoración.",
-                "El enlace de valoración debe permanecer disponible para permitir correcciones posteriores del código de valoración.",
-                "Si transcurren 24 horas sin que se registre el código de valoración, el sistema debe reenviar automáticamente el correo con el link, repitiéndose cada 24 horas hasta que la valoración sea registrada."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 6,
-            "dependencias": []
-        },
-        {
-            "id": 7,
-            "nombre": "Edición códigos massline",
-            "descripcion": "El usuario puede editar los códigos massline y sus descripciones para los productos de una orden de compra, lo que permite corregir o actualizar la información de los productos según sea necesario.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar en estado 'Por llegar' o 'En bodega'."
-            ],
-            "postcondiciones": [
-                "Los códigos massline y sus descripciones quedan actualizados en el sistema.",
-                "El cambio en los códigos massline queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
-            ],
-            "reglas_negocio": [
-                "Solo se pueden editar códigos massline de órdenes con en estado 'Por llegar', o 'En bodega'."
-            ],
-            "criterios_aceptacion": [
-                "Solo se pueden editar códigos massline de órdenes en estado 'Por llegar' o 'En bodega'.",
-                "El sistema debe mostrar los códigos massline actuales de cada producto al visualizar el detalle de la orden.",
-                "El usuario debe poder editar el código massline de un producto ingresándolo directamente.",
-                "El usuario debe poder editar el código massline de un producto buscando por descripción.",
-                "El usuario debe poder corregir múltiples productos en la misma sesión de edición.",
-                "Si el usuario cancela la edición, el sistema no debe realizar ningún cambio en los códigos massline existentes.",
-                "Al confirmar la edición, el sistema debe actualizar los códigos massline en la orden.",
-                "El cambio de códigos massline debe quedar registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 6,
-            "dependencias": []
-        },
-        {
-            "id": 8,
-            "nombre": "Editar revisión",
-            "descripcion": "El usuario puede editar los detalles de una revisión realizada a una orden de compra, lo que permite corregir o actualizar la información registrada durante la revisión según sea necesario.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar en estado 'Revisada'"
-            ],
-            "postcondiciones": [
-                "Los detalles de la revisión quedan actualizados en el sistema.",
-                "El cambio en la revisión queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
-            ],
-            "reglas_negocio": [
-                "Solo se pueden editar revisiones de órdenes en estado 'Revisada'."
-            ],
-            "criterios_aceptacion": [
-                "Solo se pueden editar revisiones de órdenes en estado 'Revisada'.",
-                "El sistema debe mostrar los detalles actuales de la revisión al visualizar el detalle de la orden revisada.",
-                "El usuario debe poder editar las cajas registradas, las cantidades recibidas por ítem, y las anomalías registradas.",
-                "Antes de guardar cambios, el sistema debe mostrar un resumen de la revisión editada.",
-                "Si el usuario no confirma el resumen, el sistema debe permitir volver a la edición sin aplicar cambios.",
-                "Si el usuario cancela la edición, el sistema no debe realizar ningún cambio en los detalles de la revisión existentes.",
-                "Al confirmar el resumen de la edición, el sistema debe actualizar los detalles de la revisión en la orden.",
-                "El cambio en la revisión debe quedar registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 10,
-            "dependencias": []
-        },
-        {
-            "id": 9,
-            "nombre": "Edición emergencia",
-            "descripcion": "El usuario puede realizar una edición de emergencia en los detalles de una orden de compra, lo que permite corregir o actualizar información crítica de la orden en situaciones excepcionales.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar registrada en el sistema."
-            ],
-            "postcondiciones": [
-                "Los detalles editados de la orden de compra quedan actualizados en el sistema.",
-                "El cambio realizado en la edición de emergencia queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición, junto con una justificación del motivo de la edición.",
-                "Mientras la solicitud de edición de emergencia esté pendiente de aprobación, no se pueden realizar otras ediciones regulares en la orden de compra."
-            ],
-            "reglas_negocio": [
-                "La edición de emergencia debe ser utilizada solo en casos excepcionales y debe requerir una justificación clara del motivo de la edición.",
-                "La edición de emergencia permitirá al usuario editar cualquier detalle de la orden de compra, sin necesidad de validar otras reglas de negocio o restricciones que normalmente se aplicarían a las ediciones regulares.",
-                "La edición no se realizará de inmediato, sino que quedará registrada como una solicitud de edición de emergencia que debe ser revisada y aprobada por un usuario con permisos especiales antes de aplicarse a la orden de compra.",
-                "Mientras la solicitud de edición de emergencia esté en estado 'Pendiente de aprobación', deben bloquearse las ediciones regulares de la orden."
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe permitir al usuario ingresar una justificación detallada para la edición de emergencia.",
-                "Al solicitar una edición de emergencia, el sistema debe registrar la solicitud con la fecha, hora, usuario y justificación, y marcarla como 'Pendiente de aprobación'.",
-                "Mientras la solicitud permanezca en estado 'Pendiente de aprobación', el sistema debe bloquear cualquier intento de edición regular sobre la misma orden e informar el motivo del bloqueo.",
-                "Un usuario con permisos especiales debe poder revisar las solicitudes de edición de emergencia y aprobar o rechazar cada solicitud.",
-                "Si la solicitud es aprobada, el sistema debe aplicar los cambios editados a la orden de compra y actualizar el historial con la información de la edición de emergencia.",
-                "Si la solicitud es rechazada, el sistema debe mantener los detalles originales de la orden sin cambios y registrar el rechazo en el historial con la fecha, hora, usuario que rechazó y motivo del rechazo."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 10,
-            "dependencias": []
-        },
-        {
-            "id": 10,
-            "nombre": "Revisar solicitud de edición de emergencia",
-            "descripcion": "Un usuario con permisos especiales revisa las solicitudes de edición de emergencia realizadas en las órdenes de compra, lo que permite aprobar o rechazar estas solicitudes según la justificación y la necesidad de la edición.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "Debe existir al menos una solicitud de edición de emergencia en estado 'Pendiente de aprobación'."
-            ],
-            "postcondiciones": [
-                "La solicitud de edición de emergencia queda registrada como aprobada o rechazada en el sistema.",
-                "Si la solicitud es aprobada, los cambios editados se aplican a la orden de compra y quedan registrados en el historial con la información de la edición de emergencia.",
-                "Si la solicitud es rechazada, los detalles originales de la orden se mantienen sin cambios y el rechazo queda registrado en el historial con la información correspondiente."
-            ],
-            "reglas_negocio": [
-                "Cuando se termine la revisión de una solicitud de edición de emergencia, ya se habilitan las ediciones regulares de la orden.",
-                "Si se rechaza la solicitud, debe incluir una justificación del motivo del rechazo que quede registrada en el historial de la orden."
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe mostrar una lista de todas las solicitudes de edición de emergencia en estado 'Pendiente de aprobación' para que el usuario con permisos especiales pueda revisarlas.",
-                "El usuario debe poder revisar la justificación y los detalles editados propuestos en cada solicitud.",
-                "El usuario debe poder aprobar o rechazar cada solicitud de edición de emergencia mediante una acción clara en la interfaz.",
-                "El sistema debe requerir que el usuario proporcione una justificación al rechazar una solicitud de edición de emergencia.",
-                "Al aprobar una solicitud, el sistema debe aplicar los cambios editados a la orden de compra, actualizar el historial con la información de la edición de emergencia, y desbloquear las ediciones regulares para esa orden.",
-                "Al rechazar una solicitud, el sistema debe mantener los detalles originales de la orden sin cambios, registrar el rechazo en el historial con la información correspondiente, y desbloquear las ediciones regulares para esa orden."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 8,
-            "dependencias": [
-                "Edición emergencia"
-            ]
-        },
-        {
-            "id": 11,
-            "nombre": "Historial de cambios",
-            "descripcion": "El usuario puede visualizar un historial detallado de los cambios realizados en una orden de compra, lo que permite rastrear todas las modificaciones, revisiones y eventos relacionados con la orden a lo largo del tiempo.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar registrada en el sistema."
-            ],
-            "postcondiciones": [
-                "El usuario puede ver un historial completo de los cambios realizados en la orden de compra, incluyendo detalles de cada cambio, fecha, hora y usuario responsable."
-            ],
-            "reglas_negocio": [
-                "El historial de cambios debe incluir todas las modificaciones realizadas en la orden de compra, incluyendo ediciones regulares, ediciones de emergencia, revisiones, valoraciones y cambios de estado."
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe permitir al usuario visualizar todas las versiones registradas de la orden de compra.",
-                "El usuario debe poder seleccionar una versión específica de la orden para revisarla.",
-                "Al seleccionar una versión, el sistema debe mostrar los campos de la orden tal como estaban en ese momento.",
-                "Si la versión seleccionada contiene modificaciones registradas, el sistema debe mostrar el detalle de esas modificaciones, incluyendo campo modificado, valor anterior, valor nuevo, fecha, hora y usuario responsable.",
-                "El historial debe incluir las modificaciones, revisiones, valoraciones y cambios de estado registrados sobre la orden de compra."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 8,
-            "dependencias": []
-        },
-        {
-            "id": 12,
-            "nombre": "Refacturación de orden de compra",
-            "descripcion": "El usuario puede realizar una refacturación de una orden de compra, lo que permite corregir o actualizar la información de la orden en caso de errores o cambios en los detalles de la orden.",
-            "actores_principales": [],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "La orden de compra debe estar registrada en el sistema."
-            ],
-            "postcondiciones": [
-                "La orden de compra queda actualizada con la información corregida o modificada.",
-                "El cambio realizado en la refacturación queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la refacturación.",
-                "Se notifica vía correo electrónico a los usuarios relacionados sobre la refacturación realizada."
-            ],
-            "reglas_negocio": [
-                "Solo se puede realizar una refacturación cuando la orden de compra sea una PO local y tenga anomalías.",
-                "La refacturación se realiza únicamente mediante la carga de un archivo XML con la nueva factura.",
-                "La refacturación debe quedar registrada como una modificación en el historial de la orden, indicando que se trata de una refacturación."
-            ],
-            "criterios_aceptacion": [
-                "Solo se puede realizar una refacturación en órdenes que sean PO locales y tengan anomalías.",
-                "El sistema debe aceptar únicamente archivos XML como medio para realizar la refacturación.",
-                "El sistema debe procesar el archivo XML cargado y actualizar los detalles de los ítems de la orden con la información de la nueva factura.",
-                "La refacturación debe quedar registrada en el historial de la orden, incluyendo la fecha, hora y usuario responsable.",
-                "Al completar la refacturación, el sistema debe enviar una notificación por correo electrónico a los usuarios relacionados con la orden de compra."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 8,
-            "dependencias": []
-        }
-    ],
-    "pedidos": [
-        {
-            "id": 13,
-            "nombre": "Visualizar inventario disponible",
-            "descripcion": "El usuario puede visualizar el inventario disponible en bodega, lo que permite conocer la cantidad de productos y repuestos disponibles para su uso en mantenimiento o reparación de equipos.",
-            "actores_principales": ["consumidores"],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El inventario debe estar registrado en el sistema."
-            ],
-            "postcondiciones": [
-                "El usuario puede ver el inventario disponible en bodega con detalles de los productos y repuestos."
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [
-                "El sistema debe mostrar una lista de productos y repuestos disponibles en bodega, incluyendo detalles como descripción, código, cantidad disponible.",
-                "El usuario debe poder buscar productos específicos en el inventario utilizando filtros como descripción, código.",
-                "Si el inventario está vacío o no se encuentran productos con los criterios de búsqueda, el sistema debe informar al usuario con un mensaje claro."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 6,
-            "dependencias": []
-        },
-        {
-            "id": 14,
-            "nombre": "Generar pedido a bodega de repuestos",
-            "descripcion": "El usuario genera un pedido a bodega de repuestos para solicitar productos necesarios para el mantenimiento o reparación de equipos.",
-            "actores_principales": ["consumidores"],
-            "actores_secundarios": [],
-            "precondiciones": [],
-            "postcondiciones": [
-                "Se genera un pedido a bodega de repuestos con los detalles especificados por el usuario.",
-                "El pedido se ingresa con estado 'Por confirmar'"
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 8,
-            "dependencias": []
-        },
-        {
-            "id": 15,
-            "nombre": "Visualizar mis pedidos a bodega de repuestos",
-            "descripcion": "El usuario puede visualizar los pedidos que ha generado a bodega de repuestos, lo que permite hacer seguimiento al estado de sus solicitudes y gestionar sus necesidades de productos para mantenimiento o reparación de equipos.",
-            "actores_principales": ["consumidores"],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El usuario debe haber generado al menos un pedido a bodega de repuestos."
-            ],
-            "postcondiciones": [
-                "El usuario puede ver una lista de sus pedidos a bodega de repuestos con detalles como estado, fecha de generación y productos solicitados."
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [
-                "El sistema debe mostrar una lista de los pedidos a bodega de repuestos generados por el usuario, incluyendo detalles como estado, fecha de generación y productos solicitados.",
-                "El usuario debe poder filtrar sus pedidos por estado (por confirmar, confirmado, por llegar, etc.) y ordenar por fecha de generación.",
-                "Si el usuario no ha generado ningún pedido a bodega de repuestos, el sistema debe mostrar un mensaje indicando que no hay pedidos registrados."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 6,
-            "dependencias": [
-                "Generar pedido a bodega de repuestos"
-            ]
-        },
-        {
-            "id": 16,
-            "nombre": "Confirmar recibido de pedido",
-            "descripcion": "El usuario confirma la recepción de un pedido a bodega de repuestos, lo que permite actualizar el estado del pedido y activar procesos relacionados con la gestión de inventario.",
-            "actores_principales": ["consumidores"],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El pedido a bodega de repuestos debe estar en estado 'Empacado'."
-            ],
-            "postcondiciones": [
-                "El pedido a bodega de repuestos se actualiza a estado 'Recibido'."
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [
-                "El sistema debe permitir al usuario confirmar la llegada de un pedido a bodega de repuestos.",
-                "El estado del pedido debe actualizarse a 'Recibido' una vez que el usuario confirme la recepción.",
-                "Si el pedido no está en estado 'Empacado', el sistema debe mostrar un mensaje indicando que no se puede confirmar la recepción."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 4,
-            "dependencias": [
-                "Generar pedido a bodega de repuestos"
-            ]
-        },
-        {
-            "id": 17,
-            "nombre": "Revisar pedidos solicitados por consumidores",
-            "descripcion": "El usuario revisa los pedidos solicitados por los consumidores a bodega de repuestos para verificar su estado, gestionar su preparación y coordinar la entrega de los productos solicitados.",
-            "actores_principales": ["bodega"],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El usuario debe haber generado al menos un pedido a bodega de repuestos."
-            ],
-            "postcondiciones": [
-                "El usuario puede ver una lista de los pedidos solicitados por los consumidores a bodega de repuestos con detalles como estado, fecha de generación y productos solicitados."
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [
-                "El sistema debe mostrar una lista de los pedidos solicitados por los consumidores a bodega de repuestos, incluyendo detalles como estado, fecha de generación y productos solicitados.",
-                "El usuario debe poder filtrar los pedidos por estado (por confirmar, confirmado, por llegar, etc.) y ordenar por fecha de generación.",
-                "Si no hay pedidos solicitados por los consumidores, el sistema debe mostrar un mensaje indicando que no hay pedidos registrados."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 6,
-            "dependencias": [
-                "Generar pedido a bodega de repuestos"
-            ]
-        },
-        {
-            "id": 18,
-            "nombre": "Confirmar envío del pedido",
-            "descripcion": "El usuario confirma el envío de un pedido a los consumidores",
-            "actores_principales": ["bodega"],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "El pedido a bodega de repuestos debe estar en estado 'Por confirmar'."
-            ],
-            "postcondiciones": [
-                "El pedido a bodega de repuestos se actualiza a estado 'Por despachar'."
-            ],
-            "reglas_negocio": [],
-            "criterios_aceptacion": [
-                "El sistema debe permitir al usuario confirmar el envío de un pedido a los consumidores.",
-                "El estado del pedido debe actualizarse a 'Por despachar' una vez que el usuario confirme el envío.",
-                "Si el pedido no está en estado 'Por confirmar', el sistema debe mostrar un mensaje indicando que no se puede confirmar el envío."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 4,
-            "dependencias": [
-                "Generar pedido a bodega de repuestos"
-             ]
-        }
-    ],
-    "almacenamiento": [
-        {
-            "id": 30,
-            "nombre": "Visualización de tareas de almacenamiento",
-            "descripcion": "El operario de bodega visualiza sus tareas de almacenamiento generadas por el sistema, donde cada tarea corresponde a una caja de una orden de compra que debe ubicarse en bodega.",
-            "actores_principales": [
-                "Operario de bodega"
-            ],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "Debe existir al menos una orden de compra en estado 'Por almacenar' con cajas registradas y pendientes de ubicación.",
-                "El operario debe tener acceso al módulo de almacenamiento."
-            ],
-            "postcondiciones": [
-                "El operario puede visualizar la lista de tareas de almacenamiento pendientes."
-            ],
-            "reglas_negocio": [
-                "Las tareas de almacenamiento se generan por caja, no por producto individual.",
-                "Cada tarea corresponde a una única caja de una orden de compra."
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe mostrar al operario una lista de tareas de almacenamiento donde cada tarea corresponda a una caja.",
-                "El sistema debe mostrar para cada tarea al menos: código de tarea, NIR de la orden, código de caja, ubicación sugerida o asignada y estado.",
-                "Las tareas deben presentarse en el orden de prioridad definido por el sistema.",
-                "Si no existen tareas pendientes, el sistema debe mostrar un mensaje claro indicando que no hay tareas de almacenamiento por atender."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 10,
-            "dependencias": [
-                "Confirmar revisión",
-                "Visualizar ordenes de compra"
-             ]
-        },
-        {
-            "id": 31,
-            "nombre": "Ejecutar tarea de almacenamiento",
-            "descripcion": "El operario de bodega ejecuta una tarea de almacenamiento seleccionándola desde la lista de tareas pendientes, para visualizar su información inicial y comenzar la operación.",
-            "actores_principales": [
-                "Operario de bodega"
-            ],
-            "actores_secundarios": [],
-            "precondiciones": [
-                "Debe existir al menos una tarea de almacenamiento pendiente en la lista.",
-                "El operario debe tener acceso al módulo de almacenamiento."
-            ],
-            "postcondiciones": [
-                "El operario visualiza la información inicial de la tarea seleccionada."
-            ],
-            "reglas_negocio": [
-                "Cada tarea de almacenamiento corresponde a una caja."
-            ],
-            "criterios_aceptacion": [
-                "El sistema debe permitir al operario seleccionar una tarea de almacenamiento desde la lista de tareas pendientes.",
-                "Al seleccionar una tarea, el sistema debe mostrar la información inicial de esa tarea.",
-                "La información inicial debe incluir al menos: código de tarea, NIR de la orden y código de caja."
-            ],
-            "prioridad": null,
-            "estado": "Pendiente",
-            "estado_prototipo": "Pendiente",
-            "estimacion_hrs": 4,
-            "dependencias": [
-                "Visualización de tareas de almacenamiento"
-             ]
-        }
-    ]
+  "orden_compra": [
+    {
+      "id": 1,
+      "nombre": "Ingresar orden de compra",
+      "descripcion": "El usuario ingresa los detalles de la orden de compra a través de un archivo Excel (si es una PO externa) o XML (si es una PO local o local directa), que es procesado por el sistema para registrar la PO",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El usuario debe tener acceso al ingreso de órdenes de compra."
+      ],
+      "postcondiciones": [
+        "Se asigna un número de ingreso a la orden de compra.",
+        "La orden de compra se registra con el estado inicial correspondiente a su tipo: 'Por llegar' si es externa o local, o 'Por valorar' si es local directa.",
+        "Se muestra al usuario un pequeño resumen de la orden ingresada"
+      ],
+      "reglas_negocio": [
+        "La orden de compra debe contener al menos un producto.",
+        "Las PO locales tienen una fecha límite de ingreso definida en el archivo XML. Si la fecha actual supera esa fecha, el sistema no permitirá el registro de la orden.",
+        "Las PO de tipo local directa se registran con el estado inicial 'Por valorar' en lugar de 'Por llegar'."
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe aceptar archivos Excel cuando se trate de PO externas.",
+        "El sistema debe aceptar archivos XML cuando se trate de PO locales.",
+        "El sistema debe permitir al usuario ingresar manualmente los datos de la orden de compra si el archivo no es válido o si su formato no puede ser procesado automáticamente.",
+        "El sistema debe completar automáticamente los campos codigo_massline y descripcion_massline de los productos que reconozca; en PO externas debe completarlos todos, en PO locales solo los reconocidos.",
+        "El sistema debe permitir adjuntar un archivo de email como evidencia de la orden de compra.",
+        "Si el archivo contiene múltiples órdenes de compra, el sistema debe mostrar un resumen de cada una para que el usuario seleccione cuál registrar.",
+        "El sistema debe asignar un número de ingreso único (NIR) a cada orden registrada correctamente.",
+        "El sistema debe mostrar un resumen de la orden de compra ingresada al finalizar el proceso.",
+        "Si la PO es local y su fecha límite de ingreso ha sido superada, el sistema debe bloquear el registro e informar al usuario con un mensaje claro.",
+        "Si la PO es de tipo local directa, el sistema debe asignarle el estado inicial 'Por valorar' en lugar de 'Por llegar'."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 18,
+      "dependencias": []
+    },
+    {
+      "id": 2,
+      "nombre": "Visualizar ordenes de compra",
+      "descripcion": "El usuario puede visualizar los detalles de una orden de compra registrada en el sistema, incluyendo los productos, cantidades, precios y estado de la orden.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El usuario debe tener acceso a la visualización de órdenes de compra."
+      ],
+      "postcondiciones": [
+        "El usuario puede ver los detalles de la orden de compra seleccionada."
+      ],
+      "reglas_negocio": [
+        "Las ordenes de compras se pueden buscar por código, proveedor, fecha y filtrar por estado.",
+        "El filtro inicial debería ser primero mostrar las ordenes de compras en bodega sin revisar, luego las más recientes ingresadas pero dando prioridad a las que esten revisadas con anomalías, y como menos prioridad las que ya están almacenadas"
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe mostrar el detalle de la orden seleccionada",
+        "El sistema debe permitir buscar órdenes por código, proveedor, fecha de ingreso y filtrar por estado.",
+        "La lista de órdenes debe mostrarse ordenada por prioridad: primero las que están en bodega sin revisar, luego las revisadas con anomalías, después las ingresadas más recientes, y al final las ya almacenadas.",
+        "Si la búsqueda no arroja resultados, el sistema debe informar al usuario que no se encontraron órdenes con los criterios indicados.",
+        "Si no hay ninguna orden registrada en el sistema, el sistema debe mostrar un mensaje indicándolo."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 12,
+      "dependencias": [
+        "Ingresar orden de compra"
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Registrar llegado de PO",
+      "descripcion": "El usuario registra el momento en que los productos de una orden de compra llegan a la bodega, lo que permite actualizar el estado de la orden y activar procesos relacionados con el almacenamiento y gestión de inventario.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar en el estado 'Por llegar'"
+      ],
+      "postcondiciones": [
+        "Se actualiza el estado de la orden de compra a 'En bodega'.",
+        "Se registra el cambio de estado en el historial de la orden de compra."
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [
+        "Solo se puede registrar la llegada de órdenes que estén en estado 'Por llegar'.",
+        "Antes de confirmar, el sistema debe mostrar un resumen de la orden",
+        "El registro de llegada debe requerir confirmación explícita del usuario; si el usuario cancela, no debe ocurrir ningún cambio.",
+        "Al confirmar, el sistema debe actualizar el estado de la orden a 'En bodega'.",
+        "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora y usuario que confirmó la llegada."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 4,
+      "dependencias": [
+        "Visualizar orden de compra"
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Revisar orden de compra",
+      "descripcion": "El usuario revisa los detalles de una orden de compra para verificar que los productos han llegado como corresponde, registrar cajas, y cualquier anomalía encontrada durante la revisión.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar en bodega."
+      ],
+      "postcondiciones": [
+        "La orden de compra queda registrada como revisada en el sistema, con o sin anomalías.",
+        "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la revisión."
+      ],
+      "reglas_negocio": [
+        "Las anomalías deben ser documentadas con una descripción o evidencia fotográfica para su seguimiento."
+      ],
+      "criterios_aceptacion": [
+        "Solo se pueden revisar órdenes en estado 'En bodega'.",
+        "El sistema debe permitir registrar las cajas que se usarán para almacenar los productos de la orden.",
+        "El sistema debe permitir registrar la cantidad de productos recibidos por ítem y calcular automáticamente las diferencias respecto a lo esperado, categorizándolas como faltantes (recibido menor a esperado) o sobrantes por cantidad (recibido mayor a esperado).",
+        "El sistema debe permitir registrar productos recibidos que no pertenezcan a la PO, categorizándolos como sobrantes por producto no perteneciente.",
+        "El sistema debe permitir registrar la cantidad de productos dañados por ítem.",
+        "Antes de confirmar, el sistema debe mostrar un resumen de la revisión con: ítems sin anomalías, faltantes, sobrantes, dañados y cajas registradas.",
+        "Antes de confirmar, el sistema debe mostrar los destinatarios a los que se enviará el reporte de revisión.",
+        "Al confirmar, el sistema debe actualizar el estado de la orden a 'Revisada' si no hay anomalías, o 'Revisada con anomalías' si las hay.",
+        "Al confirmar, el sistema debe registrar la revisión en el historial de la orden con fecha, hora y usuario responsable."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 18,
+      "dependencias": [
+        "Ingresar orden de compra",
+        "Registrar llegado de PO"
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "Confirmar revisión",
+      "descripcion": "El usuario confirma que está de acuerdo con la revisión, lo que actualiza el estado de la orden y permite avanzar en el proceso de almacenamiento o gestión de inventario.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe haber sido revisada."
+      ],
+      "postcondiciones": [
+        "El estado de la orden de compra se actualiza a 'Por almacenar' según la revisión.",
+        "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que confirmó la revisión."
+      ],
+      "reglas_negocio": [
+        "Si la orden revisada es local y tiene anomalías, entonces no permitirá la confirmación hasta que resuelva las anomalías"
+      ],
+      "criterios_aceptacion": [
+        "Solo se pueden confirmar órdenes que estén en estado 'Revisada' o 'Revisada con anomalías'.",
+        "Si la orden es una PO local y tiene anomalías sin resolver, el sistema debe bloquear la confirmación e informar al usuario con un mensaje claro.",
+        "El sistema debe permitir al usuario ingresar la posición de almacenamiento para cada caja registrada antes de confirmar, y no debe habilitar la confirmación hasta completar todas las posiciones.",
+        "Si el usuario cancela la confirmación, el sistema no debe realizar ningún cambio en la orden.",
+        "Al confirmar, el sistema debe actualizar el estado de la orden a 'Por almacenar'.",
+        "Al confirmar, el sistema debe enviar el reporte de revisión a los destinatarios correspondientes.",
+        "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora y usuario que confirmó la revisión."
+      ],
+      "estimacion_hrs": 7
+    },
+    {
+      "id": 6,
+      "nombre": "Valorar orden de compra",
+      "descripcion": "El usuario registra la valoración de los productos de una orden de compra, lo que permite actualizar el estado de la orden y activar procesos relacionados con la gestión financiera y contable.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar almacenada."
+      ],
+      "postcondiciones": [
+        "La orden de compra queda registrada como valorada en el sistema.",
+        "El cambio en la orden de compra queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la valoración.",
+        "Se registra el tiempo de demora transcurrido entre el envío del primer correo de valoración y el registro del código de valoración.",
+        "Se notifica vía correo electrónico a los usuarios relacionados, sobre la valoración realizada."
+      ],
+      "reglas_negocio": [
+        "Si el código de valoración no ha sido registrado en las últimas 24 horas, el sistema debe reenviar automáticamente el correo con el link de valoración, repitiéndose cada 24 horas hasta que la valoración sea registrada."
+      ],
+      "criterios_aceptacion": [
+        "Solo se pueden valorar órdenes en estado 'Almacenada'.",
+        "El usuario debe poder acceder a la valoración mediante el enlace recibido por correo electrónico.",
+        "El sistema debe permitir registrar un código de valoración con formato 'VAL-XXX', donde XXX es un número secuencial único.",
+        "Si la orden ya tiene valoración registrada, el sistema debe mostrar el código actual y permitir su corrección.",
+        "Si el usuario cancela la confirmación, el sistema no debe realizar ningún cambio en la valoración existente.",
+        "Al confirmar la valoración, el sistema debe actualizar el estado de la orden a 'Valorada'.",
+        "Al confirmar la valoración, el sistema debe enviar una notificación por correo electrónico a los usuarios relacionados con la orden de compra.",
+        "El cambio de estado debe quedar registrado en el historial de la orden con la fecha, hora, usuario y código de valoración aplicado.",
+        "Al registrar la valoración, el sistema debe calcular y guardar el tiempo de demora transcurrido entre el envío del primer correo de valoración y el momento en que se registró el código de valoración.",
+        "El enlace de valoración debe permanecer disponible para permitir correcciones posteriores del código de valoración.",
+        "Si transcurren 24 horas sin que se registre el código de valoración, el sistema debe reenviar automáticamente el correo con el link, repitiéndose cada 24 horas hasta que la valoración sea registrada."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 6,
+      "dependencias": []
+    },
+    {
+      "id": 7,
+      "nombre": "Edición códigos massline",
+      "descripcion": "El usuario puede editar los códigos massline y sus descripciones para los productos de una orden de compra, lo que permite corregir o actualizar la información de los productos según sea necesario.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar en estado 'Por llegar' o 'En bodega'."
+      ],
+      "postcondiciones": [
+        "Los códigos massline y sus descripciones quedan actualizados en el sistema.",
+        "El cambio en los códigos massline queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+      ],
+      "reglas_negocio": [
+        "Solo se pueden editar códigos massline de órdenes con en estado 'Por llegar', o 'En bodega'."
+      ],
+      "criterios_aceptacion": [
+        "Solo se pueden editar códigos massline de órdenes en estado 'Por llegar' o 'En bodega'.",
+        "El sistema debe mostrar los códigos massline actuales de cada producto al visualizar el detalle de la orden.",
+        "El usuario debe poder editar el código massline de un producto ingresándolo directamente.",
+        "El usuario debe poder editar el código massline de un producto buscando por descripción.",
+        "El usuario debe poder corregir múltiples productos en la misma sesión de edición.",
+        "Si el usuario cancela la edición, el sistema no debe realizar ningún cambio en los códigos massline existentes.",
+        "Al confirmar la edición, el sistema debe actualizar los códigos massline en la orden.",
+        "El cambio de códigos massline debe quedar registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 6,
+      "dependencias": []
+    },
+    {
+      "id": 8,
+      "nombre": "Editar revisión",
+      "descripcion": "El usuario puede editar los detalles de una revisión realizada a una orden de compra, lo que permite corregir o actualizar la información registrada durante la revisión según sea necesario.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar en estado 'Revisada'"
+      ],
+      "postcondiciones": [
+        "Los detalles de la revisión quedan actualizados en el sistema.",
+        "El cambio en la revisión queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+      ],
+      "reglas_negocio": [
+        "Solo se pueden editar revisiones de órdenes en estado 'Revisada'."
+      ],
+      "criterios_aceptacion": [
+        "Solo se pueden editar revisiones de órdenes en estado 'Revisada'.",
+        "El sistema debe mostrar los detalles actuales de la revisión al visualizar el detalle de la orden revisada.",
+        "El usuario debe poder editar las cajas registradas, las cantidades recibidas por ítem, y las anomalías registradas.",
+        "Antes de guardar cambios, el sistema debe mostrar un resumen de la revisión editada.",
+        "Si el usuario no confirma el resumen, el sistema debe permitir volver a la edición sin aplicar cambios.",
+        "Si el usuario cancela la edición, el sistema no debe realizar ningún cambio en los detalles de la revisión existentes.",
+        "Al confirmar el resumen de la edición, el sistema debe actualizar los detalles de la revisión en la orden.",
+        "El cambio en la revisión debe quedar registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 10,
+      "dependencias": []
+    },
+    {
+      "id": 9,
+      "nombre": "Edición emergencia",
+      "descripcion": "El usuario puede realizar una edición de emergencia en los detalles de una orden de compra, lo que permite corregir o actualizar información crítica de la orden en situaciones excepcionales.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar registrada en el sistema."
+      ],
+      "postcondiciones": [
+        "Los detalles editados de la orden de compra quedan actualizados en el sistema.",
+        "El cambio realizado en la edición de emergencia queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la edición, junto con una justificación del motivo de la edición.",
+        "Mientras la solicitud de edición de emergencia esté pendiente de aprobación, no se pueden realizar otras ediciones regulares en la orden de compra."
+      ],
+      "reglas_negocio": [
+        "La edición de emergencia debe ser utilizada solo en casos excepcionales y debe requerir una justificación clara del motivo de la edición.",
+        "La edición de emergencia permitirá al usuario editar cualquier detalle de la orden de compra, sin necesidad de validar otras reglas de negocio o restricciones que normalmente se aplicarían a las ediciones regulares.",
+        "La edición no se realizará de inmediato, sino que quedará registrada como una solicitud de edición de emergencia que debe ser revisada y aprobada por un usuario con permisos especiales antes de aplicarse a la orden de compra.",
+        "Mientras la solicitud de edición de emergencia esté en estado 'Pendiente de aprobación', deben bloquearse las ediciones regulares de la orden."
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe permitir al usuario ingresar una justificación detallada para la edición de emergencia.",
+        "Al solicitar una edición de emergencia, el sistema debe registrar la solicitud con la fecha, hora, usuario y justificación, y marcarla como 'Pendiente de aprobación'.",
+        "Mientras la solicitud permanezca en estado 'Pendiente de aprobación', el sistema debe bloquear cualquier intento de edición regular sobre la misma orden e informar el motivo del bloqueo.",
+        "Un usuario con permisos especiales debe poder revisar las solicitudes de edición de emergencia y aprobar o rechazar cada solicitud.",
+        "Si la solicitud es aprobada, el sistema debe aplicar los cambios editados a la orden de compra y actualizar el historial con la información de la edición de emergencia.",
+        "Si la solicitud es rechazada, el sistema debe mantener los detalles originales de la orden sin cambios y registrar el rechazo en el historial con la fecha, hora, usuario que rechazó y motivo del rechazo."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 10,
+      "dependencias": []
+    },
+    {
+      "id": 10,
+      "nombre": "Revisar solicitud de edición de emergencia",
+      "descripcion": "Un usuario con permisos especiales revisa las solicitudes de edición de emergencia realizadas en las órdenes de compra, lo que permite aprobar o rechazar estas solicitudes según la justificación y la necesidad de la edición.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "Debe existir al menos una solicitud de edición de emergencia en estado 'Pendiente de aprobación'."
+      ],
+      "postcondiciones": [
+        "La solicitud de edición de emergencia queda registrada como aprobada o rechazada en el sistema.",
+        "Si la solicitud es aprobada, los cambios editados se aplican a la orden de compra y quedan registrados en el historial con la información de la edición de emergencia.",
+        "Si la solicitud es rechazada, los detalles originales de la orden se mantienen sin cambios y el rechazo queda registrado en el historial con la información correspondiente."
+      ],
+      "reglas_negocio": [
+        "Cuando se termine la revisión de una solicitud de edición de emergencia, ya se habilitan las ediciones regulares de la orden.",
+        "Si se rechaza la solicitud, debe incluir una justificación del motivo del rechazo que quede registrada en el historial de la orden."
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe mostrar una lista de todas las solicitudes de edición de emergencia en estado 'Pendiente de aprobación' para que el usuario con permisos especiales pueda revisarlas.",
+        "El usuario debe poder revisar la justificación y los detalles editados propuestos en cada solicitud.",
+        "El usuario debe poder aprobar o rechazar cada solicitud de edición de emergencia mediante una acción clara en la interfaz.",
+        "El sistema debe requerir que el usuario proporcione una justificación al rechazar una solicitud de edición de emergencia.",
+        "Al aprobar una solicitud, el sistema debe aplicar los cambios editados a la orden de compra, actualizar el historial con la información de la edición de emergencia, y desbloquear las ediciones regulares para esa orden.",
+        "Al rechazar una solicitud, el sistema debe mantener los detalles originales de la orden sin cambios, registrar el rechazo en el historial con la información correspondiente, y desbloquear las ediciones regulares para esa orden."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 8,
+      "dependencias": [
+        "Edición emergencia"
+      ]
+    },
+    {
+      "id": 11,
+      "nombre": "Historial de cambios",
+      "descripcion": "El usuario puede visualizar un historial detallado de los cambios realizados en una orden de compra, lo que permite rastrear todas las modificaciones, revisiones y eventos relacionados con la orden a lo largo del tiempo.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar registrada en el sistema."
+      ],
+      "postcondiciones": [
+        "El usuario puede ver un historial completo de los cambios realizados en la orden de compra, incluyendo detalles de cada cambio, fecha, hora y usuario responsable."
+      ],
+      "reglas_negocio": [
+        "El historial de cambios debe incluir todas las modificaciones realizadas en la orden de compra, incluyendo ediciones regulares, ediciones de emergencia, revisiones, valoraciones y cambios de estado."
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe permitir al usuario visualizar todas las versiones registradas de la orden de compra.",
+        "El usuario debe poder seleccionar una versión específica de la orden para revisarla.",
+        "Al seleccionar una versión, el sistema debe mostrar los campos de la orden tal como estaban en ese momento.",
+        "Si la versión seleccionada contiene modificaciones registradas, el sistema debe mostrar el detalle de esas modificaciones, incluyendo campo modificado, valor anterior, valor nuevo, fecha, hora y usuario responsable.",
+        "El historial debe incluir las modificaciones, revisiones, valoraciones y cambios de estado registrados sobre la orden de compra."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 8,
+      "dependencias": []
+    },
+    {
+      "id": 12,
+      "nombre": "Refacturación de orden de compra",
+      "descripcion": "El usuario puede realizar una refacturación de una orden de compra, lo que permite corregir o actualizar la información de la orden en caso de errores o cambios en los detalles de la orden.",
+      "actores_principales": [],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "La orden de compra debe estar registrada en el sistema."
+      ],
+      "postcondiciones": [
+        "La orden de compra queda actualizada con la información corregida o modificada.",
+        "El cambio realizado en la refacturación queda registrado en el historial de la orden con la fecha, hora y usuario que realizó la refacturación.",
+        "Se notifica vía correo electrónico a los usuarios relacionados sobre la refacturación realizada."
+      ],
+      "reglas_negocio": [
+        "Solo se puede realizar una refacturación cuando la orden de compra sea una PO local y tenga anomalías.",
+        "La refacturación se realiza únicamente mediante la carga de un archivo XML con la nueva factura.",
+        "La refacturación debe quedar registrada como una modificación en el historial de la orden, indicando que se trata de una refacturación."
+      ],
+      "criterios_aceptacion": [
+        "Solo se puede realizar una refacturación en órdenes que sean PO locales y tengan anomalías.",
+        "El sistema debe aceptar únicamente archivos XML como medio para realizar la refacturación.",
+        "El sistema debe procesar el archivo XML cargado y actualizar los detalles de los ítems de la orden con la información de la nueva factura.",
+        "La refacturación debe quedar registrada en el historial de la orden, incluyendo la fecha, hora y usuario responsable.",
+        "Al completar la refacturación, el sistema debe enviar una notificación por correo electrónico a los usuarios relacionados con la orden de compra."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 8,
+      "dependencias": []
+    }
+  ],
+  "pedidos": [
+    {
+      "id": 13,
+      "nombre": "Visualizar inventario disponible",
+      "descripcion": "El usuario puede visualizar el inventario disponible en bodega, lo que permite conocer la cantidad de productos y repuestos disponibles para su uso en mantenimiento o reparación de equipos.",
+      "actores_principales": [
+        "consumidores"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El inventario debe estar registrado en el sistema."
+      ],
+      "postcondiciones": [
+        "El usuario puede ver el inventario disponible en bodega con detalles de los productos y repuestos."
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [
+        "El sistema debe mostrar una lista de productos y repuestos disponibles en bodega, incluyendo detalles como descripción, código, cantidad disponible.",
+        "El usuario debe poder buscar productos específicos en el inventario utilizando filtros como descripción, código.",
+        "Si el inventario está vacío o no se encuentran productos con los criterios de búsqueda, el sistema debe informar al usuario con un mensaje claro."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 6,
+      "dependencias": []
+    },
+    {
+      "id": 14,
+      "nombre": "Generar pedido a bodega de repuestos",
+      "descripcion": "El usuario genera un pedido a bodega de repuestos para solicitar productos necesarios para el mantenimiento o reparación de equipos.",
+      "actores_principales": [
+        "consumidores"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [],
+      "postcondiciones": [
+        "Se genera un pedido a bodega de repuestos con los detalles especificados por el usuario.",
+        "El pedido se ingresa con estado 'Por confirmar'"
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 8,
+      "dependencias": []
+    },
+    {
+      "id": 15,
+      "nombre": "Visualizar mis pedidos a bodega de repuestos",
+      "descripcion": "El usuario puede visualizar los pedidos que ha generado a bodega de repuestos, lo que permite hacer seguimiento al estado de sus solicitudes y gestionar sus necesidades de productos para mantenimiento o reparación de equipos.",
+      "actores_principales": [
+        "consumidores"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El usuario debe haber generado al menos un pedido a bodega de repuestos."
+      ],
+      "postcondiciones": [
+        "El usuario puede ver una lista de sus pedidos a bodega de repuestos con detalles como estado, fecha de generación y productos solicitados."
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [
+        "El sistema debe mostrar una lista de los pedidos a bodega de repuestos generados por el usuario, incluyendo detalles como estado, fecha de generación y productos solicitados.",
+        "El usuario debe poder filtrar sus pedidos por estado (por confirmar, confirmado, por llegar, etc.) y ordenar por fecha de generación.",
+        "Si el usuario no ha generado ningún pedido a bodega de repuestos, el sistema debe mostrar un mensaje indicando que no hay pedidos registrados."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 6,
+      "dependencias": [
+        "Generar pedido a bodega de repuestos"
+      ]
+    },
+    {
+      "id": 16,
+      "nombre": "Confirmar recibido de pedido",
+      "descripcion": "El usuario confirma la recepción de un pedido a bodega de repuestos, lo que permite actualizar el estado del pedido y activar procesos relacionados con la gestión de inventario.",
+      "actores_principales": [
+        "consumidores"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El pedido a bodega de repuestos debe estar en estado 'Empacado'."
+      ],
+      "postcondiciones": [
+        "El pedido a bodega de repuestos se actualiza a estado 'Recibido'."
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [
+        "El sistema debe permitir al usuario confirmar la llegada de un pedido a bodega de repuestos.",
+        "El estado del pedido debe actualizarse a 'Recibido' una vez que el usuario confirme la recepción.",
+        "Si el pedido no está en estado 'Empacado', el sistema debe mostrar un mensaje indicando que no se puede confirmar la recepción."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 4,
+      "dependencias": [
+        "Generar pedido a bodega de repuestos"
+      ]
+    },
+    {
+      "id": 17,
+      "nombre": "Revisar pedidos solicitados por consumidores",
+      "descripcion": "El usuario revisa los pedidos solicitados por los consumidores a bodega de repuestos para verificar su estado, gestionar su preparación y coordinar la entrega de los productos solicitados.",
+      "actores_principales": [
+        "bodega"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El usuario debe haber generado al menos un pedido a bodega de repuestos."
+      ],
+      "postcondiciones": [
+        "El usuario puede ver una lista de los pedidos solicitados por los consumidores a bodega de repuestos con detalles como estado, fecha de generación y productos solicitados."
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [
+        "El sistema debe mostrar una lista de los pedidos solicitados por los consumidores a bodega de repuestos, incluyendo detalles como estado, fecha de generación y productos solicitados.",
+        "El usuario debe poder filtrar los pedidos por estado (por confirmar, confirmado, por llegar, etc.) y ordenar por fecha de generación.",
+        "Si no hay pedidos solicitados por los consumidores, el sistema debe mostrar un mensaje indicando que no hay pedidos registrados."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 6,
+      "dependencias": [
+        "Generar pedido a bodega de repuestos"
+      ]
+    },
+    {
+      "id": 18,
+      "nombre": "Confirmar envío del pedido",
+      "descripcion": "El usuario confirma el envío de un pedido a los consumidores",
+      "actores_principales": [
+        "bodega"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "El pedido a bodega de repuestos debe estar en estado 'Por confirmar'."
+      ],
+      "postcondiciones": [
+        "El pedido a bodega de repuestos se actualiza a estado 'Por despachar'."
+      ],
+      "reglas_negocio": [],
+      "criterios_aceptacion": [
+        "El sistema debe permitir al usuario confirmar el envío de un pedido a los consumidores.",
+        "El estado del pedido debe actualizarse a 'Por despachar' una vez que el usuario confirme el envío.",
+        "Si el pedido no está en estado 'Por confirmar', el sistema debe mostrar un mensaje indicando que no se puede confirmar el envío."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 4,
+      "dependencias": [
+        "Generar pedido a bodega de repuestos"
+      ]
+    }
+  ],
+  "almacenamiento": [
+    {
+      "id": 30,
+      "nombre": "Visualización de tareas de almacenamiento",
+      "descripcion": "El operario de bodega visualiza sus tareas de almacenamiento generadas por el sistema, donde cada tarea corresponde a una caja de una orden de compra que debe ubicarse en bodega.",
+      "actores_principales": [
+        "Operario de bodega"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "Debe existir al menos una orden de compra en estado 'Por almacenar' con cajas registradas y pendientes de ubicación.",
+        "El operario debe tener acceso al módulo de almacenamiento."
+      ],
+      "postcondiciones": [
+        "El operario puede visualizar la lista de tareas de almacenamiento pendientes."
+      ],
+      "reglas_negocio": [
+        "Las tareas de almacenamiento se generan por caja, no por producto individual.",
+        "Cada tarea corresponde a una única caja de una orden de compra."
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe mostrar al operario una lista de tareas de almacenamiento donde cada tarea corresponda a una caja.",
+        "El sistema debe mostrar para cada tarea al menos: código de tarea, NIR de la orden, código de caja, ubicación sugerida o asignada y estado.",
+        "Las tareas deben presentarse en el orden de prioridad definido por el sistema.",
+        "Si no existen tareas pendientes, el sistema debe mostrar un mensaje claro indicando que no hay tareas de almacenamiento por atender."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 10,
+      "dependencias": [
+        "Confirmar revisión",
+        "Visualizar ordenes de compra"
+      ]
+    },
+    {
+      "id": 31,
+      "nombre": "Ejecutar tarea de almacenamiento",
+      "descripcion": "El operario de bodega ejecuta una tarea de almacenamiento seleccionándola desde la lista de tareas pendientes, para visualizar su información inicial y comenzar la operación.",
+      "actores_principales": [
+        "Operario de bodega"
+      ],
+      "actores_secundarios": [],
+      "precondiciones": [
+        "Debe existir al menos una tarea de almacenamiento pendiente en la lista.",
+        "El operario debe tener acceso al módulo de almacenamiento."
+      ],
+      "postcondiciones": [
+        "El operario visualiza la información inicial de la tarea seleccionada."
+      ],
+      "reglas_negocio": [
+        "Cada tarea de almacenamiento corresponde a una caja."
+      ],
+      "criterios_aceptacion": [
+        "El sistema debe permitir al operario seleccionar una tarea de almacenamiento desde la lista de tareas pendientes.",
+        "Al seleccionar una tarea, el sistema debe mostrar la información inicial de esa tarea.",
+        "La información inicial debe incluir al menos: código de tarea, NIR de la orden y código de caja."
+      ],
+      "prioridad": null,
+      "estado": "Pendiente",
+      "estado_prototipo": "Pendiente",
+      "estimacion_hrs": 4,
+      "dependencias": [
+        "Visualización de tareas de almacenamiento"
+      ]
+    }
+  ]
 }

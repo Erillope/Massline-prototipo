@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MasStock Operador — Ejecutar tarea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/operador.css">
+</head>
+<body>
+  <main class="op-app op-exec-app">
+    <header class="op-top">
+      <div class="op-top-row">
+        <button class="op-back-btn" onclick="goBackToList()">← Tareas</button>
+        <div>
+          <h1>Ejecutar tarea</h1>
+          <p id="execTaskCode">TA-ALM-00000</p>
+        </div>
+      </div>
+    </header>
+
+    <section id="execTaskInfo" class="op-exec-card" style="display:none;">
+      <div class="op-exec-info-grid">
+        <div>
+          <span class="op-task-label">NIR</span>
+          <div class="op-task-value" id="execNir">—</div>
+        </div>
+        <div>
+          <span class="op-task-label">Caja</span>
+          <div class="op-task-value" id="execBox">—</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;">
+        <span class="op-task-label">Ubicación destino</span>
+        <div class="op-task-value" id="execLocation">—</div>
+      </div>
+    </section>
+
+    <section id="execNotFound" class="card" style="display:none;">
+      <div class="card-body">
+        <div class="empty-state" style="padding: 24px 16px;">
+          <div class="empty-state-icon warning">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-8.938 4h17.876c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L1.34 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+          </div>
+          <h3>Tarea no encontrada</h3>
+          <p>La tarea solicitada no existe o no está disponible.</p>
+          <button class="op-primary-btn" style="margin-top:10px;" onclick="goBackToList()">Volver</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="execFlow" class="op-exec-flow" style="display:none;">
+      <article class="op-exec-step" id="stepBoxCard">
+        <div class="op-exec-step-head">
+          <h2>1. Escanear caja</h2>
+          <span class="op-step-pill" id="stepBoxPill">Pendiente</span>
+        </div>
+        <p class="op-exec-step-text">Escanea la caja física asignada a esta tarea.</p>
+
+        <div class="op-step-sim-row">
+          <span class="op-step-sim-label">Modo escaneo caja</span>
+          <button id="boxModeBtn" class="toggle-error-mode op-step-mode-btn" onclick="toggleStepMode('box')">Éxito</button>
+        </div>
+
+        <button class="op-primary-btn" id="scanBoxBtn" onclick="startScan('box')">Abrir cámara</button>
+        <p class="op-step-error" id="boxErrorMsg" style="display:none;">Código de caja incorrecto. Escanea la caja asignada.</p>
+      </article>
+
+      <article class="op-exec-step" id="stepLocationCard">
+        <div class="op-exec-step-head">
+          <h2>2. Escanear ubicación</h2>
+          <span class="op-step-pill" id="stepLocationPill">Pendiente</span>
+        </div>
+        <p class="op-exec-step-text">Dirígete a la ubicación indicada y escanea su código.</p>
+
+        <div class="op-step-sim-row">
+          <span class="op-step-sim-label">Modo escaneo ubicación</span>
+          <button id="locationModeBtn" class="toggle-error-mode op-step-mode-btn" onclick="toggleStepMode('location')">Éxito</button>
+        </div>
+
+        <button class="op-primary-btn" id="scanLocationBtn" onclick="startScan('location')" disabled>Abrir cámara</button>
+        <p class="op-step-error" id="locationErrorMsg" style="display:none;">Ubicación incorrecta. Escanea la ubicación asignada.</p>
+      </article>
+
+      <div class="op-exec-finish-wrap">
+        <button class="op-primary-btn op-finish-btn" id="finishTaskBtn" onclick="finishTask()" disabled>Finalizar tarea</button>
+      </div>
+    </section>
+
+    <nav class="op-bottom-nav" aria-label="Navegación Operador">
+      <a href="index.html" class="op-nav-item active">
+        <span class="op-nav-ico">◼</span>
+        <span>Tareas</span>
+      </a>
+      <a href="#" class="op-nav-item disabled">
+        <span class="op-nav-ico">◯</span>
+        <span>Perfil</span>
+      </a>
+    </nav>
+  </main>
+
+  <div class="op-camera-overlay" id="cameraOverlay" aria-hidden="true">
+    <div class="op-camera-shell">
+      <video id="cameraVideo" autoplay playsinline muted></video>
+      <div class="op-camera-fallback" id="cameraFallback">Simulando cámara…</div>
+      <div class="op-scan-frame"></div>
+      <div class="op-camera-footer">
+        <div class="op-camera-title" id="cameraTitle">Escaneando…</div>
+        <div class="op-camera-count" id="cameraCount">3</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/shared.js"></script>
+  <script src="js/data_operador.js"></script>
+  <script src="js/ejecutar_tarea.js"></script>
+</body>
+</html>

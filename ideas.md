@@ -1,0 +1,2 @@
+- [ ] Agregar la pestaña historial donde ver todo los tipos de tareas
+  - [] filtro por fecha

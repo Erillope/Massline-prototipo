@@ -18,15 +18,18 @@
         </div>
       </div>
 
-      <div class="op-mini-stats">
-        <div class="op-mini-stat">
-          <span class="op-stat-label">Pendientes</span>
-          <span class="op-stat-value" id="pendingCount">0</span>
-        </div>
-      </div>
     </header>
 
     <section class="op-content">
+      <div class="op-filters">
+        <button id="filterPending" class="op-filter-chip pending active" onclick="toggleFilter('pending')">
+          Pendientes (0)
+        </button>
+        <button id="filterCompleted" class="op-filter-chip completed" onclick="toggleFilter('completed')">
+          Completadas (0)
+        </button>
+      </div>
+
       <div id="taskList" class="op-task-list"></div>
 
       <div id="emptyState" class="card" style="display:none;">
@@ -65,7 +68,12 @@
     </nav>
   </main>
 
+  <div class="op-toast" id="opToast">
+    <span id="opToastMsg">Tarea completada</span>
+  </div>
+
   <script src="../js/shared.js"></script>
+  <script src="js/data_operador.js"></script>
   <script src="js/tareas_almacenamiento.js"></script>
 </body>
 </html>
