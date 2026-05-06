@@ -538,5 +538,72 @@
                 "Generar pedido a bodega de repuestos"
              ]
         }
+    ],
+    "almacenamiento": [
+        {
+            "id": 30,
+            "nombre": "Visualización de tareas de almacenamiento",
+            "descripcion": "El operario de bodega visualiza sus tareas de almacenamiento generadas por el sistema, donde cada tarea corresponde a una caja de una orden de compra que debe ubicarse en bodega.",
+            "actores_principales": [
+                "Operario de bodega"
+            ],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "Debe existir al menos una orden de compra en estado 'Por almacenar' con cajas registradas y pendientes de ubicación.",
+                "El operario debe tener acceso al módulo de almacenamiento."
+            ],
+            "postcondiciones": [
+                "El operario puede visualizar la lista de tareas de almacenamiento pendientes."
+            ],
+            "reglas_negocio": [
+                "Las tareas de almacenamiento se generan por caja, no por producto individual.",
+                "Cada tarea corresponde a una única caja de una orden de compra."
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar al operario una lista de tareas de almacenamiento donde cada tarea corresponda a una caja.",
+                "El sistema debe mostrar para cada tarea al menos: código de tarea, NIR de la orden, código de caja, ubicación sugerida o asignada y estado.",
+                "Las tareas deben presentarse en el orden de prioridad definido por el sistema.",
+                "Si no existen tareas pendientes, el sistema debe mostrar un mensaje claro indicando que no hay tareas de almacenamiento por atender."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 10,
+            "dependencias": [
+                "Confirmar revisión",
+                "Visualizar ordenes de compra"
+             ]
+        },
+        {
+            "id": 31,
+            "nombre": "Ejecutar tarea de almacenamiento",
+            "descripcion": "El operario de bodega ejecuta una tarea de almacenamiento seleccionándola desde la lista de tareas pendientes, para visualizar su información inicial y comenzar la operación.",
+            "actores_principales": [
+                "Operario de bodega"
+            ],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "Debe existir al menos una tarea de almacenamiento pendiente en la lista.",
+                "El operario debe tener acceso al módulo de almacenamiento."
+            ],
+            "postcondiciones": [
+                "El operario visualiza la información inicial de la tarea seleccionada."
+            ],
+            "reglas_negocio": [
+                "Cada tarea de almacenamiento corresponde a una caja."
+            ],
+            "criterios_aceptacion": [
+                "El sistema debe permitir al operario seleccionar una tarea de almacenamiento desde la lista de tareas pendientes.",
+                "Al seleccionar una tarea, el sistema debe mostrar la información inicial de esa tarea.",
+                "La información inicial debe incluir al menos: código de tarea, NIR de la orden y código de caja."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 4,
+            "dependencias": [
+                "Visualización de tareas de almacenamiento"
+             ]
+        }
     ]
 }

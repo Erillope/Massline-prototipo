@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MasStock Operador — Tareas de almacenamiento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/operador.css">
+</head>
+<body>
+  <main class="op-app">
+    <header class="op-top">
+      <div class="op-top-row">
+        <div>
+          <h1>Tareas de almacenamiento</h1>
+          <p>Pendientes por caja</p>
+        </div>
+      </div>
+
+      <div class="op-mini-stats">
+        <div class="op-mini-stat">
+          <span class="op-stat-label">Pendientes</span>
+          <span class="op-stat-value" id="pendingCount">0</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="op-content">
+      <div id="taskList" class="op-task-list"></div>
+
+      <div id="emptyState" class="card" style="display:none;">
+        <div class="card-body">
+          <div class="empty-state" style="padding: 24px 16px;">
+            <div class="empty-state-icon success">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h3>Sin tareas pendientes</h3>
+            <p>No hay tareas de almacenamiento por atender en este momento.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="op-sim-wrap">
+        <button class="toggle-error-mode op-sim-btn" id="btnToggleMode" onclick="toggleSimMode()" title="Modo: Normal (clic para cambiar)">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          <span id="simLabel" class="mode-label">Normal</span>
+        </button>
+      </div>
+    </section>
+
+    <nav class="op-bottom-nav" aria-label="Navegación Operador">
+      <a href="index.html" class="op-nav-item active">
+        <span class="op-nav-ico">◼</span>
+        <span>Tareas</span>
+      </a>
+      <a href="#" class="op-nav-item disabled">
+        <span class="op-nav-ico">◯</span>
+        <span>Perfil</span>
+      </a>
+    </nav>
+  </main>
+
+  <script src="../js/shared.js"></script>
+  <script src="js/tareas_almacenamiento.js"></script>
+</body>
+</html>
