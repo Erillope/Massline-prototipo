@@ -57,6 +57,8 @@ function handleFiles(event, listId) {
       renderCurrentInvoice();
     } else if (simMode === 5) {
       showManualEntry();
+    } else if (simMode === 6) {
+      document.getElementById('poExpiredSection').style.display = '';
     }
   }
 
@@ -97,9 +99,9 @@ function handleCancel() {
 }
 
 /* === Modo simulación de flujos === */
-let simMode = 0; // 0=válido, 1=archivo no válido, 2=datos incompletos, 3=orden existente, 4=multi-invoice, 5=ingreso manual
-const modeLabels = ['Válido', 'Archivo no válido', 'Datos incompletos', 'Orden existente', 'Multi-invoice', 'Ingreso manual'];
-const modeClasses = ['', 'mode-1', 'mode-2', 'mode-3', 'mode-4', 'mode-5'];
+let simMode = 0; // 0=válido, 1=archivo no válido, 2=datos incompletos, 3=orden existente, 4=multi-invoice, 5=ingreso manual, 6=orden vencida
+const modeLabels = ['Válido', 'Archivo no válido', 'Datos incompletos', 'Orden existente', 'Multi-invoice', 'Ingreso manual', 'Orden vencida'];
+const modeClasses = ['', 'mode-1', 'mode-2', 'mode-3', 'mode-4', 'mode-5', 'mode-6'];
 
 /* === Ingreso manual === */
 let manualMode = false;
@@ -160,6 +162,7 @@ function hideAllPoAlerts() {
   document.getElementById('poInfoMulti').style.display = 'none';
   document.getElementById('poMultiInvoiceSection').style.display = 'none';
   document.getElementById('poManualSection').style.display = 'none';
+  document.getElementById('poExpiredSection').style.display = 'none';
   document.getElementById('manualTableBody').innerHTML = '';
   document.getElementById('manualProveedor').value = '';
   manualMode = false;
@@ -169,7 +172,7 @@ function hideAllPoAlerts() {
 }
 
 function toggleSimMode() {
-  simMode = (simMode + 1) % 6;
+  simMode = (simMode + 1) % 7;
   const btn = document.getElementById('btnToggleMode');
   btn.className = 'toggle-error-mode ' + modeClasses[simMode];
   btn.querySelector('.mode-label').textContent = modeLabels[simMode];
@@ -195,8 +198,10 @@ function validateForm() {
     return;
   }
   const hasFile = document.getElementById('fileListPO').children.length > 0;
-  const isValidMode = simMode === 0 || simMode === 4;
-  document.getElementById('btnProcesar').disabled = !(hasFile && isValidMode);
+  const isValidMode = (simMode === 0 || simMode === 4) && currentOrderType !== 'expired';
+  // Bloquear si es orden vencida
+  const isExpired = simMode === 6;
+  document.getElementById('btnProcesar').disabled = !(hasFile && isValidMode) || isExpired;
 }
 
 /* === Navegación entre pasos === */
@@ -216,13 +221,31 @@ function goToStep3() {
 
 /* ── Selector tipo de orden ── */
 let currentOrderType = 'local';
+let currentLocalSubtype = 'normal'; // 'normal' | 'directa'
 
 function selectOrderType(el, type) {
   document.querySelectorAll('.order-type-option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   el.querySelector('input[type="radio"]').checked = true;
   currentOrderType = type;
+
+  // Mostrar u ocultar sub-panel de tipo local
+  const subPanel = document.getElementById('localSubtypePanel');
+  if (subPanel) {
+    if (type === 'local') {
+      subPanel.classList.add('visible');
+    } else {
+      subPanel.classList.remove('visible');
+    }
+  }
+
   applyExternaMode();
+}
+
+function selectLocalSubtype(subtype) {
+  currentLocalSubtype = subtype;
+  document.getElementById('subtypeNormal').classList.toggle('selected', subtype === 'normal');
+  document.getElementById('subtypeDirecta').classList.toggle('selected', subtype === 'directa');
 }
 
 function applyExternaMode() {
@@ -282,8 +305,14 @@ function resetForm() {
   hideAllPoAlerts();
   // Reset order type to Local
   currentOrderType = 'local';
+  currentLocalSubtype = 'normal';
   const localOption = document.querySelector('.order-type-option');
   if (localOption) selectOrderType(localOption, 'local');
+  // Reset subtype buttons
+  const sn = document.getElementById('subtypeNormal');
+  const sd = document.getElementById('subtypeDirecta');
+  if (sn) sn.classList.add('selected');
+  if (sd) sd.classList.remove('selected');
   validateForm();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }

@@ -46,16 +46,15 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
             </svg>
-            <span class="nav-label">Traslado</span>
-            <span class="nav-badge">1</span>
+            <span class="nav-label">Pedidos</span>
+            <span class="nav-badge">3</span>
           </div>
           <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </div>
         <div class="nav-submenu">
-          <a href="#">Crear</a>
-          <a href="#">Consultar</a>
+          <a href="pedidos_bodega.html">Solicitudes</a>
         </div>
       </div>
     </nav>
@@ -110,6 +109,17 @@
                   <span class="order-type-desc">Proveedor internacional</span>
                 </div>
               </label>
+            </div>
+
+            <!-- Sub-panel: ¿Es compra directa? (solo visible cuando tipo = Local) -->
+            <div class="local-subtype-panel" id="localSubtypePanel">
+              <div class="local-subtype-inner">
+                <span class="local-subtype-label">¿Es compra directa?</span>
+                <div class="local-subtype-options">
+                  <button type="button" class="local-subtype-btn selected" id="subtypeNormal" onclick="selectLocalSubtype('normal')">Normal</button>
+                  <button type="button" class="local-subtype-btn" id="subtypeDirecta" onclick="selectLocalSubtype('directa')">Directa</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -338,6 +348,23 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            <!-- Alerta: Orden vencida (solo local) -->
+            <div class="po-error-alert" id="poExpiredSection" style="display:none;">
+              <svg class="po-error-alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <div class="po-error-alert-content">
+                <h4>Orden de compra vencida</h4>
+                <p>La orden <strong>NIR1-000054</strong> no puede ingresarse porque su fecha de vencimiento ya expiró.</p>
+                <ul>
+                  <li>Fecha de vencimiento: <strong>28/04/2026</strong></li>
+                  <li>Fecha actual: <strong>04/05/2026</strong></li>
+                  <li>Días vencida: <strong>6 días</strong></li>
+                </ul>
+                <p style="margin-top:8px;">Comuníquese con el proveedor para gestionar una nueva orden de compra o la extensión del plazo.</p>
               </div>
             </div>
 
@@ -649,6 +676,10 @@
   <script src="js/data.js"></script>
   <script src="js/shared.js"></script>
   <script src="js/ingreso_orden.js"></script>
+  <script>
+    // Inicializar sub-panel visible (Local está seleccionado por defecto)
+    document.getElementById('localSubtypePanel').classList.add('visible');
+  </script>
 
   <!-- Botón oculto para alternar modo de simulación -->
   <button class="toggle-error-mode" id="btnToggleMode" onclick="toggleSimMode()" title="Modo: Válido (clic para cambiar)">

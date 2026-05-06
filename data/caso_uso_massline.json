@@ -389,5 +389,154 @@
             "estimacion_hrs": 8,
             "dependencias": []
         }
+    ],
+    "pedidos": [
+        {
+            "id": 13,
+            "nombre": "Visualizar inventario disponible",
+            "descripcion": "El usuario puede visualizar el inventario disponible en bodega, lo que permite conocer la cantidad de productos y repuestos disponibles para su uso en mantenimiento o reparación de equipos.",
+            "actores_principales": ["consumidores"],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El inventario debe estar registrado en el sistema."
+            ],
+            "postcondiciones": [
+                "El usuario puede ver el inventario disponible en bodega con detalles de los productos y repuestos."
+            ],
+            "reglas_negocio": [],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar una lista de productos y repuestos disponibles en bodega, incluyendo detalles como descripción, código, cantidad disponible.",
+                "El usuario debe poder buscar productos específicos en el inventario utilizando filtros como descripción, código.",
+                "Si el inventario está vacío o no se encuentran productos con los criterios de búsqueda, el sistema debe informar al usuario con un mensaje claro."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 6,
+            "dependencias": []
+        },
+        {
+            "id": 14,
+            "nombre": "Generar pedido a bodega de repuestos",
+            "descripcion": "El usuario genera un pedido a bodega de repuestos para solicitar productos necesarios para el mantenimiento o reparación de equipos.",
+            "actores_principales": ["consumidores"],
+            "actores_secundarios": [],
+            "precondiciones": [],
+            "postcondiciones": [
+                "Se genera un pedido a bodega de repuestos con los detalles especificados por el usuario.",
+                "El pedido se ingresa con estado 'Por confirmar'"
+            ],
+            "reglas_negocio": [],
+            "criterios_aceptacion": [],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 8,
+            "dependencias": []
+        },
+        {
+            "id": 15,
+            "nombre": "Visualizar mis pedidos a bodega de repuestos",
+            "descripcion": "El usuario puede visualizar los pedidos que ha generado a bodega de repuestos, lo que permite hacer seguimiento al estado de sus solicitudes y gestionar sus necesidades de productos para mantenimiento o reparación de equipos.",
+            "actores_principales": ["consumidores"],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El usuario debe haber generado al menos un pedido a bodega de repuestos."
+            ],
+            "postcondiciones": [
+                "El usuario puede ver una lista de sus pedidos a bodega de repuestos con detalles como estado, fecha de generación y productos solicitados."
+            ],
+            "reglas_negocio": [],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar una lista de los pedidos a bodega de repuestos generados por el usuario, incluyendo detalles como estado, fecha de generación y productos solicitados.",
+                "El usuario debe poder filtrar sus pedidos por estado (por confirmar, confirmado, por llegar, etc.) y ordenar por fecha de generación.",
+                "Si el usuario no ha generado ningún pedido a bodega de repuestos, el sistema debe mostrar un mensaje indicando que no hay pedidos registrados."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 6,
+            "dependencias": [
+                "Generar pedido a bodega de repuestos"
+            ]
+        },
+        {
+            "id": 16,
+            "nombre": "Confirmar recibido de pedido",
+            "descripcion": "El usuario confirma la recepción de un pedido a bodega de repuestos, lo que permite actualizar el estado del pedido y activar procesos relacionados con la gestión de inventario.",
+            "actores_principales": ["consumidores"],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El pedido a bodega de repuestos debe estar en estado 'Empacado'."
+            ],
+            "postcondiciones": [
+                "El pedido a bodega de repuestos se actualiza a estado 'Recibido'."
+            ],
+            "reglas_negocio": [],
+            "criterios_aceptacion": [
+                "El sistema debe permitir al usuario confirmar la llegada de un pedido a bodega de repuestos.",
+                "El estado del pedido debe actualizarse a 'Recibido' una vez que el usuario confirme la recepción.",
+                "Si el pedido no está en estado 'Empacado', el sistema debe mostrar un mensaje indicando que no se puede confirmar la recepción."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 4,
+            "dependencias": [
+                "Generar pedido a bodega de repuestos"
+            ]
+        },
+        {
+            "id": 17,
+            "nombre": "Revisar pedidos solicitados por consumidores",
+            "descripcion": "El usuario revisa los pedidos solicitados por los consumidores a bodega de repuestos para verificar su estado, gestionar su preparación y coordinar la entrega de los productos solicitados.",
+            "actores_principales": ["bodega"],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El usuario debe haber generado al menos un pedido a bodega de repuestos."
+            ],
+            "postcondiciones": [
+                "El usuario puede ver una lista de los pedidos solicitados por los consumidores a bodega de repuestos con detalles como estado, fecha de generación y productos solicitados."
+            ],
+            "reglas_negocio": [],
+            "criterios_aceptacion": [
+                "El sistema debe mostrar una lista de los pedidos solicitados por los consumidores a bodega de repuestos, incluyendo detalles como estado, fecha de generación y productos solicitados.",
+                "El usuario debe poder filtrar los pedidos por estado (por confirmar, confirmado, por llegar, etc.) y ordenar por fecha de generación.",
+                "Si no hay pedidos solicitados por los consumidores, el sistema debe mostrar un mensaje indicando que no hay pedidos registrados."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 6,
+            "dependencias": [
+                "Generar pedido a bodega de repuestos"
+            ]
+        },
+        {
+            "id": 18,
+            "nombre": "Confirmar envío del pedido",
+            "descripcion": "El usuario confirma el envío de un pedido a los consumidores",
+            "actores_principales": ["bodega"],
+            "actores_secundarios": [],
+            "precondiciones": [
+                "El pedido a bodega de repuestos debe estar en estado 'Por confirmar'."
+            ],
+            "postcondiciones": [
+                "El pedido a bodega de repuestos se actualiza a estado 'Por despachar'."
+            ],
+            "reglas_negocio": [],
+            "criterios_aceptacion": [
+                "El sistema debe permitir al usuario confirmar el envío de un pedido a los consumidores.",
+                "El estado del pedido debe actualizarse a 'Por despachar' una vez que el usuario confirme el envío.",
+                "Si el pedido no está en estado 'Por confirmar', el sistema debe mostrar un mensaje indicando que no se puede confirmar el envío."
+            ],
+            "prioridad": null,
+            "estado": "Pendiente",
+            "estado_prototipo": "Pendiente",
+            "estimacion_hrs": 4,
+            "dependencias": [
+                "Generar pedido a bodega de repuestos"
+             ]
+        }
     ]
 }

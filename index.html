@@ -42,16 +42,15 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
             </svg>
-            <span class="nav-label">Traslado</span>
-            <span class="nav-badge">1</span>
+            <span class="nav-label">Pedidos</span>
+            <span class="nav-badge">3</span>
           </div>
           <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </div>
         <div class="nav-submenu">
-          <a href="#">Crear</a>
-          <a href="#">Consultar</a>
+          <a href="pedidos_bodega.html">Solicitudes</a>
         </div>
       </div>
     </nav>
@@ -121,7 +120,7 @@
             <!-- Filtros por estado -->
             <div class="estado-tabs">
               <button class="estado-tab active" onclick="setTab(this)">
-                Todos <span class="tab-count">10</span>
+                Todos <span class="tab-count">11</span>
               </button>
               <button class="estado-tab" onclick="setTab(this)">
                 En bodega <span class="tab-count">2</span>
@@ -142,6 +141,9 @@
                 Valorada <span class="tab-count">1</span>
               </button>
               <button class="estado-tab" onclick="setTab(this)">
+                Por valorar <span class="tab-count">1</span>
+              </button>
+              <button class="estado-tab" onclick="setTab(this)">
                 Por llegar <span class="tab-count">1</span>
               </button>
             </div>
@@ -157,7 +159,7 @@
               </svg>
             </div>
             <h2>Resultados</h2>
-            <span class="card-header-right">9 ordenes encontradas</span>
+            <span class="card-header-right">11 ordenes encontradas</span>
           </div>
           <div class="card-body" style="padding:0;">
             <div class="table-wrapper" style="border:none; border-radius:0;">
@@ -245,6 +247,18 @@
                     <td>5</td>
                     <td>—</td>
                     <td><span class="status-badge por-almacenar"><span class="dot"></span> Por almacenar</span></td>
+                    <td>
+                      <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </td>
+                  </tr>
+                  <!-- Prioridad 3.8: Por valorar (Local directa — flujo directo sin revisión ni almacenamiento) -->
+                  <tr onclick="goToDetail('NIR1-000059','MOTORALMOR CIA. LTDA.','15/04/2026 14:30','por-valorar','Por valorar','','','','','Local directa')">
+                    <td><code>NIR1-000059</code></td>
+                    <td>MOTORALMOR CIA. LTDA.</td>
+                    <td>15/04/2026 14:30</td>
+                    <td>4</td>
+                    <td>—</td>
+                    <td><span class="status-badge por-valorar"><span class="dot"></span> Por valorar</span></td>
                     <td>
                       <svg width="16" height="16" fill="none" stroke="#8b8fa3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </td>
