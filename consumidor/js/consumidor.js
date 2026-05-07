@@ -7,15 +7,15 @@ const productos = [
   { code: 'R150-AR0507', desc: 'Cable de acelerador',           cat: 'Cables',      disp: 32, unidad: 'und.' },
   { code: 'R150-AR0508', desc: 'Cable de embrague',             cat: 'Cables',      disp: 45, unidad: 'und.' },
   { code: 'R150-AR0509', desc: 'Cable de velocímetro',          cat: 'Cables',      disp: 28, unidad: 'und.' },
-  { code: 'R150-100837', desc: 'Pastillas de freno',            cat: 'Frenos',      disp: 80, unidad: 'par'  },
+  { code: 'R150-100837', desc: 'Pastillas de freno',            cat: 'Frenos',      disp: 80, unidad: 'und.' },
   { code: 'R180-XP0903', desc: 'Llave de paso de combustible',  cat: 'Combustible', disp: 60, unidad: 'und.' },
-  { code: 'R180-XP0302', desc: 'Juego de retenedores',          cat: 'Sellantes',   disp: 25, unidad: 'juego'},
+  { code: 'R180-XP0302', desc: 'Juego de retenedores',          cat: 'Sellantes',   disp: 25, unidad: 'und.' },
   { code: 'R180-XP0806', desc: 'Piñón de velocímetro',          cat: 'Transmisión', disp: 40, unidad: 'und.' },
   { code: 'R180-XP1122', desc: 'Decorativo frontal superior',   cat: 'Carrocería',  disp: 15, unidad: 'und.' },
-  { code: 'R150-GY0205', desc: 'Kit de balancines I/D',         cat: 'Motor',       disp: 18, unidad: 'kit'  },
-  { code: 'R110-LX0923', desc: 'Empaques kit 110cc (23 piezas)',cat: 'Motor',       disp: 35, unidad: 'kit'  },
+  { code: 'R150-GY0205', desc: 'Kit de balancines I/D',         cat: 'Motor',       disp: 18, unidad: 'und.' },
+  { code: 'R110-LX0923', desc: 'Empaques kit 110cc (23 piezas)',cat: 'Motor',       disp: 35, unidad: 'und.' },
   { code: 'R150-XY0412', desc: 'Bendix de rodillo 41 dientes',  cat: 'Transmisión', disp: 22, unidad: 'und.' },
-  { code: 'R250-XY0619', desc: 'Cilindro kit 250cc',            cat: 'Motor',       disp:  2, unidad: 'kit'  },
+  { code: 'R250-XY0619', desc: 'Cilindro kit 250cc',            cat: 'Motor',       disp:  2, unidad: 'und.' },
   { code: 'R200-GY0119', desc: 'Caja de transmisión LEP168.5',  cat: 'Transmisión', disp: 12, unidad: 'und.' },
 ];
 
@@ -66,7 +66,9 @@ function renderInventario() {
       '<td>' +
         '<div class="add-cell">' +
           '<input type="number" class="inv-qty-input" id="qty-' + p.code + '"' +
-                 ' value="' + (carrito[p.code] || 1) + '" min="1" max="' + p.disp + '">' +
+                 ' value="' + (carrito[p.code] || 1) + '" min="1"' +
+                 ' data-disp="' + p.disp + '" oninput="onQtyInput(this)"' +
+                 (carrito[p.code] > p.disp ? ' style="border-color:#f59e0b;background:#fffbeb;"' : '') + '>' +
           '<button class="btn-add-cart' + (enCarrito ? ' added' : '') + '"' +
                   ' onclick="agregarAlCarrito(\'' + p.code + '\')">' +
             (enCarrito
@@ -77,6 +79,21 @@ function renderInventario() {
       '</td>';
     tbody.appendChild(tr);
   });
+}
+
+// =============================================================
+// Advertencia de stock en input de cantidad
+// =============================================================
+function onQtyInput(input) {
+  var disp = parseInt(input.getAttribute('data-disp')) || 0;
+  var val  = parseInt(input.value) || 0;
+  if (val > disp) {
+    input.style.borderColor = '#f59e0b';
+    input.style.background  = '#fffbeb';
+  } else {
+    input.style.borderColor = '';
+    input.style.background  = '';
+  }
 }
 
 // =============================================================
@@ -103,7 +120,7 @@ function agregarAlCarrito(code) {
   var prod  = productos.find(function (p) { return p.code === code; });
   if (!prod) return;
 
-  carrito[code] = Math.min(qty, prod.disp);
+  carrito[code] = qty;
   actualizarCarritoBadge();
   renderInventario();
 }
@@ -141,16 +158,41 @@ function abrirConfirmModal() {
   var tbody = document.getElementById('modalCartTbody');
   tbody.innerHTML = '';
 
+  // Banner si algún ítem supera el stock disponible
+  var hayExceso = Object.keys(carrito).some(function (code) {
+    var prod = productos.find(function (p) { return p.code === code; });
+    return prod && carrito[code] > prod.disp;
+  });
+  var banner = document.getElementById('modalStockWarning');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'modalStockWarning';
+    banner.className = 'modal-info-banner';
+    banner.style.cssText = 'background:#fffbeb;border-color:#f59e0b;color:#92400e;margin-bottom:12px;';
+    banner.innerHTML =
+      '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>' +
+      '</svg>' +
+      '<span>Uno o más ítems superan el stock disponible. El pedido se generará igual, pero el tiempo de entrega podría verse afectado.</span>';
+    // Insertar ANTES de la tabla, no dentro de ella
+    tbody.parentNode.parentNode.insertBefore(banner, tbody.parentNode);
+  }
+  banner.style.display = hayExceso ? '' : 'none';
+
   Object.keys(carrito).forEach(function (code) {
     var prod = productos.find(function (p) { return p.code === code; });
     if (!prod) return;
+    var excede = carrito[code] > prod.disp;
 
     var tr = document.createElement('tr');
     tr.innerHTML =
       '<td><code>' + code + '</code></td>' +
       '<td style="min-width: 160px;">' + prod.desc + '</td>' +
       '<td>' +
-        '<span class="modal-qty-plain">' + carrito[code] + ' und</span>' +
+        '<span class="modal-qty-plain"' + (excede ? ' style="color:#b45309;"' : '') + '>' +
+          carrito[code] + ' und' +
+          (excede ? ' <span style="font-size:11px;color:#d97706;" title="Stock disponible: ' + prod.disp + ' und.">⚠ supera stock</span>' : '') +
+        '</span>' +
       '</td>' +
       '<td>' +
         '<button class="file-item-remove" title="Quitar" onclick="quitarDelModalYCarrito(\'' + code + '\')">' +
@@ -179,7 +221,7 @@ function actualizarQtyModal(code, val) {
   var qty  = parseInt(val) || 1;
   var prod = productos.find(function (p) { return p.code === code; });
   if (!prod) return;
-  carrito[code] = Math.max(1, Math.min(qty, prod.disp));
+  carrito[code] = Math.max(1, qty);
   actualizarCarritoBadge();
 }
 

@@ -2,6 +2,11 @@
    consumidor.css — Estilos específicos del portal de repuestos
    ============================================================= */
 
+#confirmModal .modal,
+#confirmEnvioModal .modal {
+  max-width: 680px;
+}
+
 
 /* ─── Sidebar: enlace deshabilitado ("Mis pedidos") ─────────── */
 .nav-link-soon {
@@ -194,6 +199,13 @@
 .modal-cart-table tr:last-child td {
   border-bottom: none;
 }
+.modal-cart-table code {
+  background: #f0eeff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #6c63ff;
+}
 
 .modal-qty-plain {
   font-size: 14px;
@@ -222,6 +234,30 @@
 }
 .status-badge.por-confirmar .dot { background: #f59e0b; }
 
+.status-badge.por-confirmar-anomalia {
+  background: linear-gradient(135deg, #fffbeb 50%, #fef3c7 100%);
+  color: #78350f;
+  border: 1px solid #f59e0b;
+}
+.status-badge.por-confirmar-anomalia .dot { background: #d97706; }
+.status-badge.por-confirmar-anomalia .warning-icon {
+  width: 14px;
+  height: 14px;
+  color: #d97706;
+}
+
+@keyframes spin-once {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.reenvio-icon {
+  width: 13px;
+  height: 13px;
+  color: #7c3aed;
+  animation: spin-once 0.6s ease-out 1;
+  flex-shrink: 0;
+}
+
 .status-badge.por-despachar {
   background: #ede9fe;
   color: #5b21b6;
@@ -229,12 +265,36 @@
 }
 .status-badge.por-despachar .dot { background: #8b5cf6; }
 
-.status-badge.empacado {
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
+.status-badge.por-despachar-anomalia {
+  background: linear-gradient(135deg, #ede9fe 50%, #fef3c7 100%);
+  color: #5b21b6;
+  border: 1px solid #c4b5fd;
 }
-.status-badge.empacado .dot { background: #f97316; }
+.status-badge.por-despachar-anomalia .dot { background: #d97706; }
+.status-badge.por-despachar-anomalia .warning-icon {
+  width: 14px;
+  height: 14px;
+  color: #d97706;
+}
+
+.status-badge.empacado {
+  background: #fdf2f8;
+  color: #9d174d;
+  border: 1px solid #fbcfe8;
+}
+.status-badge.empacado .dot { background: #db2777; }
+
+.status-badge.empacado-anomalia {
+  background: linear-gradient(135deg, #fdf2f8 50%, #fef3c7 100%);
+  color: #9d174d;
+  border: 1px solid #fbcfe8;
+}
+.status-badge.empacado-anomalia .dot { background: #d97706; }
+.status-badge.empacado-anomalia .warning-icon {
+  width: 14px;
+  height: 14px;
+  color: #d97706;
+}
 
 .status-badge.recibido {
   background: #f0fdf4;
@@ -242,6 +302,18 @@
   border: 1px solid #bbf7d0;
 }
 .status-badge.recibido .dot { background: #22c55e; }
+
+.status-badge.recibido-parcial {
+  background: linear-gradient(135deg, #f0fdf4 50%, #fef3c7 100%);
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+.status-badge.recibido-parcial .dot { background: #d97706; }
+.status-badge.recibido-parcial .warning-icon {
+  width: 14px;
+  height: 14px;
+  color: #d97706;
+}
 
 
 /* ─── Botón outline secundario ───────────────────────────────── */
@@ -357,6 +429,31 @@
   box-shadow: 0 6px 16px rgba(34,197,94,0.4);
 }
 
+/* Botón confirmar en header del detalle (estilo btn-store-lg pero verde) */
+.btn-confirm-lg {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #86efac;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-confirm-lg:hover {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+  box-shadow: 0 2px 8px rgba(22,163,74,0.4);
+  transform: translateY(-1px);
+}
+
 
 /* ─── Modal: banner informativo ──────────────────────────────── */
 .modal-info-banner {
@@ -373,6 +470,189 @@
   margin-bottom: 18px;
 }
 .modal-info-banner svg { flex-shrink: 0; margin-top: 1px; }
+
+
+/* ─── Botón confirmar envío en header (púrpura, estilo btn-confirm-lg) ── */
+.btn-confirm-envio {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #c4b5fd;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-confirm-envio:hover {
+  background: #6c63ff;
+  color: #fff;
+  border-color: #6c63ff;
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
+  transform: translateY(-1px);
+}
+.btn-confirm-reenvio {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #7dd3fc;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-confirm-reenvio:hover {
+  background: #0284c7;
+  color: #fff;
+  border-color: #0284c7;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ─── Botón acción en fila de tabla (confirmar envío — púrpura) ── */
+.btn-confirm-row-envio {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #c4b5fd;
+  background: #ede9fe;
+  color: #6c63ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+.btn-confirm-row-envio:hover {
+  background: #6c63ff;
+  color: #fff;
+  border-color: #6c63ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
+}
+.btn-confirm-row-reenvio {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #7dd3fc;
+  background: #e0f2fe;
+  color: #0284c7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+.btn-confirm-row-reenvio:hover {
+  background: #0284c7;
+  color: #fff;
+  border-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+}
+.btn-confirm-row-envio::after {
+  content: 'Confirmar envío';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.btn-confirm-row-envio:hover::after {
+  opacity: 1;
+}
+.btn-confirm-row-reenvio::after {
+  content: 'Confirmar envío faltante';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.btn-confirm-row-reenvio:hover::after {
+  opacity: 1;
+}
+
+
+/* ─── Botón acción en fila de tabla (confirmar recepción) ───── */
+.btn-confirm-row {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #86efac;
+  background: #dcfce7;
+  color: #16a34a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+.btn-confirm-row:hover {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.4);
+}
+.btn-confirm-row::after {
+  content: 'Confirmar recepción';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.btn-confirm-row:hover::after {
+  opacity: 1;
+}
 
 
 /* ─── Toast de llegada ───────────────────────────────────────── */
