@@ -39,6 +39,27 @@ function openTask() {
   window.location.href = 'ejecutar_tarea.html?taskCode=' + encodeURIComponent(fixedCode);
 }
 
+function formatDurationSec(durationSec) {
+  if (typeof durationSec !== 'number' || !isFinite(durationSec) || durationSec < 0) {
+    return '--m --s';
+  }
+
+  var minutes = Math.floor(durationSec / 60);
+  var seconds = durationSec % 60;
+  return minutes + 'm ' + seconds + 's';
+}
+
+function formatAssignedAt(assignedAt) {
+  if (!assignedAt) return '--:--';
+
+  var date = new Date(assignedAt);
+  if (isNaN(date.getTime())) return '--:--';
+
+  var hours = String(date.getHours()).padStart(2, '0');
+  var minutes = String(date.getMinutes()).padStart(2, '0');
+  return hours + ':' + minutes;
+}
+
 function renderTasks() {
   var taskList = document.getElementById('taskList');
   var emptyState = document.getElementById('emptyState');
@@ -75,13 +96,14 @@ function renderTasks() {
   taskList.innerHTML = viewTasks.map(function (task) {
     var completedMeta = '';
     var cardClass = 'op-task-card op-task-clickable';
+    var assignedAtText = formatAssignedAt(task.assignedAt);
 
     if (task.completed) {
       cardClass += ' is-completed';
-      completedMeta = '<div class="op-task-meta">Completada ' + (task.completedAt || '--:--') + ' · ' + String(task.durationMin || 0).padStart(2, '0') + 'm</div>';
+      completedMeta = '<div class="op-task-meta">' + formatDurationSec(task.durationSec) + '</div>';
     }
 
-    return '\n      <article class="' + cardClass + '" role="button" tabindex="0" onclick="openTask()" onkeydown="openTaskFromKey(event)">\n        <div class="op-task-card-head">\n          <div class="op-task-code">' + task.taskCode + '</div>\n          ' + completedMeta + '\n        </div>\n        <div class="op-task-body">\n          <div class="op-task-row">\n            <span class="op-task-label">NIR</span>\n            <span class="op-task-value">' + task.nir + '</span>\n          </div>\n          <div class="op-task-row">\n            <span class="op-task-label">Caja</span>\n            <span class="op-task-value">' + task.boxCode + '</span>\n          </div>\n          <div class="op-task-row">\n            <span class="op-task-label">Ubicación</span>\n            <span class="op-task-value">' + task.suggestedLocation + '</span>\n          </div>\n        </div>\n      </article>\n    ';
+    return '\n      <article class="' + cardClass + '" role="button" tabindex="0" onclick="openTask()" onkeydown="openTaskFromKey(event)">\n        <div class="op-task-card-head">\n          <div class="op-task-code">' + task.taskCode + '</div>\n          ' + completedMeta + '\n        </div>\n        <div class="op-task-body">\n          <div class="op-task-main">\n            <div class="op-task-row">\n              <span class="op-task-label">NIR</span>\n              <span class="op-task-value">' + task.nir + '</span>\n            </div>\n            <div class="op-task-row">\n              <span class="op-task-label">Caja</span>\n              <span class="op-task-value">' + task.boxCode + '</span>\n            </div>\n            <div class="op-task-row">\n              <span class="op-task-label">Ubicación</span>\n              <span class="op-task-value">' + task.suggestedLocation + '</span>\n            </div>\n          </div>\n          <aside class="op-task-assigned" aria-label="Hora asignada de tarea">\n            <span class="op-task-assigned-label">Hora asignada</span>\n            <span class="op-task-assigned-value">' + assignedAtText + '</span>\n          </aside>\n        </div>\n      </article>\n    ';
   }).join('');
 }
 

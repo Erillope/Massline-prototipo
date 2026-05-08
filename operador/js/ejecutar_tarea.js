@@ -30,6 +30,16 @@ function renderTaskHeader() {
   document.getElementById('execLocation').textContent = task.suggestedLocation;
 }
 
+function setCompletionVisualState(isCompleted) {
+  var target = document.getElementById('execTargetValue');
+  var successCheck = document.getElementById('execSuccessCheck');
+  var cameraCard = document.querySelector('.op-camera-card');
+
+  if (target) target.style.display = isCompleted ? 'none' : 'block';
+  if (successCheck) successCheck.style.display = isCompleted ? 'flex' : 'none';
+  if (cameraCard) cameraCard.style.display = isCompleted ? 'none' : 'block';
+}
+
 function setFlowPhase(nextPhase) {
   phase = nextPhase;
 
@@ -40,6 +50,7 @@ function setFlowPhase(nextPhase) {
   if (!instruction || !target || !cameraTitle) return;
 
   hideScanError();
+  setCompletionVisualState(false);
 
   if (phase === 'box') {
     instruction.textContent = 'Escanea el código QR de la caja';
@@ -160,6 +171,8 @@ function completeTask() {
 
   if (instruction) instruction.textContent = 'Tarea completada correctamente';
   if (cameraTitle) cameraTitle.textContent = 'Escaneo completado';
+  hideScanError();
+  setCompletionVisualState(true);
 
   if (window.operatorData && task) {
     window.operatorData.markTaskCompleted(task.taskCode);
@@ -168,7 +181,7 @@ function completeTask() {
   setTimeout(function () {
     stopCameraFeed();
     window.location.href = 'index.html?toast=tarea-completada&taskCode=' + encodeURIComponent(task.taskCode);
-  }, 280);
+  }, 500);
 }
 
 function handleCameraTap() {

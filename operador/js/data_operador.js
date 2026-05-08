@@ -6,6 +6,7 @@ var OPERATOR_DEFAULT_TASKS = [
     nir: 'NIR1-000055',
     boxCode: 'CAJA-014',
     suggestedLocation: 'B-02-03',
+    assignedAt: '2026-05-07T08:12:00',
     completed: false
   },
   {
@@ -13,6 +14,7 @@ var OPERATOR_DEFAULT_TASKS = [
     nir: 'NIR1-000055',
     boxCode: 'CAJA-015',
     suggestedLocation: 'B-02-04',
+    assignedAt: '2026-05-07T08:18:00',
     completed: false
   },
   {
@@ -20,6 +22,7 @@ var OPERATOR_DEFAULT_TASKS = [
     nir: 'NIR1-000060',
     boxCode: 'CAJA-021',
     suggestedLocation: 'C-01-02',
+    assignedAt: '2026-05-07T08:24:00',
     completed: false
   },
   {
@@ -27,6 +30,7 @@ var OPERATOR_DEFAULT_TASKS = [
     nir: 'NIR1-000060',
     boxCode: 'CAJA-022',
     suggestedLocation: 'C-01-03',
+    assignedAt: '2026-05-07T08:31:00',
     completed: false
   },
   {
@@ -34,18 +38,20 @@ var OPERATOR_DEFAULT_TASKS = [
     nir: 'NIR1-000049',
     boxCode: 'CAJA-003',
     suggestedLocation: 'A-01-02',
+    assignedAt: '2026-05-07T07:42:00',
     completed: true,
     completedAt: '14:32',
-    durationMin: 8
+    durationSec: 515
   },
   {
     taskCode: 'TA-ALM-00037',
     nir: 'NIR1-000049',
     boxCode: 'CAJA-004',
     suggestedLocation: 'A-01-03',
+    assignedAt: '2026-05-07T07:55:00',
     completed: true,
     completedAt: '15:11',
-    durationMin: 11
+    durationSec: 663
   }
 ];
 
