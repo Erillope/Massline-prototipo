@@ -21,11 +21,11 @@
     </header>
 
     <section class="op-content">
-      <div class="op-filters">
-        <button id="filterPending" class="op-filter-chip pending active" onclick="toggleFilter('pending')">
+      <div class="op-tabs" role="tablist" aria-label="Estado de tareas">
+        <button id="filterPending" class="op-tab active" onclick="setTab('pending')" role="tab" aria-selected="true">
           Pendientes (0)
         </button>
-        <button id="filterCompleted" class="op-filter-chip completed" onclick="toggleFilter('completed')">
+        <button id="filterCompleted" class="op-tab" onclick="setTab('completed')" role="tab" aria-selected="false">
           Completadas (0)
         </button>
       </div>
@@ -58,11 +58,15 @@
 
     <nav class="op-bottom-nav" aria-label="Navegación Operador">
       <a href="index.html" class="op-nav-item active">
-        <span class="op-nav-ico">◼</span>
+        <svg class="op-nav-ico" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h11M8 12h11M8 17h11M4 7h.01M4 12h.01M4 17h.01"/>
+        </svg>
         <span>Tareas</span>
       </a>
       <a href="#" class="op-nav-item disabled">
-        <span class="op-nav-ico">◯</span>
+        <svg class="op-nav-ico" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 21a8 8 0 10-16 0M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+        </svg>
         <span>Perfil</span>
       </a>
     </nav>

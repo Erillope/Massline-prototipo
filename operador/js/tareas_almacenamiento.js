@@ -1,7 +1,4 @@
-var filters = {
-  pending: true,
-  completed: false
-};
+var activeTab = 'pending'; // pending | completed
 
 var simMode = 0;
 var simLabels = ['Normal', 'Sin tareas'];
@@ -13,13 +10,11 @@ function getTasks() {
 
 function applyFilter(list) {
   return list.filter(function (task) {
-    if (task.completed && filters.completed) return true;
-    if (!task.completed && filters.pending) return true;
-    return false;
+    return activeTab === 'completed' ? !!task.completed : !task.completed;
   });
 }
 
-function updateFilterChips(tasks) {
+function updateTabs(tasks) {
   var pendingTotal = tasks.filter(function (t) { return !t.completed; }).length;
   var completedTotal = tasks.filter(function (t) { return t.completed; }).length;
 
@@ -31,8 +26,10 @@ function updateFilterChips(tasks) {
   pendingBtn.textContent = 'Pendientes (' + pendingTotal + ')';
   completedBtn.textContent = 'Completadas (' + completedTotal + ')';
 
-  pendingBtn.classList.toggle('active', filters.pending);
-  completedBtn.classList.toggle('active', filters.completed);
+  pendingBtn.classList.toggle('active', activeTab === 'pending');
+  completedBtn.classList.toggle('active', activeTab === 'completed');
+  pendingBtn.setAttribute('aria-selected', activeTab === 'pending' ? 'true' : 'false');
+  completedBtn.setAttribute('aria-selected', activeTab === 'completed' ? 'true' : 'false');
 }
 
 function openTask() {
@@ -53,14 +50,11 @@ function renderTasks() {
   var filteredTasks = applyFilter(tasks);
   var viewTasks = simMode === 1 ? [] : filteredTasks;
 
-  updateFilterChips(tasks);
+  updateTabs(tasks);
 
   if (!viewTasks.length) {
     if (emptyTitle && emptyMsg) {
-      if (filters.pending && filters.completed) {
-        emptyTitle.textContent = 'Sin tareas';
-        emptyMsg.textContent = 'No hay tareas de almacenamiento para los filtros seleccionados.';
-      } else if (filters.completed) {
+      if (activeTab === 'completed') {
         emptyTitle.textContent = 'Sin tareas completadas';
         emptyMsg.textContent = 'Aún no hay tareas completadas para mostrar.';
       } else {
@@ -79,7 +73,15 @@ function renderTasks() {
   emptyState.style.display = 'none';
 
   taskList.innerHTML = viewTasks.map(function (task) {
-    return '\n      <article class="op-task-card op-task-clickable" role="button" tabindex="0" onclick="openTask()" onkeydown="openTaskFromKey(event)">\n        <div class="op-task-card-head">\n          <div class="op-task-code">' + task.taskCode + '</div>\n        </div>\n        <div class="op-task-body">\n          <div class="op-task-row">\n            <span class="op-task-label">NIR</span>\n            <span class="op-task-value">' + task.nir + '</span>\n          </div>\n          <div class="op-task-row">\n            <span class="op-task-label">Caja</span>\n            <span class="op-task-value">' + task.boxCode + '</span>\n          </div>\n          <div class="op-task-row">\n            <span class="op-task-label">Ubicación</span>\n            <span class="op-task-value">' + task.suggestedLocation + '</span>\n          </div>\n        </div>\n      </article>\n    ';
+    var completedMeta = '';
+    var cardClass = 'op-task-card op-task-clickable';
+
+    if (task.completed) {
+      cardClass += ' is-completed';
+      completedMeta = '<div class="op-task-meta">Completada ' + (task.completedAt || '--:--') + ' · ' + String(task.durationMin || 0).padStart(2, '0') + 'm</div>';
+    }
+
+    return '\n      <article class="' + cardClass + '" role="button" tabindex="0" onclick="openTask()" onkeydown="openTaskFromKey(event)">\n        <div class="op-task-card-head">\n          <div class="op-task-code">' + task.taskCode + '</div>\n          ' + completedMeta + '\n        </div>\n        <div class="op-task-body">\n          <div class="op-task-row">\n            <span class="op-task-label">NIR</span>\n            <span class="op-task-value">' + task.nir + '</span>\n          </div>\n          <div class="op-task-row">\n            <span class="op-task-label">Caja</span>\n            <span class="op-task-value">' + task.boxCode + '</span>\n          </div>\n          <div class="op-task-row">\n            <span class="op-task-label">Ubicación</span>\n            <span class="op-task-value">' + task.suggestedLocation + '</span>\n          </div>\n        </div>\n      </article>\n    ';
   }).join('');
 }
 
@@ -90,14 +92,9 @@ function openTaskFromKey(event) {
   }
 }
 
-function toggleFilter(type) {
-  if (!filters.hasOwnProperty(type)) return;
-  filters[type] = !filters[type];
-
-  if (!filters.pending && !filters.completed) {
-    filters[type] = true;
-  }
-
+function setTab(type) {
+  if (type !== 'pending' && type !== 'completed') return;
+  activeTab = type;
   renderTasks();
 }
 
@@ -136,7 +133,7 @@ function showListToastFromQuery() {
   window.history.replaceState({}, document.title, cleanUrl);
 }
 
-window.toggleFilter = toggleFilter;
+window.setTab = setTab;
 window.toggleSimMode = toggleSimMode;
 window.openTask = openTask;
 window.openTaskFromKey = openTaskFromKey;

@@ -34,14 +34,18 @@ var OPERATOR_DEFAULT_TASKS = [
     nir: 'NIR1-000049',
     boxCode: 'CAJA-003',
     suggestedLocation: 'A-01-02',
-    completed: true
+    completed: true,
+    completedAt: '14:32',
+    durationMin: 8
   },
   {
     taskCode: 'TA-ALM-00037',
     nir: 'NIR1-000049',
     boxCode: 'CAJA-004',
     suggestedLocation: 'A-01-03',
-    completed: true
+    completed: true,
+    completedAt: '15:11',
+    durationMin: 11
   }
 ];
 

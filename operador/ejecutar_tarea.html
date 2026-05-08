@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/operador.css">
 </head>
-<body>
+<body class="op-exec-body">
   <main class="op-app op-exec-app">
     <header class="op-top">
       <div class="op-top-row">
@@ -17,6 +17,7 @@
           <h1>Ejecutar tarea</h1>
           <p id="execTaskCode">TA-ALM-00000</p>
         </div>
+        <button class="op-scan-mode-btn ideal" id="scanModeBtn" onclick="toggleScanMode()">Ideal</button>
       </div>
     </header>
 
@@ -52,67 +53,40 @@
       </div>
     </section>
 
-    <section id="execFlow" class="op-exec-flow" style="display:none;">
-      <article class="op-exec-step" id="stepBoxCard">
-        <div class="op-exec-step-head">
-          <h2>1. Escanear caja</h2>
-          <span class="op-step-pill" id="stepBoxPill">Pendiente</span>
-        </div>
-        <p class="op-exec-step-text">Escanea la caja física asignada a esta tarea.</p>
-
-        <div class="op-step-sim-row">
-          <span class="op-step-sim-label">Modo escaneo caja</span>
-          <button id="boxModeBtn" class="toggle-error-mode op-step-mode-btn" onclick="toggleStepMode('box')">Éxito</button>
-        </div>
-
-        <button class="op-primary-btn" id="scanBoxBtn" onclick="startScan('box')">Abrir cámara</button>
-        <p class="op-step-error" id="boxErrorMsg" style="display:none;">Código de caja incorrecto. Escanea la caja asignada.</p>
+    <section id="execFlow" class="op-auto-flow" style="display:none;">
+      <article class="op-auto-head-card">
+        <p class="op-auto-instruction" id="execInstruction">Escanea el código QR de la caja</p>
+        <div class="op-auto-target" id="execTargetValue">—</div>
+        <div class="op-scan-error-msg" id="execScanError" style="display:none;"></div>
       </article>
 
-      <article class="op-exec-step" id="stepLocationCard">
-        <div class="op-exec-step-head">
-          <h2>2. Escanear ubicación</h2>
-          <span class="op-step-pill" id="stepLocationPill">Pendiente</span>
+      <article class="op-camera-card">
+        <div class="op-camera-shell op-camera-shell-inline op-camera-tap-target" id="cameraTapTarget" onclick="handleCameraTap()">
+          <video id="cameraVideo" autoplay playsinline muted></video>
+          <div class="op-camera-fallback" id="cameraFallback">Simulando cámara…</div>
+          <div class="op-scan-frame"></div>
+          <div class="op-camera-footer">
+            <div class="op-camera-title" id="cameraTitle">Escaneando caja…</div>
+          </div>
         </div>
-        <p class="op-exec-step-text">Dirígete a la ubicación indicada y escanea su código.</p>
-
-        <div class="op-step-sim-row">
-          <span class="op-step-sim-label">Modo escaneo ubicación</span>
-          <button id="locationModeBtn" class="toggle-error-mode op-step-mode-btn" onclick="toggleStepMode('location')">Éxito</button>
-        </div>
-
-        <button class="op-primary-btn" id="scanLocationBtn" onclick="startScan('location')" disabled>Abrir cámara</button>
-        <p class="op-step-error" id="locationErrorMsg" style="display:none;">Ubicación incorrecta. Escanea la ubicación asignada.</p>
       </article>
-
-      <div class="op-exec-finish-wrap">
-        <button class="op-primary-btn op-finish-btn" id="finishTaskBtn" onclick="finishTask()" disabled>Finalizar tarea</button>
-      </div>
     </section>
 
     <nav class="op-bottom-nav" aria-label="Navegación Operador">
       <a href="index.html" class="op-nav-item active">
-        <span class="op-nav-ico">◼</span>
+        <svg class="op-nav-ico" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h11M8 12h11M8 17h11M4 7h.01M4 12h.01M4 17h.01"/>
+        </svg>
         <span>Tareas</span>
       </a>
       <a href="#" class="op-nav-item disabled">
-        <span class="op-nav-ico">◯</span>
+        <svg class="op-nav-ico" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 21a8 8 0 10-16 0M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+        </svg>
         <span>Perfil</span>
       </a>
     </nav>
   </main>
-
-  <div class="op-camera-overlay" id="cameraOverlay" aria-hidden="true">
-    <div class="op-camera-shell">
-      <video id="cameraVideo" autoplay playsinline muted></video>
-      <div class="op-camera-fallback" id="cameraFallback">Simulando cámara…</div>
-      <div class="op-scan-frame"></div>
-      <div class="op-camera-footer">
-        <div class="op-camera-title" id="cameraTitle">Escaneando…</div>
-        <div class="op-camera-count" id="cameraCount">3</div>
-      </div>
-    </div>
-  </div>
 
   <script src="../js/shared.js"></script>
   <script src="js/data_operador.js"></script>
