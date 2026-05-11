@@ -6,16 +6,16 @@
 // Datos mock
 // =============================================================
 var pedidos = [
-  { code: 'PED-000141', solicitante: 'Juan Pérez',    fecha: '05/05/2026 09:15', items: 3, status: 'por-confirmar' },
-  { code: 'PED-000140', solicitante: 'María García',  fecha: '04/05/2026 14:30', items: 2, status: 'por-confirmar' },
-  { code: 'PED-000138', solicitante: 'Ana López',     fecha: '04/05/2026 11:00', items: 2, status: 'por-confirmar' },
-  { code: 'PED-000135', solicitante: 'Carlos Romero', fecha: '03/05/2026 11:00', items: 1, status: 'por-despachar' },
-  { code: 'PED-000134', solicitante: 'Luis Torres',   fecha: '03/05/2026 08:30', items: 2, status: 'por-despachar' },
-  { code: 'PED-000132', solicitante: 'Juan Pérez',    fecha: '02/05/2026 16:45', items: 2, status: 'empacado'      },
-  { code: 'PED-000131', solicitante: 'Ana López',     fecha: '01/05/2026 10:15', items: 3, status: 'empacado'      },
-  { code: 'PED-000128', solicitante: 'María García',  fecha: '30/04/2026 08:20', items: 2, status: 'recibido'      },
-  { code: 'PED-000127', solicitante: 'Carlos Romero', fecha: '28/04/2026 15:30', items: 3, status: 'recibido-parcial' },
-  { code: 'PED-000126', solicitante: 'Marta Díaz',    fecha: '27/04/2026 10:30', items: 2, status: 'recibido-parcial' }
+  { code: 'PED-000141', solicitante: 'Mayoreo',              fecha: '05/05/2026 09:15', items: 3, status: 'por-confirmar' },
+  { code: 'PED-000140', solicitante: 'Ecommerce',             fecha: '04/05/2026 14:30', items: 2, status: 'por-confirmar' },
+  { code: 'PED-000138', solicitante: 'Almacenes',             fecha: '04/05/2026 11:00', items: 2, status: 'por-confirmar' },
+  { code: 'PED-000135', solicitante: 'Línea de producción',   fecha: '03/05/2026 11:00', items: 1, status: 'por-despachar' },
+  { code: 'PED-000134', solicitante: 'Mayoreo',              fecha: '03/05/2026 08:30', items: 2, status: 'por-despachar' },
+  { code: 'PED-000132', solicitante: 'Ecommerce',             fecha: '02/05/2026 16:45', items: 2, status: 'enviado'       },
+  { code: 'PED-000131', solicitante: 'Almacenes',             fecha: '01/05/2026 10:15', items: 3, status: 'enviado'       },
+  { code: 'PED-000128', solicitante: 'Línea de producción',   fecha: '30/04/2026 08:20', items: 2, status: 'recibido'      },
+  { code: 'PED-000127', solicitante: 'Línea de producción',   fecha: '28/04/2026 15:30', items: 3, status: 'recibido-parcial' },
+  { code: 'PED-000126', solicitante: 'Línea de producción',   fecha: '27/04/2026 10:30', items: 2, status: 'recibido-parcial' }
 ];
 
 var detalleItems = {
@@ -66,8 +66,9 @@ var detalleItems = {
 var statusLabels = {
   'por-confirmar':  'Por confirmar',
   'por-despachar':  'Por despachar',
-  'empacado':       'Empacado',
+  'enviado':        'Enviado',
   'recibido-parcial': 'Recibido parcial',
+  'recibido-parcial-cerrado': 'Recibido parcial',
   'recibido':       'Recibido'
 };
 
@@ -82,8 +83,8 @@ var tabs = [
   { key: 'todos',             label: 'Todos'             },
   { key: 'por-confirmar',     label: 'Por confirmar'     },
   { key: 'por-despachar',     label: 'Por despachar'     },
-  { key: 'empacado',          label: 'Empacado'          },
-  { key: 'recibido-parcial',  label: 'Recibido parcial'  },
+  { key: 'enviado',           label: 'Enviado'           },
+  { key: 'recibido-parcial',  label: 'Recibido parcial', extra: ['recibido-parcial-cerrado'] },
   { key: 'recibido',          label: 'Recibido'          }
 ];
 
@@ -119,7 +120,9 @@ function renderTabs() {
   container.innerHTML = '';
 
   tabs.forEach(function (t) {
-    var base  = t.key === 'todos' ? pedidos : pedidos.filter(function (p) { return p.status === t.key; });
+    var base  = t.key === 'todos' ? pedidos : pedidos.filter(function (p) {
+      return p.status === t.key || (t.extra && t.extra.indexOf(p.status) !== -1);
+    });
     var count = base.length;
 
     var btn       = document.createElement('button');
@@ -162,7 +165,12 @@ function renderPedidos() {
   // Aplicar tab
   var base = tabActual === 'todos'
     ? pedidos
-    : pedidos.filter(function (p) { return p.status === tabActual; });
+    : (function () {
+        var t = tabs.find(function (tb) { return tb.key === tabActual; });
+        return pedidos.filter(function (p) {
+          return p.status === tabActual || (t && t.extra && t.extra.indexOf(p.status) !== -1);
+        });
+      })();
 
   // Aplicar filtros de texto y fecha
   var filtrados = base.filter(function (p) {
@@ -192,9 +200,11 @@ function renderPedidos() {
     var label      = statusLabels[p.status] || p.status;
     var itemsTxt   = p.items + (p.items === 1 ? ' ítem' : ' ítems');
     var isAnomalia = (p.status === 'por-confirmar' && hasStockAnomalia(p.code)) ||
-                     ((p.status === 'por-despachar' || p.status === 'empacado') && !p.faltanteConfirmado && hasConfirmedAnomalia(p.code)) ||
+                     ((p.status === 'por-despachar' || p.status === 'enviado') && !p.faltanteConfirmado && hasConfirmedAnomalia(p.code)) ||
                      p.status === 'recibido-parcial';
-    var badgeClass = (isAnomalia && p.status !== 'recibido-parcial') ? p.status + '-anomalia' : p.status;
+    var badgeClass = (isAnomalia && p.status !== 'recibido-parcial') ? p.status + '-anomalia'
+                   : p.status === 'recibido-parcial-cerrado' ? 'recibido-parcial'
+                   : p.status;
     var warnSVG    = isAnomalia
       ? '<svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>'
       : '';
@@ -247,10 +257,13 @@ function showDetalle(code) {
   document.getElementById('detalleFecha').textContent = p.fecha;
 
   // Badge de estado (header + card)
+  var isCerrado   = p.status === 'recibido-parcial-cerrado';
   var hasAnomalia = (p.status === 'por-confirmar' && hasStockAnomalia(p.code)) ||
-                    ((p.status === 'por-despachar' || p.status === 'empacado') && !p.faltanteConfirmado && hasConfirmedAnomalia(p.code)) ||
+                    ((p.status === 'por-despachar' || p.status === 'enviado') && !p.faltanteConfirmado && hasConfirmedAnomalia(p.code)) ||
                     p.status === 'recibido-parcial';
-  var badgeClass  = (hasAnomalia && p.status !== 'recibido-parcial') ? p.status + '-anomalia' : p.status;
+  var badgeClass  = (hasAnomalia && p.status !== 'recibido-parcial') ? p.status + '-anomalia'
+                  : isCerrado ? 'recibido-parcial'
+                  : p.status;
   var badgeLabel  = statusLabels[p.status] || p.status;
   var warnSVG     = hasAnomalia
     ? '<svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>'
@@ -267,8 +280,9 @@ function showDetalle(code) {
   cardBadge.innerHTML = '<span class="dot"></span> <span id="detalleStatusCardLabel">' + badgeLabel + '</span>' + (warnSVG ? ' ' + warnSVG : '') + reenvioSVG;
 
   // Botones de acción en header
-  document.getElementById('btnConfirmarHeader').style.display = p.status === 'por-confirmar'   ? '' : 'none';
-  document.getElementById('btnReenviarHeader').style.display  = p.status === 'recibido-parcial' ? '' : 'none';
+  document.getElementById('btnConfirmarHeader').style.display  = p.status === 'por-confirmar'   ? '' : 'none';
+  document.getElementById('btnReenviarHeader').style.display   = p.status === 'recibido-parcial' ? '' : 'none';
+  document.getElementById('btnCerrarPedidoHeader').style.display = p.status === 'recibido-parcial' ? '' : 'none';
 
   // Tabla de ítems
   var items = detalleItems[p.code] || [];
@@ -296,7 +310,7 @@ function showDetalle(code) {
         '<td style="' + stockStyle + '">' + stockText + '</td>' +
       '</tr>';
     }).join('');
-  } else if (p.status === 'recibido-parcial') {
+  } else if (p.status === 'recibido-parcial' || p.status === 'recibido-parcial-cerrado') {
     thead.innerHTML = '<tr><th>Código</th><th>Descripción</th><th>Cant. sol.</th><th>Cant. recibida</th><th>Cant. pendiente</th></tr>';
     tbody.innerHTML = items.map(function (it) {
       var pendiente  = it.qty - (it.confirmed || 0);
@@ -427,9 +441,10 @@ function abrirModalConfirmar() {
   if (isReenvio) {
     // Solo ítems con entrega pendiente
     var pending = items.filter(function (it) { return (it.confirmed || 0) < it.qty; });
-    document.getElementById('modalEnvioThead').innerHTML = '<tr><th>Código</th><th>Descripción</th><th>Cant. pendiente</th><th>Stock disponible</th></tr>';
+    document.getElementById('modalEnvioThead').innerHTML = '<tr><th>Código</th><th>Descripción</th><th>Cant. pendiente</th><th>Stock disponible</th><th>Cant. confirmada</th></tr>';
     document.getElementById('modalEnvioTbody').innerHTML = pending.map(function (it) {
       var pendiente = it.qty - (it.confirmed || 0);
+      var confirmada = Math.min(pendiente, it.stock);
       var stockStyle, stockText;
       if (it.stock === 0) {
         stockStyle = 'color:#ef4444; font-weight:600;'; stockText = '0 und';
@@ -438,16 +453,21 @@ function abrirModalConfirmar() {
       } else {
         stockStyle = 'color:#16a34a; font-weight:500;'; stockText = it.stock + ' und';
       }
+      var confStyle = confirmada === 0      ? 'color:#ef4444; font-weight:600;'
+                    : confirmada < pendiente ? 'color:#f59e0b; font-weight:600;'
+                    : 'color:#16a34a; font-weight:500;';
       return '<tr>' +
         '<td><code>' + it.code + '</code></td>' +
         '<td>' + it.desc + '</td>' +
         '<td>' + pendiente + ' und</td>' +
         '<td style="' + stockStyle + '">' + stockText + '</td>' +
+        '<td style="' + confStyle + '">' + confirmada + ' und</td>' +
       '</tr>';
     }).join('');
   } else {
-    document.getElementById('modalEnvioThead').innerHTML = '<tr><th>Código</th><th>Descripción</th><th>Cant. solicitada</th><th>Stock disponible</th></tr>';
+    document.getElementById('modalEnvioThead').innerHTML = '<tr><th>Código</th><th>Descripción</th><th>Cant. solicitada</th><th>Stock disponible</th><th>Cant. por confirmar</th></tr>';
     document.getElementById('modalEnvioTbody').innerHTML = items.map(function (it) {
+      var confirmada = Math.min(it.qty, it.stock);
       var stockStyle, stockText;
       if (it.stock === 0) {
         stockStyle = 'color:#ef4444; font-weight:600;'; stockText = '0 und';
@@ -456,11 +476,15 @@ function abrirModalConfirmar() {
       } else {
         stockStyle = 'color:#16a34a; font-weight:500;'; stockText = it.stock + ' und';
       }
+      var confStyle = confirmada === 0    ? 'color:#ef4444; font-weight:600;'
+                    : confirmada < it.qty ? 'color:#f59e0b; font-weight:600;'
+                    : 'color:#16a34a; font-weight:500;';
       return '<tr>' +
         '<td><code>' + it.code + '</code></td>' +
         '<td>' + it.desc + '</td>' +
         '<td>' + it.qty + ' und</td>' +
         '<td style="' + stockStyle + '">' + stockText + '</td>' +
+        '<td style="' + confStyle + '">' + confirmada + ' und</td>' +
       '</tr>';
     }).join('');
   }
@@ -476,6 +500,59 @@ function abrirModalConfirmar() {
 
 function cerrarModalConfirmar() {
   document.getElementById('confirmEnvioModal').classList.remove('active');
+}
+
+// =============================================================
+// Modal cerrar pedido (recibido-parcial)
+// =============================================================
+function abrirModalCerrar() {
+  if (!pedidoActual) return;
+  var items = detalleItems[pedidoActual.code] || [];
+  document.getElementById('cerrarPedidoCode').textContent = pedidoActual.code;
+
+  var pending = items.filter(function (it) { return (it.confirmed || 0) < it.qty; });
+  document.getElementById('cerrarPedidoTbody').innerHTML = pending.map(function (it) {
+    var recibido  = it.confirmed || 0;
+    var pendiente = it.qty - recibido;
+    return '<tr>' +
+      '<td><code>' + it.code + '</code></td>' +
+      '<td>' + it.desc + '</td>' +
+      '<td>' + it.qty + ' und</td>' +
+      '<td style="color:#f59e0b; font-weight:600;">' + recibido + ' und</td>' +
+      '<td style="color:#ef4444; font-weight:600;">' + pendiente + ' und</td>' +
+    '</tr>';
+  }).join('');
+
+  document.getElementById('cerrarPedidoModal').classList.add('active');
+}
+
+function cerrarModalCerrar() {
+  document.getElementById('cerrarPedidoModal').classList.remove('active');
+}
+
+function cerrarPedido() {
+  if (!pedidoActual) return;
+
+  pedidoActual.status = 'recibido-parcial-cerrado';
+  statusLabels['recibido-parcial-cerrado'] = 'Recibido parcial';
+
+  cerrarModalCerrar();
+
+  // Actualizar badges y botones en la vista detalle
+  var badge = document.getElementById('detalleStatusBadge');
+  badge.className = 'status-badge recibido-parcial';
+  badge.innerHTML = '<span class="dot"></span> <span id="detalleStatusLabel">Recibido parcial</span>';
+  var cardBadge = document.getElementById('detalleStatusCard');
+  cardBadge.className = 'status-badge recibido-parcial';
+  cardBadge.innerHTML = '<span class="dot"></span> <span id="detalleStatusCardLabel">Recibido parcial</span>';
+  document.getElementById('btnReenviarHeader').style.display    = 'none';
+  document.getElementById('btnCerrarPedidoHeader').style.display = 'none';
+
+  document.getElementById('toastMsg').textContent = 'Pedido ' + pedidoActual.code + ' cerrado exitosamente';
+  showToast();
+
+  renderPedidos();
+  renderTabs();
 }
 
 // =============================================================

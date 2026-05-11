@@ -250,6 +250,7 @@ function selectLocalSubtype(subtype) {
 
 function applyExternaMode() {
   const isExterna = currentOrderType === 'externa';
+  document.body.classList.toggle('mode-externa', isExterna);
   const externaData = [
     { code: 'R150-AR0509', desc: 'Cable de velocímetro' },
     { code: 'R150-AR0507', desc: 'Cable de acelerador' },

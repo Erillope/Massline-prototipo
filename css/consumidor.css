@@ -277,20 +277,20 @@
   color: #d97706;
 }
 
-.status-badge.empacado {
+.status-badge.enviado {
   background: #fdf2f8;
   color: #9d174d;
   border: 1px solid #fbcfe8;
 }
-.status-badge.empacado .dot { background: #db2777; }
+.status-badge.enviado .dot { background: #db2777; }
 
-.status-badge.empacado-anomalia {
+.status-badge.enviado-anomalia {
   background: linear-gradient(135deg, #fdf2f8 50%, #fef3c7 100%);
   color: #9d174d;
   border: 1px solid #fbcfe8;
 }
-.status-badge.empacado-anomalia .dot { background: #d97706; }
-.status-badge.empacado-anomalia .warning-icon {
+.status-badge.enviado-anomalia .dot { background: #d97706; }
+.status-badge.enviado-anomalia .warning-icon {
   width: 14px;
   height: 14px;
   color: #d97706;
@@ -517,6 +517,30 @@
   color: #fff;
   border-color: #0284c7;
   box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-cerrar-pedido {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #fca5a5;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-cerrar-pedido:hover {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
   transform: translateY(-1px);
 }
 

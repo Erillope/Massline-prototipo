@@ -199,6 +199,12 @@
             </svg>
             Confirmar envío faltante
           </button>
+          <button id="btnCerrarPedidoHeader" class="btn-cerrar-pedido" style="display:none; margin-left:12px;" onclick="abrirModalCerrar()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            Cerrar pedido
+          </button>
         </div>
 
         <!-- Info del pedido -->
@@ -320,6 +326,60 @@
                   d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
           </svg>
           <span id="modalConfirmBtnText">Confirmar envío</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================================================================
+       Modal: Cerrar pedido (recibido-parcial)
+  ================================================================ -->
+  <div class="modal-overlay" id="cerrarPedidoModal">
+    <div class="modal">
+
+      <div class="modal-header">
+        <div class="modal-header-icon" style="background: linear-gradient(135deg, rgba(220,38,38,0.1), rgba(185,28,28,0.08)); color: #dc2626;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Cerrar pedido</h3>
+          <p>Esta acción marca el pedido como cerrado sin esperar los ítems pendientes</p>
+        </div>
+        <button class="modal-close" onclick="cerrarModalCerrar()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size:14px; color:#475569; margin-bottom:16px;">El pedido <strong id="cerrarPedidoCode">—</strong> tiene ítems que no fueron recibidos. Al cerrar el pedido se registrará como <strong>Recibido parcial cerrado</strong> y no podrá reactivarse.</p>
+        <div class="modal-section-label">Ítems pendientes</div>
+        <table class="modal-cart-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descripción</th>
+              <th>Solicitado</th>
+              <th>Recibido</th>
+              <th>Pendiente</th>
+            </tr>
+          </thead>
+          <tbody id="cerrarPedidoTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="cerrarModalCerrar()">Cancelar</button>
+        <button class="btn-modal-confirm" style="background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 4px 12px rgba(220,38,38,0.35);" onclick="cerrarPedido()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          Confirmar cierre
         </button>
       </div>
 

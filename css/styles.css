@@ -4027,6 +4027,16 @@ td .snapshot-deleted-badge {
     margin-top: 20px;
 }
 
+/* Ocultar columna "Descripción factura" cuando la orden es externa */
+body.mode-externa #poTableSection .data-table th:nth-child(2),
+body.mode-externa #poTableSection .data-table td:nth-child(2),
+body.mode-externa #poTableIncomplete .data-table th:nth-child(2),
+body.mode-externa #poTableIncomplete .data-table td:nth-child(2),
+body.mode-externa #poMultiInvoiceSection .data-table th:nth-child(2),
+body.mode-externa #poMultiInvoiceSection .data-table td:nth-child(2) {
+    display: none;
+}
+
 .po-table-title {
     font-size: 14px;
     font-weight: 600;

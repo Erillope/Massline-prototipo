@@ -7,8 +7,8 @@ var pedidos = [
   {
     code: 'PED-000143',
     fecha: '05/05/2026 11:45',
-    status: 'empacado-anomalia',
-    statusLabel: 'Empacado',
+    status: 'enviado-anomalia',
+    statusLabel: 'Enviado',
     items: [
       { code: 'R150-GY0205', desc: 'Kit de balancines I/D',         qty: 2, confirmed: 1 },
       { code: 'R180-XP0302', desc: 'Juego de retenedores',           qty: 3, confirmed: 3 }
@@ -17,8 +17,8 @@ var pedidos = [
   {
     code: 'PED-000141',
     fecha: '05/05/2026 09:15',
-    status: 'empacado',
-    statusLabel: 'Empacado',
+    status: 'enviado',
+    statusLabel: 'Enviado',
     items: [
       { code: 'R150-AR0507', desc: 'Cable de acelerador',          qty: 2 },
       { code: 'R150-100837', desc: 'Pastillas de freno',           qty: 1 },
@@ -107,7 +107,7 @@ var tabs = [
   { key: 'todos',            label: 'Todos'                                               },
   { key: 'por-confirmar',    label: 'Por confirmar'                                       },
   { key: 'por-despachar',    label: 'Por despachar',    extra: ['por-despachar-anomalia'] },
-  { key: 'empacado',         label: 'Empacado',         extra: ['empacado-anomalia']      },
+  { key: 'enviado',         label: 'Enviado',         extra: ['enviado-anomalia']      },
   { key: 'recibido-parcial', label: 'Recibido parcial'                                   },
   { key: 'recibido',         label: 'Recibido'                                            }
 ];
@@ -213,7 +213,7 @@ function renderPedidos() {
     var reenvioSVG = (p.status === 'por-despachar' && p.faltanteConfirmado)
       ? '<svg class="reenvio-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>'
       : '';
-    var confirmBtn = (p.status === 'empacado' || p.status === 'empacado-anomalia')
+    var confirmBtn = (p.status === 'enviado' || p.status === 'enviado-anomalia')
       ? ' <button class="btn-confirm-row" onclick="event.stopPropagation(); confirmarDesdeTabla(\'' + p.code + '\')">' +
           '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>' +
@@ -271,8 +271,8 @@ function showDetalle(code) {
   cardBadge.className = 'status-badge ' + p.status;
   cardBadge.innerHTML = '<span class="dot"></span> <span id="detalleStatusCardLabel">' + p.statusLabel + '</span>' + warnSVG + reenvioSVG;
 
-  // Botón confirmar en header (solo si empacado)
-  document.getElementById('btnConfirmarHeader').style.display = (p.status === 'empacado' || p.status === 'empacado-anomalia') ? '' : 'none';
+  // Botón confirmar en header (solo si enviado)
+  document.getElementById('btnConfirmarHeader').style.display = (p.status === 'enviado' || p.status === 'enviado-anomalia') ? '' : 'none';
 
   // Tabla de ítems
   var thead = document.getElementById('detalleItemsThead');
@@ -329,7 +329,7 @@ function showDetalle(code) {
         '<td style="' + pendStyle + '">' + pendiente + ' und</td>';
       tbody.appendChild(tr);
     });
-  } else if (p.status === 'por-despachar' || p.status === 'por-despachar-anomalia' || p.status === 'empacado' || p.status === 'empacado-anomalia') {
+  } else if (p.status === 'por-despachar' || p.status === 'por-despachar-anomalia' || p.status === 'enviado' || p.status === 'enviado-anomalia') {
     thead.innerHTML = '<tr><th>Código</th><th>Descripción</th><th>Cant. solicitada</th><th>Cant. confirmada</th></tr>';
     p.items.forEach(function (item) {
       var conf      = item.confirmed !== undefined ? item.confirmed : item.qty;
@@ -358,7 +358,7 @@ function showDetalle(code) {
     });
   }
 
-  // Sección confirmar llegada (UC16): solo si empacado
+  // Sección confirmar llegada (UC16): solo si enviado
   document.getElementById('confirmarLlegadaCard').style.display = 'none';
 
   // Cambiar vista
