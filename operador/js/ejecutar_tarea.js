@@ -1,19 +1,9 @@
 var task = null;
-var stepDone = {
-  box: false,
-  location: false
-};
-
-var forceErrorNextScan = {
-  box: false,
-  location: false
-};
-
-var scanInProgress = false;
-var scanTimer = null;
+var phase = 'box'; // box | location
 var activeStream = null;
+var scanMode = 'ideal'; // ideal | error
 
-function getTaskFromQuery() {
+function getExecutionTask() {
   if (!window.operatorData) return null;
   if (typeof window.operatorData.getExecutionTask === 'function') {
     return window.operatorData.getExecutionTask();
@@ -23,10 +13,6 @@ function getTaskFromQuery() {
 }
 
 function goBackToList() {
-  if (scanTimer) {
-    clearInterval(scanTimer);
-    scanTimer = null;
-  }
   stopCameraFeed();
   window.location.href = 'index.html';
 }
@@ -44,80 +30,101 @@ function renderTaskHeader() {
   document.getElementById('execLocation').textContent = task.suggestedLocation;
 }
 
-function updateStepPill(step, label, cls) {
-  var pill = document.getElementById(step === 'box' ? 'stepBoxPill' : 'stepLocationPill');
-  pill.textContent = label;
-  pill.className = 'op-step-pill ' + cls;
+function setCompletionVisualState(isCompleted) {
+  var target = document.getElementById('execTargetValue');
+  var successCheck = document.getElementById('execSuccessCheck');
+  var cameraCard = document.querySelector('.op-camera-card');
+
+  if (target) target.style.display = isCompleted ? 'none' : 'block';
+  if (successCheck) successCheck.style.display = isCompleted ? 'flex' : 'none';
+  if (cameraCard) cameraCard.style.display = isCompleted ? 'none' : 'block';
 }
 
-function renderFlowState() {
-  var scanBoxBtn = document.getElementById('scanBoxBtn');
-  var scanLocationBtn = document.getElementById('scanLocationBtn');
-  var finishBtn = document.getElementById('finishTaskBtn');
-  var boxModeBtn = document.getElementById('boxModeBtn');
-  var locationModeBtn = document.getElementById('locationModeBtn');
+function setFlowPhase(nextPhase) {
+  phase = nextPhase;
 
-  if (scanBoxBtn) {
-    scanBoxBtn.disabled = scanInProgress || stepDone.box;
-  }
-  if (scanLocationBtn) {
-    scanLocationBtn.disabled = !stepDone.box || scanInProgress || stepDone.location;
-  }
-  if (finishBtn) {
-    finishBtn.disabled = !(stepDone.box && stepDone.location) || scanInProgress;
-  }
-  if (boxModeBtn) {
-    boxModeBtn.disabled = scanInProgress || stepDone.box;
-  }
-  if (locationModeBtn) {
-    locationModeBtn.disabled = scanInProgress || !stepDone.box || stepDone.location;
-  }
+  var instruction = document.getElementById('execInstruction');
+  var target = document.getElementById('execTargetValue');
+  var cameraTitle = document.getElementById('cameraTitle');
 
-  if (stepDone.box) {
-    updateStepPill('box', 'OK', 'ok');
+  if (!instruction || !target || !cameraTitle) return;
+
+  hideScanError();
+  setCompletionVisualState(false);
+
+  if (phase === 'box') {
+    instruction.textContent = 'Escanea el código QR de la caja';
+    target.textContent = task.boxCode;
+    cameraTitle.textContent = 'Escaneando caja…';
   } else {
-    updateStepPill('box', 'Pendiente', 'pending');
-  }
-
-  if (stepDone.location) {
-    updateStepPill('location', 'OK', 'ok');
-  } else {
-    updateStepPill('location', 'Pendiente', 'pending');
+    instruction.textContent = 'Diríjase a Bodega y escanee el QR de la ubicación';
+    target.textContent = task.suggestedLocation;
+    cameraTitle.textContent = 'Escaneando ubicación…';
   }
 }
 
-function toggleStepMode(step) {
-  if (!forceErrorNextScan.hasOwnProperty(step)) return;
-
-  var btn = document.getElementById(step + 'ModeBtn');
-  if (!btn || btn.disabled) return;
-  forceErrorNextScan[step] = !forceErrorNextScan[step];
-
-  if (forceErrorNextScan[step]) {
-    btn.textContent = 'Error próximo';
-    btn.classList.add('mode-1');
-  } else {
-    btn.textContent = 'Éxito';
-    btn.classList.remove('mode-1');
-  }
+function getScanModeFromQuery() {
+  var params = new URLSearchParams(window.location.search);
+  return params.get('scanMode') === 'error' ? 'error' : 'ideal';
 }
 
-function resetStepMode(step) {
-  var btn = document.getElementById(step + 'ModeBtn');
-  forceErrorNextScan[step] = false;
+function persistScanModeInQuery() {
+  var url = new URL(window.location.href);
+  if (scanMode === 'error') {
+    url.searchParams.set('scanMode', 'error');
+  } else {
+    url.searchParams.delete('scanMode');
+  }
+
+  var query = url.searchParams.toString();
+  var nextUrl = url.pathname + (query ? '?' + query : '') + url.hash;
+  window.history.replaceState({}, '', nextUrl);
+}
+
+function renderScanModeButton() {
+  var btn = document.getElementById('scanModeBtn');
   if (!btn) return;
-  btn.textContent = 'Éxito';
-  btn.classList.remove('mode-1');
+
+  var isError = scanMode === 'error';
+  btn.textContent = isError ? 'Error' : 'Ideal';
+  btn.classList.toggle('error', isError);
+  btn.classList.toggle('ideal', !isError);
 }
 
-function hideStepErrors() {
-  document.getElementById('boxErrorMsg').style.display = 'none';
-  document.getElementById('locationErrorMsg').style.display = 'none';
+function toggleScanMode() {
+  scanMode = scanMode === 'error' ? 'ideal' : 'error';
+  renderScanModeButton();
+  persistScanModeInQuery();
+  hideScanError();
 }
 
-function showError(step) {
-  var errId = step === 'box' ? 'boxErrorMsg' : 'locationErrorMsg';
-  document.getElementById(errId).style.display = 'block';
+function showScanError() {
+  var errorBox = document.getElementById('execScanError');
+  var shell = document.getElementById('cameraTapTarget');
+  var cameraTitle = document.getElementById('cameraTitle');
+  if (!errorBox) return;
+
+  if (phase === 'box') {
+    errorBox.textContent = 'Caja incorrecta. Verifica el código y vuelve a escanear.';
+  } else {
+    errorBox.textContent = 'Ubicación incorrecta. Escanea la ubicación indicada.';
+  }
+
+  if (cameraTitle) cameraTitle.textContent = 'Error de escaneo';
+  errorBox.style.display = 'block';
+
+  if (shell) {
+    shell.classList.remove('scan-error');
+    void shell.offsetWidth;
+    shell.classList.add('scan-error');
+  }
+}
+
+function hideScanError() {
+  var errorBox = document.getElementById('execScanError');
+  var shell = document.getElementById('cameraTapTarget');
+  if (errorBox) errorBox.style.display = 'none';
+  if (shell) shell.classList.remove('scan-error');
 }
 
 async function startCameraFeed() {
@@ -128,6 +135,7 @@ async function startCameraFeed() {
   fallback.style.display = 'none';
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    fallback.textContent = 'Este navegador no soporta cámara.';
     fallback.style.display = 'flex';
     return;
   }
@@ -140,6 +148,7 @@ async function startCameraFeed() {
     video.srcObject = activeStream;
     await video.play();
   } catch (e) {
+    fallback.textContent = 'No se pudo acceder a la cámara. Verifica permisos.';
     fallback.style.display = 'flex';
   }
 }
@@ -156,97 +165,59 @@ function stopCameraFeed() {
   if (video) video.srcObject = null;
 }
 
-function hideCameraOverlay() {
-  document.getElementById('cameraOverlay').classList.remove('active');
-  stopCameraFeed();
+function completeTask() {
+  var instruction = document.getElementById('execInstruction');
+  var cameraTitle = document.getElementById('cameraTitle');
+
+  if (instruction) instruction.textContent = 'Tarea completada correctamente';
+  if (cameraTitle) cameraTitle.textContent = 'Escaneo completado';
+  hideScanError();
+  setCompletionVisualState(true);
+
+  if (window.operatorData && task) {
+    window.operatorData.markTaskCompleted(task.taskCode);
+  }
+
+  setTimeout(function () {
+    stopCameraFeed();
+    window.location.href = 'index.html?toast=tarea-completada&taskCode=' + encodeURIComponent(task.taskCode);
+  }, 500);
 }
 
-function applyScanResult(step) {
-  hideStepErrors();
-
-  if (forceErrorNextScan[step]) {
-    resetStepMode(step);
-    showError(step);
-    renderFlowState();
+function handleCameraTap() {
+  if (scanMode === 'error') {
+    showScanError();
     return;
   }
 
-  if (step === 'box') {
-    stepDone.box = true;
-  } else if (step === 'location') {
-    stepDone.location = true;
+  if (phase === 'box') {
+    setFlowPhase('location');
+    return;
   }
-
-  renderFlowState();
-}
-
-function startScan(step) {
-  if (scanInProgress) return;
-
-  if (step === 'location' && !stepDone.box) return;
-
-  scanInProgress = true;
-  renderFlowState();
-
-  var overlay = document.getElementById('cameraOverlay');
-  var title = document.getElementById('cameraTitle');
-  var count = document.getElementById('cameraCount');
-
-  title.textContent = step === 'box' ? 'Escaneando caja…' : 'Escaneando ubicación…';
-  count.textContent = '3';
-  overlay.classList.add('active');
-
-  startCameraFeed();
-
-  var remaining = 3;
-  scanTimer = setInterval(function () {
-    remaining -= 1;
-    count.textContent = String(Math.max(remaining, 0));
-    if (remaining <= 0) {
-      clearInterval(scanTimer);
-      scanTimer = null;
-      hideCameraOverlay();
-      scanInProgress = false;
-      applyScanResult(step);
-    }
-  }, 1000);
-}
-
-function finishTask() {
-  if (!(stepDone.box && stepDone.location)) return;
-  if (!window.operatorData || !task) return;
-
-  window.operatorData.markTaskCompleted(task.taskCode);
-  window.location.href = 'index.html?toast=tarea-completada&taskCode=' + encodeURIComponent(task.taskCode);
+  completeTask();
 }
 
 function initExecution() {
-  task = getTaskFromQuery();
+  task = getExecutionTask();
   if (!task) {
     showTaskNotFound();
     return;
   }
 
   renderTaskHeader();
-
   document.getElementById('execTaskInfo').style.display = 'block';
   document.getElementById('execFlow').style.display = 'grid';
   document.getElementById('execNotFound').style.display = 'none';
 
-  renderFlowState();
-  setTimeout(function () {
-    startScan('box');
-  }, 120);
+  scanMode = getScanModeFromQuery();
+  renderScanModeButton();
+  setFlowPhase('box');
+  startCameraFeed();
 }
 
 window.goBackToList = goBackToList;
-window.toggleStepMode = toggleStepMode;
-window.startScan = startScan;
-window.finishTask = finishTask;
-
-window.addEventListener('beforeunload', function () {
-  if (scanTimer) clearInterval(scanTimer);
-  stopCameraFeed();
-});
+window.handleCameraTap = handleCameraTap;
+window.toggleScanMode = toggleScanMode;
+window.addEventListener('beforeunload', stopCameraFeed);
 
 initExecution();
